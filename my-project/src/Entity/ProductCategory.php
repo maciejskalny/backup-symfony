@@ -69,13 +69,16 @@ class ProductCategory
     private $mainImage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="images_categories",
      *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true)})
      */
     private $images;
 
+    /**
+     * ProductCategory constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -83,7 +86,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -247,6 +250,7 @@ class ProductCategory
     {
         $this->mainImage = $mainImage;
         $this->images = $mainImage;
+
         return $this;
     }
 }
