@@ -92,7 +92,7 @@ class ProductController extends Controller
             'form' => $form->createView(),
         ]);
     }
-
+gi
     /**
      * @Route("/{id}", name="product_delete", methods="DELETE")
      */
