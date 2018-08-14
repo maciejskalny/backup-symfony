@@ -34,7 +34,7 @@ class Image
     private $name;
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {

@@ -86,7 +86,7 @@ class ProductCategory
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {

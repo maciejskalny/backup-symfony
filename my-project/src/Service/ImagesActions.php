@@ -19,16 +19,22 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Collection;
 
+/**
+ * Class ImagesActions
+ * @package App\Service
+ */
 class ImagesActions
 {
     /**
-     * @var
+     * Service parameter, a directory with uploaded images.
+     * @var string
      */
     private $imagesDirectory;
 
     /**
      * ImagesCollection constructor.
-     * @param $imagesDirectory
+     * Parameter is a path of a directory with uploaded images.
+     * @param string $imagesDirectory
      */
     public function __construct($imagesDirectory)
     {
@@ -41,22 +47,12 @@ class ImagesActions
      */
     public function createImagesCollection($images)
     {
-        $parameterValue = $this->imagesDirectory;
+        $imageManager = new ImagesActions($this->imagesDirectory);
         $filesCollection = new ArrayCollection();
 
         foreach ($images as $image)
         {
-            $file = new Image();
-            $ext = $image->guessExtension();
-            $file->setName($image.'.'.$ext);
-
-            $image->move(
-                $parameterValue,
-                $file->getName()
-            );
-
-            $file->setName(substr(strrchr($image, "/"), 1).'.'.$ext);
-            $filesCollection->add($file);
+            $filesCollection->add($imageManager->createImage($image));
         }
 
         return $filesCollection;
@@ -74,11 +70,11 @@ class ImagesActions
 
         $ext = $image->guessExtension();
         $file->setName($image.'.'.$ext);
-        $test = $file->getName();
+        $fileName = $file->getName();
 
         $image->move(
             $parameterValue,
-            $test
+            $fileName
         );
 
         $file->setName(substr(strrchr($image, "/"), 1).'.'.$ext);

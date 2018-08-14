@@ -52,7 +52,7 @@ class Product
     private $category;
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {

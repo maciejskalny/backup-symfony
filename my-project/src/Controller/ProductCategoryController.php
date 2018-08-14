@@ -46,13 +46,13 @@ class ProductCategoryController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if(!is_null($form->get('ImageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('ImageFile')->getData());
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
                 $productCategory->setMainImage($mainImage);
             }
 
-            if(!is_null($form->get('image_files')->getData())){
-                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('image_files')->getData()));
+            if(!is_null($form->get('imageFiles')->getData())){
+                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
             }
 
             $em->persist($productCategory);
@@ -91,13 +91,13 @@ class ProductCategoryController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if(!is_null($form->get('ImageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('ImageFile')->getData());
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
                 $productCategory->setMainImage($mainImage);
             }
 
-            if(!is_null($form->get('image_files')->getData())){
-                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('image_files')->getData()));
+            if(!is_null($form->get('imageFiles')->getData())){
+                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
             }
 
             $em->flush();
