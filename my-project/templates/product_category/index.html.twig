@@ -18,6 +18,14 @@ This file shows all of the categories
 
 {% block body %}
 
+    {% for message in app.flashes('notice') %}
+
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+
     <div class="jumbotron">
 
     <h1 class="entity-name">Categories</h1>

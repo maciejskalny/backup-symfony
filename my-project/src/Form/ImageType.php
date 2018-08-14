@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file supports product form
+ * This file builds part of ProductCategory form.
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -10,32 +10,29 @@
 
 namespace App\Form;
 
-use App\Entity\ProductCategory;
-use App\Entity\Product;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ProductType extends AbstractType
+class ImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('description')
-            ->add('category', EntityType::class, array(
-                'class' => ProductCategory::class,
-                'choice_label' => 'name',
-            ))
+            ->add('name', FileType::class, ([
+            'label' => false,
+            ]))
         ;
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => Image::class,
         ]);
     }
 }

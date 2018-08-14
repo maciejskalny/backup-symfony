@@ -58,6 +58,19 @@ This file shows one of the category
     {% endfor %}
     </span>
 
+        <p class="entity-field">Images:</p>
+        <span class="entity-list">
+    {% for image in product_category.images %}
+
+        <li class="entity-list-item">{{ image.name }}</li>
+
+    {% else %}
+
+        <li>no images found</li><br>
+
+    {% endfor %}
+    </span>
+
         <br>
 
         <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-primary">Back to list</button></a>

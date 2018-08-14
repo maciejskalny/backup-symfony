@@ -10,9 +10,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\ProductCategory;
+use App\Form\ImageType;
 use App\Form\ProductCategoryType;
 use App\Repository\ProductCategoryRepository;
+use App\Service\ImagesActions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,23 +29,33 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/", name="product_category_index", methods="GET")
      */
-    public function index(ProductCategoryRepository $ProductCategoryRepository): Response
+    public function index(ProductCategoryRepository $productCategoryRepository): Response
     {
-        return $this->render('product_category/index.html.twig', ['product_categories' => $ProductCategoryRepository->findAll()]);
+        return $this->render('product_category/index.html.twig', ['product_categories' => $productCategoryRepository->findAll()]);
     }
 
     /**
      * @Route("/new", name="product_category_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ImagesActions $imagesActionsService): Response
     {
-        $ProductCategory = new ProductCategory();
-        $form = $this->createForm(ProductCategoryType::class, $ProductCategory);
+        $productCategory = new ProductCategory();
+        $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($ProductCategory);
+
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $productCategory->setMainImage($mainImage);
+            }
+
+            if(!is_null($form->get('imageFiles')->getData())){
+                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
+
+            $em->persist($productCategory);
             $em->flush();
 
             $this->addFlash(
@@ -54,7 +67,7 @@ class ProductCategoryController extends Controller
         }
 
         return $this->render('product_category/new.html.twig', [
-            'product_category' => $ProductCategory,
+            'product_category' => $productCategory,
             'form' => $form->createView(),
         ]);
     }
@@ -62,31 +75,43 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
      */
-    public function show(ProductCategory $ProductCategory): Response
+    public function show(ProductCategory $productCategory): Response
     {
-        return $this->render('product_category/show.html.twig', ['product_category' => $ProductCategory]);
+        return $this->render('product_category/show.html.twig', ['product_category' => $productCategory]);
     }
 
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
      */
-    public function edit(Request $request, ProductCategory $ProductCategory): Response
+    public function edit(Request $request, ProductCategory $productCategory, ImagesActions $imagesActionsService): Response
     {
-        $form = $this->createForm(ProductCategoryType::class, $ProductCategory);
+        $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $productCategory->setMainImage($mainImage);
+            }
+
+            if(!is_null($form->get('imageFiles')->getData())){
+                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
+
+            $em->flush();
 
             $this->addFlash(
                 'notice',
                 'Edited successfully.'
             );
 
-            return $this->redirectToRoute('product_category_edit', ['id' => $ProductCategory->getId()]);
+            return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
         }
 
         return $this->render('product_category/edit.html.twig', [
-            'product_category' => $ProductCategory,
+            'product_category' => $productCategory,
             'form' => $form->createView(),
         ]);
     }
@@ -94,11 +119,11 @@ class ProductCategoryController extends Controller
     /**
      * @Route("/{id}", name="product_category_delete", methods="DELETE")
      */
-    public function delete(Request $request, ProductCategory $ProductCategory): Response
+    public function delete(Request $request, ProductCategory $productCategory): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$ProductCategory->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($ProductCategory);
+            $em->remove($productCategory);
             $em->flush();
 
             $this->addFlash(
