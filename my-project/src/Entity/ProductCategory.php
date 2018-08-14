@@ -76,6 +76,9 @@ class ProductCategory
      */
     private $images;
 
+    /**
+     * ProductCategory constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
