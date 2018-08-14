@@ -18,59 +18,65 @@ This file shows one of the category
 
 {% block body %}
     <div class="jumbotron">
-    <h1 class="entity-name">Product category</h1>
 
-    <div class="row entity-list-item">
-        <div class="col entity-field">Id</div>
-        <div class="col">{{ product_category.id }}</div>
-    </div>
+        <h1 class="entity-name">Product category</h1>
 
-    <div class="row entity-list-item">
-        <div class="col entity-field">name</div>
-        <div class="col">{{ product_category.name }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col entity-field">Id</div>
+            <div class="col">{{ product_category.id }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col entity-field">description</div>
-        <div class="col">{{ product_category.description }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col entity-field">name</div>
+            <div class="col">{{ product_category.name }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col entity-field">add_date</div>
-        <div class="col">{{ product_category.AddDate ? product_category.AddDate|date('Y-m-d') : '' }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col entity-field">description</div>
+            <div class="col">{{ product_category.description }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col entity-field">last_modified_date</div>
-        <div class="col">{{ product_category.LastModifiedDate ? product_category.LastModifiedDate|date('Y-m-d') : '' }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col entity-field">add_date</div>
+            <div class="col">{{ product_category.AddDate ? product_category.AddDate|date('Y-m-d') : '' }}</div>
+        </div>
 
-    <p class="entity-field">Products:</p>
-    <span class="entity-list">
-    {% for product in product_category.products %}
+        <div class="row entity-list-item">
+            <div class="col entity-field">last_modified_date</div>
+            <div class="col">{{ product_category.LastModifiedDate ? product_category.LastModifiedDate|date('Y-m-d') : '' }}</div>
+        </div>
 
-        <li class="entity-list-item"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+        <p class="entity-field">Products:</p>
 
-    {% else %}
-
-            <li>no products found</li><br>
-
-    {% endfor %}
-    </span>
-
-        <p class="entity-field">Images:</p>
         <span class="entity-list">
 
-    {% for image in product_category.images %}
+            {% for product in product_category.products %}
 
-        <li class="entity-list-item">{{ image.name }}</li>
+                <li class="entity-list-item"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
 
-    {% else %}
+            {% else %}
 
-        <li>no images found</li><br>
+                <li>no products found</li><br>
 
-    {% endfor %}
-    </span>
+            {% endfor %}
+
+        </span>
+
+        <p class="entity-field">Images:</p>
+
+        <span class="entity-list">
+
+            {% for image in product_category.images %}
+
+                <li class="entity-list-item">{{ image.name }}</li>
+
+            {% else %}
+
+                <li>no images found</li><br>
+
+            {% endfor %}
+
+        </span>
 
         <br>
 
@@ -84,7 +90,7 @@ This file shows one of the category
         <br>
         <br>
 
-    {{ include('product_category/_delete_form.html.twig') }}
+        {{ include('product_category/_delete_form.html.twig') }}
 
     </div>
 
