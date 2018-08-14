@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file supports product category form
  * @category Form
@@ -30,9 +29,10 @@ class ProductCategoryType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('mainImage', FileType::class, array(
+            ->add('ImageFile', FileType::class, array(
                 'required' => false,
                 'data_class' => null,
+                'mapped' => false
             ))
             ->add('image_files', CollectionType::class, array(
                 'entry_type' => FileType::class,
@@ -55,7 +55,6 @@ class ProductCategoryType extends AbstractType
                 'mapped' =>false,
             ));
     }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

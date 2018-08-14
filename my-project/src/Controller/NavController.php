@@ -23,4 +23,3 @@ class NavController extends Controller
         return $this->render('nav/nav_items.html.twig', ['categories' => $categories->findAll()]);
     }
 }
-

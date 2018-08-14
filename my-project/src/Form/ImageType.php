@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file supports product category form
+ * This file builds part of ProductCategory form.
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -23,10 +23,9 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', FileType::class, array(
+            ->add('name', FileType::class, ([
             'label' => false,
-            ))
-
+            ]))
         ;
     }
 

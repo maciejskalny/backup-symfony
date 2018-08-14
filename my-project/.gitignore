@@ -24,3 +24,7 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-pack ###
+
+###> uploads ###
+/public/uploads
+###< uploads ###
