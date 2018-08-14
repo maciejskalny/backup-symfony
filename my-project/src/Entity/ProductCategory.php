@@ -250,6 +250,7 @@ class ProductCategory
     {
         $this->mainImage = $mainImage;
         $this->images = $mainImage;
+
         return $this;
     }
 }

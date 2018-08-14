@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file supports Image entity.
  * @category Entity
