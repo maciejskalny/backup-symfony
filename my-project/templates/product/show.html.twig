@@ -51,21 +51,21 @@ This file shows one of products
         <span class="entity-list">
             <div class="row">
 
-    {% for image in product.images %}
+                {% for image in product.images %}
 
-        <div class="gallery-thing col-lg-2 col-md-2 col-sm-2 col-xs-6 filter hdpe">
-                    <img width="100px" height="100px" src="{{ asset('uploads/images/') }}{{ image.name }}" class="img-responsive">
-                    <span class="entity-list-item">{{ image.name }}</span>
-        </div>
+                    <div class="gallery-thing col-lg-2 col-md-2 col-sm-2 col-xs-6 filter hdpe">
+                                <img width="100px" height="100px" src="{{ asset('uploads/images/') }}{{ image.name }}" class="img-responsive">
+                                <span class="entity-list-item">{{ image.name }}</span>
+                    </div>
 
-    {% else %}
+                {% else %}
 
-        <li>no images found</li><br>
+                    <li>no images found</li><br>
 
-    {% endfor %}
+                {% endfor %}
 
-        </div>
-    </span>
+            </div>
+        </span>
 
         <br>
         <br>
