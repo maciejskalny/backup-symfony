@@ -59,12 +59,6 @@ class ProductCategory
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
-     * @Assert\File(
-     *     maxSize = "400k",
-     *     maxSizeMessage = "Too large file",
-     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
-     *     mimeTypesMessage = "Your file must be a .pdf, .jpg or .jpeg!",
-     *    )
      */
     private $mainImage;
 

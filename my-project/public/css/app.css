@@ -43,3 +43,24 @@ a{
     float:right;
 }
 
+.main-image{
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    background-color: royalblue;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+.gallery-item{
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    background-color: royalblue;
+    background-position: center !important;
+    background-size: cover !important;
+}
+
+.gallery-thing{
+    float:left;
+}

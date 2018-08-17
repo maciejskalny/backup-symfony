@@ -31,6 +31,7 @@ This file shows all of the categories
         <h1 class="entity-name">Categories</h1>
 
         <div class="row">
+            <div class="col entity-field"></div>
             <div class="col entity-field">Id</div>
             <div class="col entity-field">name</div>
             <div class="col entity-field">description</div>
@@ -42,6 +43,9 @@ This file shows all of the categories
         {% for product_category in product_categories %}
 
             <div class="row entity-list-item">
+                <div class="col">
+                    <div class="main-image" {% if product_category.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product_category.mainImage.name }}')" {% endif %}></div>
+                </div>
                 <div class="col">{{ product_category.id }}</div>
                 <div class="col">{{ product_category.name }}</div>
                 <div class="col">{{ product_category.description }}</div>
