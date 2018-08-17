@@ -62,11 +62,17 @@ class ApiProductController extends Controller
         $data = json_decode($request->getContent(), true);
         $product = new Product();
         $form = $this->createForm(ApiProductType::class, $product);
+        $form->handleRequest($request);
         $form->submit($request->query->all());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($product);
-        $em->flush();
-        return new Response('New product added', 201);
+        if($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+            return new Response('New product added', 201);
+        }
+        else{
+            return new Response('Bad Request', 400);
+        }
     }
     /**
      * @Route("/api/product/{id}/edit")

@@ -208,4 +208,34 @@ class ProductCategory
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function serializeCategory(){
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategoryInfo()
+    {
+        $data = [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'created_at' => $this->getAddDate(),
+            'last_modified' => $this->getLastModifiedDate(),
+            'products' => array(),
+        ];
+        foreach ($this->getProducts() as $product)
+        {
+            $data['products'][] = $product->serializeProduct();
+        }
+        return $data;
+    }
 }
