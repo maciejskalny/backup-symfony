@@ -4,10 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\ProductCategory;
-use App\Form\Image1Type;
 use App\Repository\ImageRepository;
 use App\Service\ImagesActions;
-use App\Service\ImagesCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;

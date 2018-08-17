@@ -10,7 +10,10 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
@@ -50,6 +53,25 @@ class Product
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
+     */
+    private $mainImage;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="images_products",
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true)})
+     */
+    private $images;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+    }
 
     /**
      * @return integer
@@ -145,6 +167,58 @@ class Product
     public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param ArrayCollection $images
+     * @return $this
+     */
+    public function addImages(ArrayCollection $images)
+    {
+        $this->images = $images;
+        return $this;
+    }
+
+    /**
+     * @param Image $image
+     * @return Product
+     */
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Image|null
+     */
+    public function getMainImage(): ?Image
+    {
+        return $this->mainImage;
+    }
+
+    /**
+     * @param Image|null $mainImage
+     * @return Product
+     */
+    public function setMainImage(?Image $mainImage): self
+    {
+
+        $this->mainImage = $mainImage;
+        $this->images->add($mainImage);
 
         return $this;
     }

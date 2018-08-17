@@ -48,7 +48,9 @@ This file shows all of the products
                 <div class="col">{{ product.description }}</div>
                 <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
                 <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
-                <div class="col"><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a></div>
+                <div class="col">
+                    <a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a>
+                </div>
                 <div class="col">
                     <a href="{{ path('product_show', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Show</button></a>
                     <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Edit</button></a>

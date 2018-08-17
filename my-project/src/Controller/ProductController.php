@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\ImagesActions;
 
 /**
  * @Route("/product")
@@ -34,7 +35,7 @@ class ProductController extends Controller
     /**
      * @Route("/new", name="product_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, ImagesActions $imagesActionsService): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
@@ -42,6 +43,16 @@ class ProductController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $product->setMainImage($mainImage);
+            }
+
+            if(!is_null($form->get('imageFiles')->getData())){
+                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
+
             $em->persist($product);
             $em->flush();
 
@@ -70,14 +81,25 @@ class ProductController extends Controller
     /**
      * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Product $product): Response
+    public function edit(Request $request, Product $product, ImagesActions $imagesActionsService): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $product->setMainImage($mainImage);
+            }
+
+            if(!is_null($form->get('imageFiles')->getData())){
+                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
+
+            $em->flush();
 
             $this->addFlash(
                 'notice',
