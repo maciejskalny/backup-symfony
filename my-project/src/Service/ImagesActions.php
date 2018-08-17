@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints\Collection;
 
@@ -80,5 +81,16 @@ class ImagesActions
         $file->setName(substr(strrchr($image, "/"), 1).'.'.$ext);
 
         return $file;
+    }
+
+    /**
+     * @param Image|null $image
+     */
+    public function removeImage(?Image $image)
+    {
+        $parameterValue = $this->imagesDirectory;
+        $file = new Filesystem();
+
+        $file->remove($parameterValue.'/'.$image->getName());
     }
 }

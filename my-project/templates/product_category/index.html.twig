@@ -28,36 +28,36 @@ This file shows all of the categories
 
     <div class="jumbotron">
 
-    <h1 class="entity-name">Categories</h1>
+        <h1 class="entity-name">Categories</h1>
 
-    <div class="row">
-        <div class="col entity-field">Id</div>
-        <div class="col entity-field">name</div>
-        <div class="col entity-field">description</div>
-        <div class="col entity-field">add_date</div>
-        <div class="col entity-field">last_modified_date</div>
-        <div class="col entity-field">actions</div>
-    </div>
-
-    {% for product_category in product_categories %}
-
-        <div class="row entity-list-item">
-            <div class="col">{{ product_category.id }}</div>
-            <div class="col">{{ product_category.name }}</div>
-            <div class="col">{{ product_category.description }}</div>
-            <div class="col">{{ product_category.AddDate ? product_category.AddDate|date('Y-m-d') : '' }}</div>
-            <div class="col">{{ product_category.LastModifiedDate ? product_category.LastModifiedDate|date('Y-m-d') : '' }}</div>
-            <div class="col">
-                <a href="{{ path('product_category_show', {'id': product_category.id}) }}"><button type="button" class="btn btn-outline-primary">Show</button></a>
-                <a href="{{ path('product_category_edit', {'id': product_category.id}) }}"><button type="button" class="btn btn-outline-primary">Edit</button></a>
-            </div>
+        <div class="row">
+            <div class="col entity-field">Id</div>
+            <div class="col entity-field">name</div>
+            <div class="col entity-field">description</div>
+            <div class="col entity-field">add_date</div>
+            <div class="col entity-field">last_modified_date</div>
+            <div class="col entity-field">actions</div>
         </div>
+
+        {% for product_category in product_categories %}
+
+            <div class="row entity-list-item">
+                <div class="col">{{ product_category.id }}</div>
+                <div class="col">{{ product_category.name }}</div>
+                <div class="col">{{ product_category.description }}</div>
+                <div class="col">{{ product_category.AddDate ? product_category.AddDate|date('Y-m-d') : '' }}</div>
+                <div class="col">{{ product_category.LastModifiedDate ? product_category.LastModifiedDate|date('Y-m-d') : '' }}</div>
+                <div class="col">
+                    <a href="{{ path('product_category_show', {'id': product_category.id}) }}"><button type="button" class="btn btn-outline-primary">Show</button></a>
+                    <a href="{{ path('product_category_edit', {'id': product_category.id}) }}"><button type="button" class="btn btn-outline-primary">Edit</button></a>
+                </div>
+            </div>
 
         {% else %}
 
-                <p>no records found</p>
+            <p>no records found</p>
 
-    {% endfor %}
+        {% endfor %}
 
         <br>
 

@@ -39,3 +39,7 @@ a{
     border-bottom:1px solid lightgrey;
 }
 
+.entity-list-item .btn{
+    float:right;
+}
+

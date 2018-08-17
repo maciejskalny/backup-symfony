@@ -29,7 +29,6 @@ class ProductType extends AbstractType
                 'choice_label' => 'name',
             ))
         ;
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
