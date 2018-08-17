@@ -50,7 +50,7 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
