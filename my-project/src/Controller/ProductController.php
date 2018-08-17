@@ -59,8 +59,6 @@ class ProductController extends Controller
                 'New product has been added.'
             );
 
-
-
             return $this->redirectToRoute('product_index');
         }
 

@@ -39,26 +39,7 @@ class ProductType extends AbstractType
                 'required' => false,
                 'data_class' => null,
             ))
-            ->add('image_files', CollectionType::class, array(
-                'entry_type' => FileType::class,
-                'entry_options' => array(
-                    'label' => false,
-                    'constraints' => array(
-                        new File([
-                            'maxSize' => '400k',
-                            'maxSizeMessage' => 'Too large file.',
-                            'mimeTypes' => array(
-                                '.png' => 'image/png',
-                                '.jpg' => 'image/jpg',
-                                '.jpeg' => 'image/jpeg'
-                            ),
-                            'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
-                        ])
-                    )
-                ),
-                'allow_add' => true,
-                'mapped' =>false,
-            ));
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

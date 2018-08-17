@@ -20,9 +20,9 @@ This file shows form which is responsible for updating another category
 
     <div class="jumbotron">
 
-    <h1 class="entity-name">Edit</h1>
+        <h1 class="entity-name">Edit</h1>
 
-    {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
+        {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
 
         <br>
 
@@ -32,19 +32,22 @@ This file shows form which is responsible for updating another category
         <br>
 
         <p class="entity-field">Images:</p>
+
         <span class="entity-list">
-    {% for image in product_category.image %}
 
-        <li class="entity-list-item">{{ image.name }}{{ include('image/_delete_form.html.twig') }}</li>
+            {% for image in product_category.images %}
 
-    {% else %}
+                <li class="entity-list-item">{{ image.name }}{{ include('image/_delete_form.html.twig') }}</li>
 
-        <li>no images found</li><br>
+            {% else %}
 
-    {% endfor %}
-    </span><br>
+                <li>no images found</li><br>
 
-    {{ include('product_category/_delete_form.html.twig') }}
+            {% endfor %}
+
+        </span><br>
+
+        {{ include('product_category/_delete_form.html.twig') }}
 
     </div>
 

@@ -7,28 +7,31 @@ This file renders form which is responsible for updating another category
 #}
 
 {{ form_start(form) }}
+
     {{ form_widget(form.name) }} <br><br>
     {{ form_widget(form.description) }} <br><br>
-    {{ form_widget(form.mainImage) }}<br><br>
-<ul id="image-fields-list"
-    data-prototype="{{ form_widget(form.image_files.vars.prototype)|e }}"
+    {{ form_widget(form.imageFile) }} <br><br>
 
-    data-widget-tags="{{ '<li></li>'|e }}">
-    {% for imageField in form.image_files %}
-        <li>
-            {{ form_errors(imageField) }}
-            {{ form_widget(imageField) }}
-        </li>
-    {% endfor %}
-</ul>
+    <ul id="image-fields-list" data-prototype="{{ form_widget(form.imageFiles.vars.prototype)|e }}" data-widget-tags="{{ '<li></li>'|e }}">
 
-    <button type="button"
-        class="add-another-collection-widget"
-        data-list="#image-fields-list">Add another image to gallery</button><br><br>
+            {% for imageField in form.imageFiles %}
+
+                <li>
+                    {{ form_errors(imageField) }}
+                    {{ form_widget(imageField) }}
+                </li>
+
+            {% endfor %}
+
+    </ul>
+
+    <button type="button" class="add-another-collection-widget"
+            data-list="#image-fields-list">Add another image to gallery</button> <br><br>
 
     <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 
-    {{ form_row(form.image_files) }}
-    {{ form_end(form) }}
+    {{ form_row(form.imageFiles) }}
+
+{{ form_end(form) }}
 
 <script src="{{ asset('/js/add-collection-widget.js') }}"></script>

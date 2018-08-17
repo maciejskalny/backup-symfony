@@ -19,33 +19,33 @@ This file shows one of products
 {% block body %}
 
     <div class="jumbotron">
-    <h1 class="entity-name">Product</h1>
 
-    <div class="row entity-list-item">
-        <div class="col">Id</div>
-        <div class="col">{{ product.id }}</div>
-    </div>
+        <h1 class="entity-name">Product</h1>
 
-    <div class="row entity-list-item">
-        <div class="col">name</div>
-        <div class="col">{{ product.name }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col">Id</div>
+            <div class="col">{{ product.id }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col">description</div>
-        <div class="col">{{ product.description }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col">name</div>
+            <div class="col">{{ product.name }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col">add_date</div>
-        <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col">description</div>
+            <div class="col">{{ product.description }}</div>
+        </div>
 
-    <div class="row entity-list-item">
-        <div class="col">last_modified_date</div>
-        <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
-    </div>
+        <div class="row entity-list-item">
+            <div class="col">add_date</div>
+            <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
+        </div>
 
+        <div class="row entity-list-item">
+            <div class="col">last_modified_date</div>
+            <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
+        </div>
 
         <br>
         <br>
@@ -60,7 +60,7 @@ This file shows one of products
         <br>
         <br>
 
-    {{ include('product/_delete_form.html.twig') }}
+        {{ include('product/_delete_form.html.twig') }}
 
     </div>
 

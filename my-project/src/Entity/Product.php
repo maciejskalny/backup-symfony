@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file supports product entity
+ * This file supports product entity.
  * @category Entity
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -55,36 +55,25 @@ class Product
     private $category;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\ProductImage", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     * @return integer
      */
-    private $image;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\File(
-     *     maxSize = "400k",
-     *     maxSizeMessage = "Too large file",
-     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
-     *     mimeTypesMessage = "Your file must be a .pdf, .jpg or .jpeg!",
-     * )
-     */
-    private $mainImage;
-
-    public function __construct()
-    {
-        $this->image = new ArrayCollection();
-    }
-
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Product
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -92,11 +81,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param null|string $description
+     * @return Product
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -104,6 +100,9 @@ class Product
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getAddDate(): ?\DateTimeInterface
     {
         return $this->add_date;
@@ -112,12 +111,14 @@ class Product
     /**
      * @ORM\PrePersist
      */
-
     public function setAddDate()
     {
         $this->add_date = new \DateTime();
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getLastModifiedDate(): ?\DateTimeInterface
     {
         return $this->last_modified_date;
@@ -127,63 +128,26 @@ class Product
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-
     public function setLastModifiedDate()
     {
         $this->last_modified_date = new \DateTime();
     }
 
+    /**
+     * @return ProductCategory|null
+     */
     public function getCategory(): ?ProductCategory
     {
         return $this->category;
     }
 
+    /**
+     * @param ProductCategory|null $category
+     * @return Product
+     */
     public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|ProductImage[]
-     */
-    public function getImage(): Collection
-    {
-        return $this->image;
-    }
-
-    public function addImage(ProductImage $image): self
-    {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeImage(ProductImage $image): self
-    {
-        if ($this->image->contains($image)) {
-            $this->image->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getProduct() === $this) {
-                $image->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getMainImage(): ?string
-    {
-        return $this->mainImage;
-    }
-
-    public function setMainImage(?string $mainImage): self
-    {
-        $this->mainImage = $mainImage;
 
         return $this;
     }
