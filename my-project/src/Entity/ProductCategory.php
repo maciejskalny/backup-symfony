@@ -243,7 +243,7 @@ class ProductCategory
     public function setMainImage(?Image $mainImage): self
     {
         $this->mainImage = $mainImage;
-        $this->images = $mainImage;
+        $this->images->add($mainImage);
 
         return $this;
     }
