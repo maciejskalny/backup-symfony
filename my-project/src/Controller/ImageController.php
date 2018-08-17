@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\ProductCategory;
 use App\Repository\ImageRepository;
-use App\Service\ImagesCollection;
+use App\Service\ImagesActions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,33 +15,30 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
+ * Class ImageController
+ * @package App\Controller
  * @Route("/image")
  */
 class ImageController extends Controller
 {
     /**
      * @Route("/{id}", name="image_delete", methods="DELETE")
+     * @param Request $request
+     * @param Image $image
+     * @param ImagesActions $imagesActions
+     * @return Response
      */
-    public function delete(Request $request, Image $image, ImagesCollection $imagesCollection): Response
+    public function delete(Request $request, Image $image, ImagesActions $imagesActions): Response
     {
         if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
 
-            $imagesCollection->removeImage($image);
-            $category = $image->getCategory();
-
-            if($category->getMainImage() == $image->getName())
-                $category->setMainImage(NULL);
+            $imagesActions->removeImage($image);
 
             $em->remove($image);
             $em->flush();
         }
 
-        $this->addFlash(
-            'notice',
-            'Image deleted successfully.'
-        );
-
-        return $this->redirectToRoute('product_category_edit', ['id' => $category->getId()]);
+        return $this->redirectToRoute('product_category_index');
     }
 }

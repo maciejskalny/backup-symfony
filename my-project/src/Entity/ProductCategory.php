@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinColumns;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductCategoryRepository")
@@ -54,39 +57,48 @@ class ProductCategory
     private $products;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="category", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
      */
-    private $image;
+    private $mainImage;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *   @Assert\File(
-     *     maxSize = "400k",
-     *     maxSizeMessage = "Too large file",
-     *     mimeTypes = {"image/png", "image/jpg", "image/jpeg"},
-     *     mimeTypesMessage = "Your file must be a .pdf, .jpg or .jpeg!",
-     * )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="images_categories",
+     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
      */
+    private $images;
 
-    private $main_image;
-
-
+    /**
+     * ProductCategory constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
-        $this->image = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
+    /**
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return ProductCategory
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -94,11 +106,18 @@ class ProductCategory
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param null|string $description
+     * @return ProductCategory
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -106,6 +125,9 @@ class ProductCategory
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getAddDate(): ?\DateTimeInterface
     {
         return $this->add_date;
@@ -114,12 +136,14 @@ class ProductCategory
     /**
      * @ORM\PrePersist
      */
-
     public function setAddDate()
     {
         $this->add_date = new \DateTime();
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getLastModifiedDate(): ?\DateTimeInterface
     {
         return $this->last_modified_date;
@@ -129,7 +153,6 @@ class ProductCategory
      * @ORM\PrePersist
      * @ORM\PreUpdate
      */
-
     public function setLastModifiedDate()
     {
         $this->last_modified_date = new \DateTime();
@@ -143,6 +166,10 @@ class ProductCategory
         return $this->products;
     }
 
+    /**
+     * @param Product $product
+     * @return ProductCategory
+     */
     public function addProduct(Product $product): self
     {
         if (!$this->products->contains($product)) {
@@ -153,6 +180,10 @@ class ProductCategory
         return $this;
     }
 
+    /**
+     * @param Product $product
+     * @return ProductCategory
+     */
     public function removeProduct(Product $product): self
     {
         if ($this->products->contains($product)) {
@@ -169,42 +200,50 @@ class ProductCategory
     /**
      * @return Collection|Image[]
      */
-    public function getImage(): Collection
+    public function getImages(): Collection
     {
-        return $this->image;
+        return $this->images;
     }
 
-    public function addImage(Image $image): self
+    /**
+     * @param ArrayCollection $images
+     * @return $this
+     */
+    public function addImages(ArrayCollection $images)
     {
-        if (!$this->image->contains($image)) {
-            $this->image[] = $image;
-            $image->setCategory($this);
-        }
-
+        $this->images = $images;
         return $this;
     }
 
+    /**
+     * @param Image $image
+     * @return ProductCategory
+     */
     public function removeImage(Image $image): self
     {
-        if ($this->image->contains($image)) {
-            $this->image->removeElement($image);
-            // set the owning side to null (unless already changed)
-            if ($image->getCategory() === $this) {
-                $image->setCategory(null);
-            }
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
         }
 
         return $this;
     }
 
-    public function getMainImage(): ?string
+    /**
+     * @return Image|null
+     */
+    public function getMainImage(): ?Image
     {
-        return $this->main_image;
+        return $this->mainImage;
     }
 
-    public function setMainImage(?string $main_image): self
+    /**
+     * @param Image|null $mainImage
+     * @return ProductCategory
+     */
+    public function setMainImage(?Image $mainImage): self
     {
-        $this->main_image = $main_image;
+        $this->mainImage = $mainImage;
+        $this->images->add($mainImage);
 
         return $this;
     }
