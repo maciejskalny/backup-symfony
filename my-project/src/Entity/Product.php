@@ -187,4 +187,28 @@ class Product
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function serializeProduct(){
+        return array(
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        );
+    }
+    /**
+     * @return array
+     */
+    public function getProductInfo()
+    {
+        $data = [
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'category' => $this->getCategory(),
+            'created_at' => $this->getAddDate(),
+            'last_modified' => $this->getLastModifiedDate(),
+        ];
+        return $data;
+    }
 }
