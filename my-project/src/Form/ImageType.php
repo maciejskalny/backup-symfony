@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file builds part of ProductCategory form.
+ * This file builds part of ProductCategory and Product form.
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
