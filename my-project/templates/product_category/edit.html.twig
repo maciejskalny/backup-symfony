@@ -24,13 +24,6 @@ This file shows form which is responsible for updating another category
 
         {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
 
-        <br>
-
-        <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-primary">Back to list</button></a>
-
-        <br>
-        <br>
-
         <p class="entity-field">Images:</p>
 
         <span class="entity-list">
@@ -45,7 +38,12 @@ This file shows form which is responsible for updating another category
 
             {% endfor %}
 
-        </span><br>
+    </span>
+
+        <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-primary">Back to list</button></a>
+
+        <br>
+        <br>
 
         {{ include('product_category/_delete_form.html.twig') }}
 

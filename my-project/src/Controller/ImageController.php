@@ -15,16 +15,21 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
+ * Class ImageController
+ * @package App\Controller
  * @Route("/image")
  */
 class ImageController extends Controller
 {
     /**
      * @Route("/{id}", name="image_delete", methods="DELETE")
+     * @param Request $request
+     * @param Image $image
+     * @param ImagesActions $imagesActions
+     * @return Response
      */
     public function delete(Request $request, Image $image, ImagesActions $imagesActions): Response
     {
-
         if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
 

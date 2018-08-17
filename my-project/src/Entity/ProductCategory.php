@@ -65,8 +65,8 @@ class ProductCategory
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="images_categories",
-     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true)})
+     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
      */
     private $images;
 
