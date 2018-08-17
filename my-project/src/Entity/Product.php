@@ -63,11 +63,14 @@ class Product
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
      * @ORM\JoinTable(name="images_products",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true)})
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
      */
     private $images;
 
+    /**
+     * Product constructor.
+     */
     public function __construct()
     {
         $this->images = new ArrayCollection();

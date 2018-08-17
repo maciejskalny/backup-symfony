@@ -26,9 +26,9 @@ This file shows form which is responsible for updating another product
 
         <p class="entity-field">Images:</p>
         <span class="entity-list">
-    {% for image in product.image %}
+    {% for image in product.images %}
 
-        <li class="entity-list-item">{{ image.name }}{{ include('product_image/_delete_form.html.twig') }}</li>
+        <li class="entity-list-item">{{ image.name }}{{ include('image/_delete_form.html.twig') }}</li>
 
     {% else %}
 
