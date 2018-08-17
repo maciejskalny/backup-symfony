@@ -32,14 +32,46 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('category', EntityType::class, array(
+            ->add('category', EntityType::class, [
                 'class' => ProductCategory::class,
-                'choice_label' => 'name'))
-            ->add('mainImage', FileType::class, array(
+                'choice_label' => 'name'])
+            ->add('imageFile', FileType::class, [
                 'required' => false,
                 'data_class' => null,
-            ))
-        ;
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '400k',
+                        'maxSizeMessage' => 'Too large file.',
+                        'mimeTypes' => [
+                            '.png' => 'image/png',
+                            '.jpg' => 'image/jpg',
+                            '.jpeg' => 'image/jpeg'
+                        ],
+                        'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
+                    ])
+                ]
+            ])
+            ->add('imageFiles', CollectionType::class, [
+                'entry_type' => FileType::class,
+                'entry_options' => [
+                    'label' => false,
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '400k',
+                            'maxSizeMessage' => 'Too large file.',
+                            'mimeTypes' => [
+                                '.png' => 'image/png',
+                                '.jpg' => 'image/jpg',
+                                '.jpeg' => 'image/jpeg'
+                            ],
+                            'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
+                        ])
+                    ]
+                ],
+                'allow_add' => true,
+                'mapped' =>false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
