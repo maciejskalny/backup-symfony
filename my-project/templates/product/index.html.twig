@@ -31,6 +31,7 @@ This file shows all of the products
         <h1 class="entity-name">Products</h1>
 
         <div class="row">
+            <div class="col entity-field"></div>
             <div class="col entity-field">Id</div>
             <div class="col entity-field">Name</div>
             <div class="col entity-field">Description</div>
@@ -43,6 +44,9 @@ This file shows all of the products
         {% for product in products %}
 
             <div class="row entity-list-item">
+                <div class="col">
+                    <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
+                </div>
                 <div class="col">{{ product.id }}</div>
                 <div class="col">{{ product.name }}</div>
                 <div class="col">{{ product.description }}</div>
