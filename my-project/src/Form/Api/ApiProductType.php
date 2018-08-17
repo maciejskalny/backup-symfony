@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
  * @author Maciej Skalny contact@wearevirtua.com
  */
-namespace App\Form;
+namespace App\Form\Api;
 use App\Entity\ProductCategory;
 use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;

@@ -6,10 +6,12 @@
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
  * @author Maciej Skalny contact@wearevirtua.com
  */
-namespace App\Controller;
+
+namespace App\Controller\Api;
+
 use App\Entity\Product;
 use App\Entity\ProductCategory;
-use App\Form\ApiProductType;
+use App\Form\Api\ApiProductType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
@@ -18,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
+
 class ApiProductController extends Controller
 {
     /**
