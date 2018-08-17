@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file supports product category form
+ * This file supports product form
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -11,6 +11,7 @@
 namespace App\Form;
 
 use App\Entity\ProductImage;
+use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,9 +24,9 @@ class ProductImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', FileType::class, array(
+            ->add('name', FileType::class, [
             'label' => false,
-            ))
+            ])
 
         ;
     }
