@@ -23,8 +23,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
 use Webmozart\Assert\Assert;
 
+/**
+ * Class ProductCategoryType
+ * @package App\Form
+ */
 class ProductCategoryType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -68,6 +76,10 @@ class ProductCategoryType extends AbstractType
                 'mapped' =>false,
             ]);
     }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

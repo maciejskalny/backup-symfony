@@ -50,21 +50,34 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
     }
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     * @return User
+     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -72,11 +85,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     * @return User
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -84,11 +104,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -96,11 +123,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getPlainPassword(): ?string
     {
         return $this->plainPassword;
     }
 
+    /**
+     * @param string $plainPassword
+     * @return User
+     */
     public function setPlainPassword(string $plainPassword): self
     {
         $this->plainPassword = $plainPassword;
@@ -108,11 +142,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return array|null
+     */
     public function getRoles(): ?array
     {
         return $this->roles;
     }
 
+    /**
+     * @param array $roles
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -122,7 +163,6 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
-
     }
 
     public function getSalt()
