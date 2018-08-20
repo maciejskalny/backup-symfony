@@ -65,9 +65,7 @@ class WishlistController extends Controller
         if(sizeof($wishlist)<5) {
             array_push($wishlist, $id);
             $session->set('wishlist', $wishlist);
-        }
-
-        else{
+        } else {
             $session->getFlashBag()->add('error', 'You can add only 5 products to the wishlist.');
         }
 
