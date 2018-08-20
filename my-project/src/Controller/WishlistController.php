@@ -10,6 +10,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -57,8 +58,7 @@ class WishlistController extends Controller
 
         if($session->has('wishlist')) {
         $wishlist = $session->get('wishlist');
-        }
-        else {
+        } else {
             $wishlist = array();
         }
 
