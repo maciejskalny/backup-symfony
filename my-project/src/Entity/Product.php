@@ -230,10 +230,10 @@ class Product
      * @return array
      */
     public function serializeProduct(){
-        return array(
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-        );
+        ];
     }
 
     /**
