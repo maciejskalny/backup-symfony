@@ -12,11 +12,17 @@ namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class WelcomeController
+ * @package App\Controller
+ */
 class WelcomeController extends Controller
 {
     /**
      * @Route("/welcome", name="welcome")
+     * @return Response
      */
     public function index()
     {

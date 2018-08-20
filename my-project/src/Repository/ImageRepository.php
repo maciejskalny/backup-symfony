@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is an image repository.
+ * @category Repository
+ * @Package Virtua_Internship
+ * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+ * @author Maciej Skalny contact@wearevirtua.com
+ */
+
 namespace App\Repository;
 
 use App\Entity\Image;
@@ -14,37 +22,12 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ImageRepository extends ServiceEntityRepository
 {
+    /**
+     * ImageRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Image::class);
     }
-
-//    /**
-//     * @return Images[] Returns an array of Images objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Images
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
