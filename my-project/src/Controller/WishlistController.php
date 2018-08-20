@@ -108,10 +108,8 @@ class WishlistController extends Controller
         }
 
         if($session->has('wishlist')) {
-            $wishlist = $session->get('wishlist');
+            $session->remove('wishlist');
         }
-
-        $session->remove('wishlist');
 
         return $this->redirectToRoute('wishlist');
     }
