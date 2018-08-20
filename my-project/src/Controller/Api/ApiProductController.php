@@ -21,8 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class ApiProductController
+ * @package App\Controller\Api
+ */
 class ApiProductController extends Controller
 {
+
     /**
      * @Route("/api/product/{id}")
      * @Method("GET")
@@ -39,6 +44,7 @@ class ApiProductController extends Controller
             return new Response('Not Found.', 404);
         }
     }
+
     /**
      * @Route("api/products")
      * @Method("GET")
@@ -53,6 +59,7 @@ class ApiProductController extends Controller
         }
         return new Response(json_encode($data), 200);
     }
+
     /**
      * @Route("api/product")
      * @Method("POST")
@@ -70,11 +77,11 @@ class ApiProductController extends Controller
             $em->flush();
             return new Response('New product added.', 201);
         }
-
         catch (\Exception $exception){
             return new Response('Bad request.', 400);
         }
     }
+
     /**
      * @Route("/api/product/{id}/edit")
      * @Method("PUT")
@@ -94,7 +101,6 @@ class ApiProductController extends Controller
                 $em->flush();
                 return new Response('Product updated.', 200);
             }
-
             catch (\Exception $exception){
                 return new Response('Bad request.', 400);
             }
@@ -103,6 +109,7 @@ class ApiProductController extends Controller
             return new Response('Not found.', 404);
         }
     }
+
     /**
      * @Route("/api/product/{id}/delete")
      * @Method("DELETE")
