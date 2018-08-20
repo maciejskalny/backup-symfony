@@ -18,6 +18,14 @@ This file shows form which is responsible for updating another product
 
 {% block body %}
 
+    {% for message in app.flashes('notice') %}
+
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+
     <div class="jumbotron">
 
         <h1>Edit product</h1>

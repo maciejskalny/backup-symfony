@@ -38,14 +38,34 @@ This file shows one of products
         </div>
 
         <div class="row entity-list-item">
-            <div class="col">add_date</div>
+            <div class="col">Created at</div>
             <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
         </div>
 
         <div class="row entity-list-item">
-            <div class="col">last_modified_date</div>
-            <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
+            <div class="col">Last modified</div>
+            <div class="col">{{ product.AddDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
         </div>
+
+        <p class="entity-field">Images:</p>
+        <span class="entity-list">
+            <div class="row">
+
+                {% for image in product.images %}
+
+                    <div class="gallery-thing col-lg-2 col-md-2 col-sm-2 col-xs-6 filter hdpe">
+                                <img width="100px" height="100px" src="{{ asset('uploads/images/') }}{{ image.name }}" class="img-responsive">
+                                <span class="entity-list-item">{{ image.name }}</span>
+                    </div>
+
+                {% else %}
+
+                    <li>no images found</li><br>
+
+                {% endfor %}
+
+            </div>
+        </span>
 
         <br>
         <br>

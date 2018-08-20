@@ -52,7 +52,7 @@ class ProductCategory
     private $last_modified_date;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category", cascade={"persist", "remove"})
      */
     private $products;
 
