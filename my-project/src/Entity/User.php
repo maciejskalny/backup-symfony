@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file supports user entity
+ * @category Entity
+ * @Package Virtua_Internship
+ * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+ * @author Maciej Skalny contact@wearevirtua.com
+ */
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -59,7 +67,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getId()
     {
@@ -161,12 +169,16 @@ class User implements UserInterface
         return $this;
     }
 
-    public function eraseCredentials()
-    {
-    }
-
+    /**
+     * @return null|string
+     */
     public function getSalt()
     {
         return null;
     }
+
+    /**
+     * That method is only meant to clean up possibly stored plain text passwords.
+     */
+    public function eraseCredentials(){}
 }
