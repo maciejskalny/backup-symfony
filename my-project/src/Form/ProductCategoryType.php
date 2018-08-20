@@ -23,39 +23,63 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\File;
 use Webmozart\Assert\Assert;
 
+/**
+ * Class ProductCategoryType
+ * @package App\Form
+ */
 class ProductCategoryType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
             ->add('description')
-            ->add('mainImage', FileType::class, array(
+            ->add('imageFile', FileType::class, [
                 'required' => false,
                 'data_class' => null,
-            ))
-            ->add('image_files', CollectionType::class, array(
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '400k',
+                        'maxSizeMessage' => 'Too large file.',
+                        'mimeTypes' => [
+                            '.png' => 'image/png',
+                            '.jpg' => 'image/jpg',
+                            '.jpeg' => 'image/jpeg'
+                        ],
+                        'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
+                    ])
+                ]
+            ])
+            ->add('imageFiles', CollectionType::class, [
                 'entry_type' => FileType::class,
-                'entry_options' => array(
+                'entry_options' => [
                     'label' => false,
-                    'constraints' => array(
+                    'constraints' => [
                         new File([
                             'maxSize' => '400k',
                             'maxSizeMessage' => 'Too large file.',
-                            'mimeTypes' => array(
+                            'mimeTypes' => [
                                 '.png' => 'image/png',
                                 '.jpg' => 'image/jpg',
                                 '.jpeg' => 'image/jpeg'
-                            ),
+                            ],
                             'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
                         ])
-                    )
-                ),
+                    ]
+                ],
                 'allow_add' => true,
                 'mapped' =>false,
-            ));
+            ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
