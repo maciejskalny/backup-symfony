@@ -103,10 +103,6 @@ class WishlistController extends Controller
      */
     public function deleteAll(Session $session)
     {
-        if(!$session->isStarted()) {
-            return $this->render('wishlist/index.html.twig');
-        }
-
         if($session->has('wishlist')) {
             $session->remove('wishlist');
         }
