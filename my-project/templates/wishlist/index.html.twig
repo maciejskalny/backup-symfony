@@ -1,12 +1,14 @@
+{#
+This file shows wishlist
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Wishlist {% if products is defined %}({{ products|length }}){% endif %}{% endblock %}
-
-{% block header %}
-
-    <p class="title-of-page">Wishlist {% if products is defined %}({{ products|length }}){% endif %}</p>
-
-{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 {% block body %}
 
@@ -18,10 +20,8 @@
     <div class="jumbotron">
         <h1 class="entity-name">Your wishlist.</h1>
 
-
         {% if products is defined %}
         {% for product in products %}
-
 
         <div class="row entity-list-item">
 
@@ -35,9 +35,7 @@
 
         </div>
 
-
         {% endfor %}
-
 
         <div class="row">
             {{ include('wishlist/_deleteall_form.html.twig') }}
@@ -45,8 +43,8 @@
 
         {% else %}
             <p>Your wishlist is empty, please return to categories to continue shopping</p>
-
         {% endif %}
 
     </div>
+
 {% endblock %}
