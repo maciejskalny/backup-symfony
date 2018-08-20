@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file builds part of ProductCategory and Product form.
+ * This file supports user form
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -10,19 +10,20 @@
 
 namespace App\Form;
 
-use App\Entity\Image;
+use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 /**
- * Class ImageType
+ * Class UserType
  * @package App\Form
  */
-class ImageType extends AbstractType
+class UserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -31,9 +32,13 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', FileType::class, ([
-            'label' => false,
-            ]))
+            ->add('username', TextType::class)
+            ->add('email', EmailType::class)
+            ->add('plainPassword', RepeatedType::class, array(
+                'type' => PasswordType::class,
+                'first_options' => array('label' => 'Password'),
+                'second_options' => array('label' => 'Repeat password'),
+            ))
         ;
     }
 
@@ -43,7 +48,7 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Image::class,
+            'data_class' => User::class,
         ]);
     }
 }
