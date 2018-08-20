@@ -23,11 +23,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/category")
+ * Class ProductCategoryController
+ * @package App\Controller
  */
 class ProductCategoryController extends Controller
 {
     /**
      * @Route("/", name="product_category_index", methods="GET")
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @return Response
      */
     public function index(ProductCategoryRepository $productCategoryRepository): Response
     {
@@ -36,6 +40,9 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/new", name="product_category_new", methods="GET|POST")
+     * @param Request $request
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
     public function new(Request $request, ImagesActions $imagesActionsService): Response
     {
@@ -74,6 +81,8 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}", name="product_category_show", methods="GET")
+     * @param ProductCategory $productCategory
+     * @return Response
      */
     public function show(ProductCategory $productCategory): Response
     {
@@ -82,6 +91,10 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}/edit", name="product_category_edit", methods="GET|POST")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
     public function edit(Request $request, ProductCategory $productCategory, ImagesActions $imagesActionsService): Response
     {
@@ -118,6 +131,9 @@ class ProductCategoryController extends Controller
 
     /**
      * @Route("/{id}", name="product_category_delete", methods="DELETE")
+     * @param Request $request
+     * @param ProductCategory $productCategory
+     * @return Response
      */
     public function delete(Request $request, ProductCategory $productCategory): Response
     {

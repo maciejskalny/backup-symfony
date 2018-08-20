@@ -21,11 +21,15 @@ use App\Service\ImagesActions;
 
 /**
  * @Route("/product")
+ * Class ProductController
+ * @package App\Controller
  */
 class ProductController extends Controller
 {
     /**
      * @Route("/", name="product_index", methods="GET")
+     * @param ProductRepository $productRepository
+     * @return Response
      */
     public function index(ProductRepository $productRepository): Response
     {
@@ -34,6 +38,9 @@ class ProductController extends Controller
 
     /**
      * @Route("/new", name="product_new", methods="GET|POST")
+     * @param Request $request
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
     public function new(Request $request, ImagesActions $imagesActionsService): Response
     {
@@ -72,6 +79,8 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}", name="product_show", methods="GET")
+     * @param Product $product
+     * @return Response
      */
     public function show(Product $product): Response
     {
@@ -80,6 +89,10 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
+     * @param Request $request
+     * @param Product $product
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
     public function edit(Request $request, Product $product, ImagesActions $imagesActionsService): Response
     {
@@ -117,6 +130,9 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}", name="product_delete", methods="DELETE")
+     * @param Request $request
+     * @param Product $product
+     * @return Response
      */
     public function delete(Request $request, Product $product): Response
     {

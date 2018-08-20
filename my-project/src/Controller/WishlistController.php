@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is a controller which is responsible for wishlist
+ * @category Controller
+ * @Package Virtua_Internship
+ * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+ * @author Maciej Skalny contact@wearevirtua.com
+ */
+
 namespace App\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,11 +17,17 @@ use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class WishlistController
+ * @package App\Controller
+ */
 class WishlistController extends Controller
 {
 
     /**
      * @Route("/wishlist", name="wishlist")
+     * @param Session $session
+     * @return Response
      */
     public function index(Session $session)
     {
@@ -24,16 +38,16 @@ class WishlistController extends Controller
                 'wishlist' => $session->get('wishlist'),
                 'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
             ]);
-        }
-
-        else
-        {
+        } else {
             return $this->render('wishlist/index.html.twig');
         }
     }
 
     /**
      * @Route("/wishlist/add/{id}", name="wishlist_add", methods="GET|POST")
+     * @param Session $session
+     * @param $id
+     * @return Response
      */
     public function new(Session $session, $id)
     {
@@ -44,7 +58,6 @@ class WishlistController extends Controller
         if($session->has('wishlist')) {
         $wishlist = $session->get('wishlist');
         }
-
         else {
             $wishlist = array();
         }
