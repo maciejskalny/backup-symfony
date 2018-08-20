@@ -34,7 +34,7 @@ class ApiProductCategoryController extends Controller
             return new Response(json_encode($category->getCategoryInfo()));
         }
         else{
-            return new Response('Not Found', 404);
+            return new Response('Not Found.', 404);
         }
     }
     /**
@@ -60,13 +60,18 @@ class ApiProductCategoryController extends Controller
     public function newCategory(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $category = new ProductCategory();
-        $form = $this->createForm(ApiProductCategoryType::class, $category);
-        $form->submit($request->query->all());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($category);
-        $em->flush();
-        return new Response('New category added.', 200);
+        try {
+            $category = new ProductCategory();
+            $form = $this->createForm(ApiProductCategoryType::class, $category);
+            $form->submit($request->query->all());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+            return new Response('New category added.', 200);
+        }
+        catch (\Exception $exception){
+            return new Response('Bad request.', 400);
+        }
     }
     /**
      * @Route("api/category/{id}/edit")
@@ -81,13 +86,19 @@ class ApiProductCategoryController extends Controller
         $data = json_encode($request->getContent(), true);
         $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id'=>$id]);
         if($category) {
-            $form = $this->createForm(ApiProductCategoryType::class, $category);
-            $form->submit($request->query->all());
-            $em->flush();
-            return new Response('Category updated', 200);
+            try {
+                $form = $this->createForm(ApiProductCategoryType::class, $category);
+                $form->submit($request->query->all());
+                $em->flush();
+                return new Response('Category updated.', 200);
+            }
+
+            catch (\Exception $exception){
+                return new Response('Bad request.', 400);
+            }
         }
         else{
-            return new Response('Bad Request', 400);
+            return new Response('Not found.', 404);
         }
     }
     /**

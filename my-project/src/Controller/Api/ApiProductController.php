@@ -36,7 +36,7 @@ class ApiProductController extends Controller
             return new Response(json_encode($product->getProductInfo()));
         }
         else{
-            return new Response('Not Found', 404);
+            return new Response('Not Found.', 404);
         }
     }
     /**
@@ -60,18 +60,19 @@ class ApiProductController extends Controller
     public function newProduct(Request $request)
     {
         $data = json_decode($request->getContent(), true);
-        $product = new Product();
-        $form = $this->createForm(ApiProductType::class, $product);
-        $form->handleRequest($request);
-        $form->submit($request->query->all());
-        if($form->isValid()) {
+        try {
+            $product = new Product();
+            $form = $this->createForm(ApiProductType::class, $product);
+            $form->handleRequest($request);
+            $form->submit($request->query->all());
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
-            return new Response('New product added', 201);
+            return new Response('New product added.', 201);
         }
-        else{
-            return new Response('Bad Request', 400);
+
+        catch (\Exception $exception){
+            return new Response('Bad request.', 400);
         }
     }
     /**
@@ -87,13 +88,19 @@ class ApiProductController extends Controller
         $data = json_decode($request->getContent(), true);
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
         if($product) {
-            $form = $this->createForm(ApiProductType::class, $product);
-            $form->submit($request->query->all());
-            $em->flush();
-            return new Response('Product updated.', 200);
+            try {
+                $form = $this->createForm(ApiProductType::class, $product);
+                $form->submit($request->query->all());
+                $em->flush();
+                return new Response('Product updated.', 200);
+            }
+
+            catch (\Exception $exception){
+                return new Response('Bad request.', 400);
+            }
         }
         else{
-            return new Response('Bad Request', 400);
+            return new Response('Not found.', 404);
         }
     }
     /**
@@ -109,10 +116,10 @@ class ApiProductController extends Controller
         if($product) {
             $em->remove($product);
             $em->flush();
-            return new Response('Product deleted', 200);
+            return new Response('Product deleted.', 200);
         }
         else{
-            return new Response('Not Found', 404);
+            return new Response('Not Found.', 404);
         }
     }
 }
