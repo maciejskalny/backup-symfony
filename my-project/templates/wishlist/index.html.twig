@@ -1,12 +1,14 @@
+{#
+This file shows wishlist
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Wishlist {% if products is defined %}({{ products|length }}){% endif %}{% endblock %}
-
-{% block header %}
-
-    <p class="title-of-page">Wishlist {% if products is defined %}({{ products|length }}){% endif %}</p>
-
-{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 {% block body %}
 
@@ -42,8 +44,6 @@
             <p>Your wishlist is empty, please return to categories to continue shopping</p>
             
         {% endif %}
-
-
 
     </div>
 {% endblock %}
