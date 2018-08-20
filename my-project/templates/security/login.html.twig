@@ -1,5 +1,5 @@
 {#
-This file shows form which is responsible for registration
+This file shows login form
 @category View
 @Package Virtua_Internship
 @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -8,11 +8,11 @@ This file shows form which is responsible for registration
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Registration{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block header %}
 
-    <p class="title-of-page">Registration</p>
+    <p class="title-of-page">Login</p>
 
 {% endblock %}
 
@@ -20,11 +20,11 @@ This file shows form which is responsible for registration
 
     <div class="jumbotron">
 
-        <h1 class="entity-name">Register</h1>
+        <h1 class="entity-name">Login</h1>
 
         <br>
 
-        {{ include('registration/_register_form.html.twig') }}
+        {{ include('security/_login_form.html.twig') }}
 
     </div>
 

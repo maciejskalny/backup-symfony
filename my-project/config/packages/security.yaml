@@ -18,6 +18,9 @@ security:
             http_basic: ~
             provider: db_provider
             anonymous: true
+            form_login:
+                login_path: login
+                check_path: login
 
             # activate different ways to authenticate
 
