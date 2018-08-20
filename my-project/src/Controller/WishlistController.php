@@ -75,6 +75,9 @@ class WishlistController extends Controller
 
     /**
      * @Route("/wishlist/delete/{id}", name="wishlist_delete", methods="GET|POST")
+     * @param Session $session
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function delete(Session $session, $id)
     {
@@ -86,7 +89,6 @@ class WishlistController extends Controller
             $wishlist = $session->get('wishlist');
         }
 
-
         unset($wishlist[array_search($id, $wishlist)]);
 
         $session->set('wishlist', $wishlist);
@@ -96,6 +98,8 @@ class WishlistController extends Controller
 
     /**
      * @Route("/wishlist/delete", name="wishlist_delete_all", methods="GET|POST")
+     * @param Session $session
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAll(Session $session)
     {
@@ -106,7 +110,6 @@ class WishlistController extends Controller
         if($session->has('wishlist')) {
             $wishlist = $session->get('wishlist');
         }
-
 
         $session->remove('wishlist');
 
