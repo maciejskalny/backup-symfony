@@ -62,8 +62,12 @@ class WishlistController extends Controller
             $wishlist = array();
         }
 
-        array_push($wishlist, $id);
-        $session->set('wishlist', $wishlist);
+        if(sizeof($wishlist)<5) {
+            array_push($wishlist, $id);
+            $session->set('wishlist', $wishlist);
+        } else {
+            $session->getFlashBag()->add('error', 'You can add only 5 products to the wishlist.');
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -86,7 +90,12 @@ class WishlistController extends Controller
 
             unset($wishlist[array_search($id, $wishlist)]);
 
-            $session->set('wishlist', $wishlist);
+            if (sizeof($wishlist) == NULL) {
+                $session->remove('wishlist');
+            } else {
+                $session->set('wishlist', $wishlist);
+            }
+
         }
 
         return $this->redirectToRoute('wishlist');

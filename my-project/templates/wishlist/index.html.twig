@@ -12,6 +12,11 @@ This file shows wishlist
 
 {% block body %}
 
+    {% for flashMessage in app.session.flashbag.get('error') %}
+
+        {{ flashMessage }}
+
+    {% endfor %}
     <div class="jumbotron">
         <h1 class="entity-name">Your wishlist.</h1>
 
@@ -38,7 +43,6 @@ This file shows wishlist
 
         {% else %}
             <p>Your wishlist is empty, please return to categories to continue shopping</p>
-            
         {% endif %}
 
     </div>
