@@ -29,7 +29,8 @@
                             Categories
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="/category">Categories</a>
+
+                            <a class="dropdown-item active" href="/category">Categories</a>
                             <div class="dropdown-divider"></div>
                             {{ render(controller('App\\Controller\\NavController::items')) }}
                         </div>
@@ -37,9 +38,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/product">Products</a>
                     </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="/wishlist">Wishlist</a>
                     </li>
+
                 </ul>
             </div>
         </nav>

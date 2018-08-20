@@ -13,20 +13,23 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
-use App\Service\ProductImagesCollection;
-use App\Service\ProductMainImage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\ImagesActions;
 
 /**
  * @Route("/product")
+ * Class ProductController
+ * @package App\Controller
  */
 class ProductController extends Controller
 {
     /**
      * @Route("/", name="product_index", methods="GET")
+     * @param ProductRepository $productRepository
+     * @return Response
      */
     public function index(ProductRepository $productRepository): Response
     {
@@ -35,8 +38,11 @@ class ProductController extends Controller
 
     /**
      * @Route("/new", name="product_new", methods="GET|POST")
+     * @param Request $request
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
-    public function new(Request $request, ProductImagesCollection $productImagesCollection, ProductMainImage $productMainImage): Response
+    public function new(Request $request, ImagesActions $imagesActionsService): Response
     {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
@@ -45,11 +51,14 @@ class ProductController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if(!empty($form->get('mainImage')->getData()))
-                $productMainImage->addingProductMainImage($product, $form->get('mainImage')->getData());
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $product->setMainImage($mainImage);
+            }
 
-            if(!empty($form->get('image_files')->getData()))
-                $productImagesCollection->addingProductImagesCollection($product, $form->get('image_files')->getData());
+            if(!is_null($form->get('imageFiles')->getData())){
+                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
 
             $em->persist($product);
             $em->flush();
@@ -58,8 +67,6 @@ class ProductController extends Controller
                 'notice',
                 'New product has been added.'
             );
-
-
 
             return $this->redirectToRoute('product_index');
         }
@@ -72,6 +79,8 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}", name="product_show", methods="GET")
+     * @param Product $product
+     * @return Response
      */
     public function show(Product $product): Response
     {
@@ -80,8 +89,12 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
+     * @param Request $request
+     * @param Product $product
+     * @param ImagesActions $imagesActionsService
+     * @return Response
      */
-    public function edit(Request $request, Product $product, ProductImagesCollection $productImagesCollection, ProductMainImage $productMainImage): Response
+    public function edit(Request $request, Product $product, ImagesActions $imagesActionsService): Response
     {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -90,11 +103,14 @@ class ProductController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            if(!empty($form->get('mainImage')->getData()))
-                $productMainImage->addingProductMainImage($product, $form->get('mainImage')->getData());
+            if(!is_null($form->get('imageFile')->getData())) {
+                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $product->setMainImage($mainImage);
+            }
 
-            if(!empty($form->get('image_files')->getData()))
-                $productImagesCollection->addingProductImagesCollection($product, $form->get('image_files')->getData());
+            if(!is_null($form->get('imageFiles')->getData())){
+                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+            }
 
             $em->flush();
 
@@ -114,6 +130,9 @@ class ProductController extends Controller
 
     /**
      * @Route("/{id}", name="product_delete", methods="DELETE")
+     * @param Request $request
+     * @param Product $product
+     * @return Response
      */
     public function delete(Request $request, Product $product): Response
     {
