@@ -15,6 +15,7 @@ use App\Form\Api\ApiProductType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,22 +32,22 @@ class ApiProductController extends Controller
      * @Route("/api/product/{id}")
      * @Method("GET")
      * @param $id
-     * @return Response
+     * @return JsonResponse
      */
     public function showProduct($id)
     {
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
         if($product) {
-            return new Response(json_encode($product->getProductInfo()));
+            return new JsonResponse(json_encode($product->getProductInfo()));
         } else {
-            return new Response('Not Found.', 404);
+            return new JsonResponse('Not Found.', 404);
         }
     }
 
     /**
      * @Route("api/products")
      * @Method("GET")
-     * @return Response
+     * @return JsonResponse
      */
     public function showAllProducts()
     {
@@ -55,12 +56,14 @@ class ApiProductController extends Controller
         foreach ($products as $product) {
             $data['products'][] = $product->serializeProduct();
         }
-        return new Response(json_encode($data), 200);
+        return new JsonResponse(json_encode($data), 200);
     }
 
     /**
      * @Route("api/product")
      * @Method("POST")
+     * @param Request $request
+     * @return JsonResponse
      */
     public function newProduct(Request $request)
     {
@@ -73,9 +76,25 @@ class ApiProductController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
-            return new Response('New product added.', 201);
+            return new JsonResponse('New product added.', 201);
         } catch (\Exception $exception) {
-            return new Response('Bad request.', 400);
+            if($form->isValid()){
+                return new JsonResponse('Bad request', 400);
+            } else {
+                $errors= array();
+
+                foreach ($form as $child)
+                {
+                    if(!$child->isValid()){
+                        foreach ($child->getErrors() as $error)
+                        {
+                            $errors[$child->getName()][] = $error->getMessage();
+                        }
+                    }
+                }
+
+                return new JsonResponse('Bad request: '.json_encode($errors), 400);
+            }
         }
     }
 
@@ -84,7 +103,7 @@ class ApiProductController extends Controller
      * @Method("PUT")
      * @param Request $request
      * @param $id
-     * @return Response
+     * @return JsonResponse
      */
     public function editProduct(Request $request, $id)
     {
@@ -96,12 +115,28 @@ class ApiProductController extends Controller
                 $form = $this->createForm(ApiProductType::class, $product);
                 $form->submit($request->query->all());
                 $em->flush();
-                return new Response('Product updated.', 200);
+                return new JsonResponse('Product updated.', 200);
             } catch (\Exception $exception) {
-                return new Response('Bad request.', 400);
+                if($form->isValid()){
+                    return new JsonResponse('Bad request', 400);
+                } else {
+                    $errors= array();
+
+                    foreach ($form as $child)
+                    {
+                        if(!$child->isValid()){
+                            foreach ($child->getErrors() as $error)
+                            {
+                                $errors[$child->getName()][] = $error->getMessage();
+                            }
+                        }
+                    }
+
+                    return new JsonResponse('Bad request: '.json_encode($errors), 400);
+                }
             }
         } else {
-            return new Response('Not found.', 404);
+            return new JsonResponse('Not found.', 404);
         }
     }
 
@@ -109,7 +144,7 @@ class ApiProductController extends Controller
      * @Route("/api/product/{id}/delete")
      * @Method("DELETE")
      * @param $id
-     * @return Response
+     * @return JsonResponse
      */
     public function deleteProduct($id)
     {
@@ -118,9 +153,9 @@ class ApiProductController extends Controller
         if($product) {
             $em->remove($product);
             $em->flush();
-            return new Response('Product deleted.', 200);
+            return new JsonResponse('Product deleted.', 200);
         } else {
-            return new Response('Not Found.', 404);
+            return new JsonResponse('Not Found.', 404);
         }
     }
 }
