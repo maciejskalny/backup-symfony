@@ -81,17 +81,13 @@ class WishlistController extends Controller
      */
     public function delete(Session $session, $id)
     {
-        if(!$session->isStarted()) {
-            return $this->render('wishlist/index.html.twig');
-        }
-
         if($session->has('wishlist')) {
             $wishlist = $session->get('wishlist');
+
+            unset($wishlist[array_search($id, $wishlist)]);
+
+            $session->set('wishlist', $wishlist);
         }
-
-        unset($wishlist[array_search($id, $wishlist)]);
-
-        $session->set('wishlist', $wishlist);
 
         return $this->redirectToRoute('wishlist');
     }
