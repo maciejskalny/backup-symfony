@@ -81,7 +81,7 @@ class WishlistController extends Controller
      */
     public function delete(Session $session, $id)
     {
-        if($session->has('wishlist')) {
+        if($session->isStarted() && $session->has('wishlist')) {
             $wishlist = $session->get('wishlist');
 
             unset($wishlist[array_search($id, $wishlist)]);
@@ -99,7 +99,7 @@ class WishlistController extends Controller
      */
     public function deleteAll(Session $session)
     {
-        if($session->has('wishlist')) {
+        if($session->isStarted() && $session->has('wishlist')) {
             $session->remove('wishlist');
         }
 
