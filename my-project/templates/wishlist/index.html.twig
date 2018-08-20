@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 {% block body %}
 <style>
@@ -9,18 +9,19 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Your wishlist</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'src/Controller/WishlistController.php'|file_link(0) }}">src/Controller/WishlistController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'templates/wishlist/index.html.twig'|file_link(0) }}">templates/wishlist/index.html.twig</a></code></li>
-    </ul>
+    {% if products is defined %}
 
-    {% for item in wishlist %}
+        {% for product in products %}
 
-        <p>{{ item }}</p>
+            {{ product.name }}
 
-    {% endfor %}
+            <br>
+
+        {% endfor %}
+
+    {% endif %}
+
 </div>
 {% endblock %}

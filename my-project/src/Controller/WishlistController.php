@@ -17,10 +17,19 @@ class WishlistController extends Controller
      */
     public function index(Session $session)
     {
-        return $this->render('wishlist/index.html.twig', [
-            'controller_name' => 'WishlistController',
-            'wishlist' => $session->get('wishlist')
-        ]);
+        if($session->has('wishlist')) {
+            $em = $this->getDoctrine()->getManager();
+
+            return $this->render('wishlist/index.html.twig', [
+                'wishlist' => $session->get('wishlist'),
+                'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
+            ]);
+        }
+
+        else
+        {
+            return $this->render('wishlist/index.html.twig');
+        }
     }
 
     /**
@@ -41,12 +50,13 @@ class WishlistController extends Controller
         }
 
         array_push($wishlist, $id);
-
         $session->set('wishlist', $wishlist);
 
+        $em = $this->getDoctrine()->getManager();
+
         return $this->render('wishlist/index.html.twig', [
-            'controller_name' => 'WishlistController',
-            'wishlist' => $session->get('wishlist')
+            'wishlist' => $session->get('wishlist'),
+            'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
         ]);
     }
 }
