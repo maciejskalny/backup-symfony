@@ -31,10 +31,10 @@ class ApiProductType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('category', EntityType::class, array(
+            ->add('category', EntityType::class, [
                 'class' => ProductCategory::class,
                 'choice_label' => 'name'
-            ))
+            ])
         ;
     }
 

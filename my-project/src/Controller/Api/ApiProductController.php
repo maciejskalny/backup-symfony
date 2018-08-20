@@ -27,7 +27,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ApiProductController extends Controller
 {
-
     /**
      * @Route("/api/product/{id}")
      * @Method("GET")
@@ -39,8 +38,7 @@ class ApiProductController extends Controller
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
         if($product) {
             return new Response(json_encode($product->getProductInfo()));
-        }
-        else{
+        } else {
             return new Response('Not Found.', 404);
         }
     }
@@ -53,7 +51,7 @@ class ApiProductController extends Controller
     public function showAllProducts()
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        $data = array('products' => array());
+        $data = ['products' => []];
         foreach ($products as $product) {
             $data['products'][] = $product->serializeProduct();
         }
@@ -76,8 +74,7 @@ class ApiProductController extends Controller
             $em->persist($product);
             $em->flush();
             return new Response('New product added.', 201);
-        }
-        catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return new Response('Bad request.', 400);
         }
     }
@@ -100,12 +97,10 @@ class ApiProductController extends Controller
                 $form->submit($request->query->all());
                 $em->flush();
                 return new Response('Product updated.', 200);
-            }
-            catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 return new Response('Bad request.', 400);
             }
-        }
-        else{
+        } else {
             return new Response('Not found.', 404);
         }
     }
@@ -124,8 +119,7 @@ class ApiProductController extends Controller
             $em->remove($product);
             $em->flush();
             return new Response('Product deleted.', 200);
-        }
-        else{
+        } else {
             return new Response('Not Found.', 404);
         }
     }
