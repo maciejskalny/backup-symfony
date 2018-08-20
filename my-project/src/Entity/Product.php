@@ -235,6 +235,7 @@ class Product
             'name' => $this->getName(),
         );
     }
+
     /**
      * @return array
      */
@@ -243,7 +244,7 @@ class Product
         $data = [
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'category' => $this->getCategory(),
+            'category' => 'id: '.$this->getCategory()->getId().' name: '.$this->getCategory()->getName(),
             'created_at' => $this->getAddDate(),
             'last_modified' => $this->getLastModifiedDate(),
         ];
