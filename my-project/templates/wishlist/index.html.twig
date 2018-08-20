@@ -11,25 +11,34 @@ This file shows wishlist
 {% block title %}Wishlist{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Your wishlist</h1>
+    <div class="jumbotron">
+        <h1 class="entity-name">Your wishlist.</h1>
 
-    {% if products is defined %}
+        <div class="row">
+
+            <div class="col-2 entity-field"></div>
+            <div class="col-2 entity-field">Name</div>
+
+        </div>
 
         {% for product in products %}
 
-            {{ product.name }}
 
-            <br>
+        <div class="row entity-list-item">
+
+            <div class="col-2">
+                <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage }}')" {% endif %}></div>
+            </div>
+
+            <div class="col-2"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a></div>
+
+        </div>
+            {% else %}
+
+            <p>Your wishlist is empty, please return to categories to continue shopping.</p>
 
         {% endfor %}
 
-    {% endif %}
-
-</div>
+    </div>
 {% endblock %}
