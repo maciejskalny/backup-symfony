@@ -72,4 +72,37 @@ class WishlistController extends Controller
             'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
         ]);
     }
+
+    /**
+     * @Route("/wishlist/delete/{id}", name="wishlist_delete", methods="GET|POST")
+     * @param Session $session
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function delete(Session $session, $id)
+    {
+        if($session->isStarted() && $session->has('wishlist')) {
+            $wishlist = $session->get('wishlist');
+
+            unset($wishlist[array_search($id, $wishlist)]);
+
+            $session->set('wishlist', $wishlist);
+        }
+
+        return $this->redirectToRoute('wishlist');
+    }
+
+    /**
+     * @Route("/wishlist/delete", name="wishlist_delete_all", methods="GET|POST")
+     * @param Session $session
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
+    public function deleteAll(Session $session)
+    {
+        if($session->isStarted() && $session->has('wishlist')) {
+            $session->remove('wishlist');
+        }
+
+        return $this->redirectToRoute('wishlist');
+    }
 }
