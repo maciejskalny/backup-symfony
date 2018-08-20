@@ -48,7 +48,7 @@ This file shows one of products
         </div>
 
         <p class="entity-field">Images:</p>
-        <span class="entity-list">
+        <div class="entity-list">
             <div class="row">
 
                 {% for image in product.images %}
@@ -65,17 +65,21 @@ This file shows one of products
                 {% endfor %}
 
             </div>
-        </span>
+        </div>
 
         <br>
         <br>
 
-        <a href="{{ path('product_index') }}"><button type="button" class="btn btn-primary">Back to list</button></a>
+        {{ include('wishlist/_additem_form.html.twig') }}
+
+        <br>
+
+        <a href="{{ path('product_index') }}"><button type="button" class="btn btn-dark">Back to list</button></a>
 
         <br>
         <br>
 
-        <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+        <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="button" class="btn btn-dark">Edit</button></a>
 
         <br>
         <br>

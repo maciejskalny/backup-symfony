@@ -1,0 +1,35 @@
+{#
+This file shows wishlist
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Your wishlist</h1>
+
+    {% if products is defined %}
+
+        {% for product in products %}
+
+            {{ product.name }}
+
+            <br>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+{% endblock %}

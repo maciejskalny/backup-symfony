@@ -1,0 +1,12 @@
+{#
+This file supports adding product to wishlist.
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
+<form method="post" action="{{ path('wishlist_add', {'id': product.id}) }}">
+    <input type="hidden" name="product" value="{{ product.id }}">
+    <button class="btn btn-warning">Add to wishlist</button>
+</form>

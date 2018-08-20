@@ -9,5 +9,5 @@ This file renders form which is responsible for deleting another product
 <form method="post" action="{{ path('product_delete', {'id': product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-    <button class="btn btn-danger">Delete</button>
+    <button class="btn btn-secondary">Delete</button>
 </form>

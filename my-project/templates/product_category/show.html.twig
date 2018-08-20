@@ -52,7 +52,7 @@ This file shows one of the category
 
             {% for product in product_category.products %}
 
-                <li class="entity-list-item"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a></li>
+            <li class="entity-list-item"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>{{ include('wishlist/_additem_form.html.twig') }}</li>
 
             {% else %}
 
@@ -84,12 +84,12 @@ This file shows one of the category
 
         <br>
 
-        <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-primary">Back to list</button></a>
+        <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-dark">Back to list</button></a>
 
         <br>
         <br>
 
-        <a href="{{ path('product_category_edit', {'id': product_category.id}) }}"><button type="button" class="btn btn-primary">Edit</button></a>
+        <a href="{{ path('product_category_edit', {'id': product_category.id}) }}"><button type="button" class="btn btn-dark">Edit</button></a>
 
         <br>
         <br>
