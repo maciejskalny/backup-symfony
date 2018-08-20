@@ -15,10 +15,8 @@ This file shows wishlist
     <div class="jumbotron">
         <h1 class="entity-name">Your wishlist.</h1>
 
-
         {% if products is defined %}
         {% for product in products %}
-
 
         <div class="row entity-list-item">
 
@@ -32,9 +30,7 @@ This file shows wishlist
 
         </div>
 
-
         {% endfor %}
-
 
         <div class="row">
             {{ include('wishlist/_deleteall_form.html.twig') }}
@@ -45,7 +41,6 @@ This file shows wishlist
             
         {% endif %}
 
-
-
     </div>
+
 {% endblock %}
