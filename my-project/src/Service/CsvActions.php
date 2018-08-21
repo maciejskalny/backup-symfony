@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class CsvActions{
 
     private $csvDirectory;
@@ -16,7 +18,12 @@ class CsvActions{
      */
     public function createCsvFile(?Array $data)
     {
-        $file = fopen("./public/uploads/csv/export_".date('d-m-Y-H:i:s').'.csv', "w");
+        $fileSystem = new Filesystem();
+        if(!$fileSystem->exists($this->csvDirectory)) {
+        $fileSystem->mkdir($this->csvDirectory);
+        }
+        $fileName = $this->csvDirectory.'/export_'.date('d-m-Y-H:i:s').'.csv';
+        $file = fopen($fileName, "w");
 
         foreach($data as $line){
             fputcsv(
@@ -25,7 +32,6 @@ class CsvActions{
                 ','
             );
         }
-
         fclose($file);
     }
 

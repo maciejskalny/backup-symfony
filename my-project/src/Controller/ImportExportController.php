@@ -15,8 +15,6 @@ use App\Service\CsvActions;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Doctrine\DBAL\Connection;
 
 /**
  * Class ImportExportController
@@ -42,5 +40,4 @@ class ImportExportController extends Controller
 
         return $this->redirectToRoute('product_category_index');
     }
-
 }

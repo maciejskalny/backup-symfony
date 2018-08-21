@@ -281,12 +281,16 @@ class ProductCategory
     }
 
     public function getSomeCategoryInfo(){
+
+        $createdAt = $this->getAddDate()->format('d/m/Y');
+        $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
+
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'created_at' => $this->getAddDate(),
-            'last_modified' => $this->getLastModifiedDate()
+            'created_at' => $createdAt,
+            'last_modified' => $lastModified,
         ];
     }
 }
