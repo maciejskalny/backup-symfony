@@ -6,6 +6,7 @@
 parameters:
     locale: 'en'
     images_directory: '%kernel.project_dir%/public/uploads/images'
+    csv_directory: '%kernel.project_dir%/public/uploads/csv'
 
 services:
     # default configuration for services in *this* file
@@ -26,6 +27,11 @@ services:
                 public: true
                 arguments:
                     $imagesDirectory: '%images_directory%'
+
+    App\Service\CsvActions:
+                public: true
+                arguments:
+                    $csvDirectory: '%csv_directory%'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class

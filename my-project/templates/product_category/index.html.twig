@@ -67,6 +67,10 @@ This file shows all of the categories
 
         <a href="{{ path('product_category_new') }}"><button class="btn btn-primary">Create new</button></a>
 
+        <br><br>
+
+        {{ include('csv/_export_categories.html.twig') }}
+
     </div>
 
 {% endblock %}
