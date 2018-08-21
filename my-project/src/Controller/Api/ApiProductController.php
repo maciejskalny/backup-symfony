@@ -14,6 +14,7 @@ use App\Entity\ProductCategory;
 use App\Form\Api\ApiProductType;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\FormsActions;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,21 +80,10 @@ class ApiProductController extends Controller
             return new JsonResponse('New product added.', 201);
         } catch (\Exception $exception) {
             if($form->isValid()){
-                return new JsonResponse('Bad request', 400);
+                return new JsonResponse('Bad request.', 400);
             } else {
-                $errors= array();
-
-                foreach ($form as $child)
-                {
-                    if(!$child->isValid()){
-                        foreach ($child->getErrors() as $error)
-                        {
-                            $errors[$child->getName()][] = $error->getMessage();
-                        }
-                    }
-                }
-
-                return new JsonResponse('Bad request: '.json_encode($errors), 400);
+                $formsActionsService = new FormsActions($form);
+                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors()), 400);
             }
         }
     }
@@ -118,21 +108,10 @@ class ApiProductController extends Controller
                 return new JsonResponse('Product updated.', 200);
             } catch (\Exception $exception) {
                 if($form->isValid()){
-                    return new JsonResponse('Bad request', 400);
+                    return new JsonResponse('Bad request.', 400);
                 } else {
-                    $errors= array();
-
-                    foreach ($form as $child)
-                    {
-                        if(!$child->isValid()){
-                            foreach ($child->getErrors() as $error)
-                            {
-                                $errors[$child->getName()][] = $error->getMessage();
-                            }
-                        }
-                    }
-
-                    return new JsonResponse('Bad request: '.json_encode($errors), 400);
+                    $formsActionsService = new FormsActions($form);
+                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors()), 400);
                 }
             }
         } else {
