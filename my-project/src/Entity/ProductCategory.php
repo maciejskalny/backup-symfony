@@ -33,11 +33,13 @@ class ProductCategory
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull()
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotNull()
      */
     private $description;
 

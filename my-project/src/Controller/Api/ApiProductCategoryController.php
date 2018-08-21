@@ -7,40 +7,37 @@
  * @author Maciej Skalny contact@wearevirtua.com
  */
 namespace App\Controller\Api;
-use App\Entity\Product;
+
 use App\Entity\ProductCategory;
-use App\Repository\ProductCategoryRepository;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Api\ApiProductCategoryType;
+use App\Service\FormsActions;
 
 class ApiProductCategoryController extends Controller
 {
     /**
      * @Route("/api/category/{id}")
      * @Method("GET")
-     * @param $id
-     * @return Response
+     * @param integer $id
+     * @return JsonResponse
      */
     public function showCategory($id)
     {
         $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $id]);
-        if($category)
-        {
-            return new Response(json_encode($category->getCategoryInfo()));
-        }
-        else{
-            return new Response('Not Found.', 404);
+        if($category) {
+            return new JsonResponse(json_encode($category->getCategoryInfo()));
+        } else {
+            return new JsonResponse('Not Found.', 404);
         }
     }
     /**
      * @Route("api/categories")
      * @Method("GET")
-     * @return Response
+     * @return JsonResponse
      */
     public function showAllCategories()
     {
@@ -49,63 +46,62 @@ class ApiProductCategoryController extends Controller
         foreach ($categories as $category){
             $data['categories'][] = $category->serializeCategory();
         }
-        return new Response(json_encode($data), 200);
+        return new JsonResponse(json_encode($data), 200);
     }
+
     /**
      * @Route("api/category")
      * @Method("POST")
      * @param Request $request
-     * @return Response
+     * @param FormsActions $formsActionsService
+     * @return JsonResponse
      */
-    public function newCategory(Request $request)
+    public function newCategory(Request $request, FormsActions $formsActionsService)
     {
-        $data = json_decode($request->getContent(), true);
-        try {
             $category = new ProductCategory();
             $form = $this->createForm(ApiProductCategoryType::class, $category);
+            $form->handleRequest($request);
             $form->submit($request->query->all());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($category);
-            $em->flush();
-            return new Response('New category added.', 200);
-        }
-        catch (\Exception $exception){
-            return new Response('Bad request.', 400);
-        }
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($category);
+                $em->flush();
+                return new JsonResponse('New category added.', 200);
+            } else {
+                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+            }
     }
+
     /**
      * @Route("api/category/{id}/edit")
      * @Method("PUT")
      * @param Request $request
-     * @param $id
-     * @return Response
+     * @param FormsActions $formActionsService
+     * @param integer $id
+     * @return JsonResponse
      */
-    public function editCategory(Request $request, $id)
+    public function editCategory(Request $request, $id, FormsActions $formActionsService)
     {
         $em = $this->getDoctrine()->getManager();
-        $data = json_encode($request->getContent(), true);
         $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id'=>$id]);
         if($category) {
-            try {
-                $form = $this->createForm(ApiProductCategoryType::class, $category);
-                $form->submit($request->query->all());
+            $form = $this->createForm(ApiProductCategoryType::class, $category);
+            $form->submit($request->query->all());
+            if($form->isValid()) {
                 $em->flush();
-                return new Response('Category updated.', 200);
+                return new JsonResponse('Category updated.', 200);
+            } else {
+                return new JsonResponse('Bad request: '.json_encode($formActionsService->showErrors($form)), 400);
             }
-
-            catch (\Exception $exception){
-                return new Response('Bad request.', 400);
-            }
-        }
-        else{
-            return new Response('Not found.', 404);
+        } else {
+            return new JsonResponse('Not found.', 404);
         }
     }
     /**
      * @Route("api/category/{id}/delete")
      * @Method("DELETE")
-     * @param $id
-     * @return Response
+     * @param integer $id
+     * @return JsonResponse
      */
     public function deleteCategory($id)
     {
@@ -114,10 +110,9 @@ class ApiProductCategoryController extends Controller
         if($category){
             $em->remove($category);
             $em->flush();
-            return new Response('Category deleted', 200);
-        }
-        else{
-            return new Response('Not Found', 404);
+            return new JsonResponse('Category deleted', 200);
+        } else {
+            return new JsonResponse('Not Found', 404);
         }
     }
 }
