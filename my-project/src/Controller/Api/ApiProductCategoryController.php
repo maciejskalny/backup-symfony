@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is a controller which supports Category Rest api.
  * @category Controller
@@ -6,7 +7,6 @@
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
  * @author Maciej Skalny contact@wearevirtua.com
  */
-namespace App\Controller\Api;
 
 use App\Entity\ProductCategory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +34,7 @@ class ApiProductCategoryController extends Controller
             return new JsonResponse('Not Found.', 404);
         }
     }
+
     /**
      * @Route("api/categories")
      * @Method("GET")
@@ -97,6 +98,7 @@ class ApiProductCategoryController extends Controller
             return new JsonResponse('Not found.', 404);
         }
     }
+
     /**
      * @Route("api/category/{id}/delete")
      * @Method("DELETE")
@@ -110,9 +112,9 @@ class ApiProductCategoryController extends Controller
         if($category){
             $em->remove($category);
             $em->flush();
-            return new JsonResponse('Category deleted', 200);
+            return new JsonResponse('Category deleted.', 200);
         } else {
-            return new JsonResponse('Not Found', 404);
+            return new JsonResponse('Not Found.', 404);
         }
     }
 }
