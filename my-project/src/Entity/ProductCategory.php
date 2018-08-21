@@ -254,10 +254,10 @@ class ProductCategory
      * @return array
      */
     public function serializeCategory(){
-        return array(
+        return [
             'id' => $this->getId(),
             'name' => $this->getName(),
-        );
+        ];
     }
 
     /**
