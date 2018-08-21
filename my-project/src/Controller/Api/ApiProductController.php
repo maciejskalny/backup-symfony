@@ -64,21 +64,17 @@ class ApiProductController extends Controller
      */
     public function newProduct(Request $request, FormsActions $formsActionsService)
     {
-        try {
-            $product = new Product();
-            $form = $this->createForm(ApiProductType::class, $product);
-            $form->handleRequest($request);
-            $form->submit($request->query->all());
-            if($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($product);
-                $em->flush();
-                return new JsonResponse('New product added.', 201);
-            } else {
-                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
-            }
-        } catch (\Exception $exception) {
-            return new JsonResponse('Bad request.', 400);
+        $product = new Product();
+        $form = $this->createForm(ApiProductType::class, $product);
+        $form->handleRequest($request);
+        $form->submit($request->query->all());
+        if($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($product);
+            $em->flush();
+            return new JsonResponse('New product added.', 201);
+        } else {
+            return new JsonResponse('Bad request: ' . json_encode($formsActionsService->showErrors($form)), 400);
         }
     }
 
@@ -95,17 +91,13 @@ class ApiProductController extends Controller
         $em = $this->getDoctrine()->getManager();
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
         if($product) {
-            try {
-                $form = $this->createForm(ApiProductType::class, $product);
-                $form->submit($request->query->all());
-                if($form->isValid()) {
-                    $em->flush();
-                    return new JsonResponse('Product updated.', 200);
-                } else {
-                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
-                }
-            } catch (\Exception $exception) {
-                return new JsonResponse('Bad request.', 400);
+            $form = $this->createForm(ApiProductType::class, $product);
+            $form->submit($request->query->all());
+            if($form->isValid()) {
+                $em->flush();
+                return new JsonResponse('Product updated.', 200);
+            } else {
+                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
             }
         } else {
             return new JsonResponse('Not found.', 404);
