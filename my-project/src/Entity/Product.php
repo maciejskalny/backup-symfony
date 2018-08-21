@@ -30,11 +30,13 @@ class Product
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull()
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotNull()
      */
     private $description;
 
@@ -51,6 +53,7 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
      */
     private $category;
 
@@ -224,5 +227,30 @@ class Product
         $this->images->add($mainImage);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function serializeProduct(){
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductInfo()
+    {
+        $data = [
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'category' => 'id: '.$this->getCategory()->getId().' name: '.$this->getCategory()->getName(),
+            'created_at' => $this->getAddDate(),
+            'last_modified' => $this->getLastModifiedDate(),
+        ];
+        return $data;
     }
 }
