@@ -102,18 +102,14 @@ class ApiProductController extends Controller
             try {
                 $form = $this->createForm(ApiProductType::class, $product);
                 $form->submit($request->query->all());
-                $em->flush();
-                if(!empty($formsActionsService->showErrors($form))) {
-                    return new JsonResponse('Product updated, but there were some mistakes: ' . json_encode($formsActionsService->showErrors($form)), 200);
-                } else {
+                if($form->isValid()) {
+                    $em->flush();
                     return new JsonResponse('Product updated.', 200);
-                }
+                    } else {
+                        return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+                    }
             } catch (\Exception $exception) {
-                if($form->isValid()){
-                    return new JsonResponse('Bad request.', 400);
-                } else {
-                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
-                }
+                return new JsonResponse('Bad request.', 400);
             }
         } else {
             return new JsonResponse('Not found.', 404);
