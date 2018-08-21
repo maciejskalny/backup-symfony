@@ -33,11 +33,13 @@ class ProductCategory
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotNull()
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotNull()
      */
     private $description;
 
@@ -246,5 +248,35 @@ class ProductCategory
         $this->images->add($mainImage);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function serializeCategory(){
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getCategoryInfo()
+    {
+        $data = [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'created_at' => $this->getAddDate(),
+            'last_modified' => $this->getLastModifiedDate(),
+            'products' => array(),
+        ];
+        foreach ($this->getProducts() as $product)
+        {
+            $data['products'][] = $product->serializeProduct();
+        }
+        return $data;
     }
 }

@@ -1,6 +1,7 @@
 <?php
+
 /**
- * This file supports api product form
+ * This file supports api product category form
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -10,17 +11,15 @@
 namespace App\Form\Api;
 
 use App\Entity\ProductCategory;
-use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
- * Class ApiProductType
+ * Class ApiProductCategoryType
  * @package App\Form\Api
  */
-class ApiProductType extends AbstractType
+class ApiProductCategoryType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -30,12 +29,7 @@ class ApiProductType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
-            ->add('category', EntityType::class, [
-                'class' => ProductCategory::class,
-                'choice_label' => 'name'
-            ])
-        ;
+            ->add('description');
     }
 
     /**
@@ -44,7 +38,7 @@ class ApiProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => ProductCategory::class,
             'csrf_protection' => false,
         ]);
     }
