@@ -28,7 +28,8 @@ class ImportExportController extends Controller
      * @param CsvActions $csvActionsService
      * @Route("/categories", name="categories_export")
      */
-    public function exportCategoriesToCsv(CsvActions $csvActionsService){
+    public function exportCategoriesToCsv(CsvActions $csvActionsService)
+    {
         $categories = $this->getDoctrine()->getRepository(ProductCategory::class)->findAll();
         $data = [];
 
