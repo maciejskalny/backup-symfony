@@ -16,6 +16,7 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use App\Service\FormsActions;
 use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
+use Symfony\Component\DependencyInjection\Tests\Compiler\J;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -68,22 +69,21 @@ class ApiProductController extends Controller
      */
     public function newProduct(Request $request, FormsActions $formsActionsService)
     {
-
         try {
             $product = new Product();
             $form = $this->createForm(ApiProductType::class, $product);
             $form->handleRequest($request);
             $form->submit($request->query->all());
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($product);
-            $em->flush();
-            return new JsonResponse('New product added.', 201);
-        } catch (\Exception $exception) {
-            if($form->isValid()){
-                return new JsonResponse('Bad request.', 400);
-            } else {
-                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+            if($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($product);
+                $em->flush();
+                return new JsonResponse('New product added.', 201);
+                } else {
+                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
             }
+        } catch (\Exception $exception) {
+            return new JsonResponse('Bad request.', 400);
         }
     }
 
