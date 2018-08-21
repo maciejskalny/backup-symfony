@@ -66,9 +66,9 @@ class ApiProductController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function newProduct(Request $request)
+    public function newProduct(Request $request, FormsActions $formsActionsService)
     {
-        $data = json_decode($request->getContent(), true);
+
         try {
             $product = new Product();
             $form = $this->createForm(ApiProductType::class, $product);
@@ -82,8 +82,7 @@ class ApiProductController extends Controller
             if($form->isValid()){
                 return new JsonResponse('Bad request.', 400);
             } else {
-                $formsActionsService = new FormsActions($form);
-                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors()), 400);
+                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
             }
         }
     }
@@ -98,7 +97,6 @@ class ApiProductController extends Controller
     public function editProduct(Request $request, $id, FormsActions $formsActionsService)
     {
         $em = $this->getDoctrine()->getManager();
-        $data = json_decode($request->getContent(), true);
         $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
         if($product) {
             try {
