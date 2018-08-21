@@ -59,7 +59,7 @@ class WishlistController extends Controller
         if($session->has('wishlist')) {
         $wishlist = $session->get('wishlist');
         } else {
-            $wishlist = array();
+            $wishlist = [];
         }
 
         if(sizeof($wishlist)<5) {
