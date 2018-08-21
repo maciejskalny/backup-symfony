@@ -10,15 +10,9 @@
 namespace App\Controller\Api;
 
 use App\Entity\Product;
-use App\Entity\ProductCategory;
 use App\Form\Api\ApiProductType;
-use App\Form\ProductType;
-use App\Repository\ProductRepository;
 use App\Service\FormsActions;
-use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
-use Symfony\Component\DependencyInjection\Tests\Compiler\J;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -33,7 +27,7 @@ class ApiProductController extends Controller
     /**
      * @Route("/api/product/{id}")
      * @Method("GET")
-     * @param $id
+     * @param integer $id
      * @return JsonResponse
      */
     public function showProduct($id)
@@ -65,6 +59,7 @@ class ApiProductController extends Controller
      * @Route("api/product")
      * @Method("POST")
      * @param Request $request
+     * @param FormsActions $formsActionsService
      * @return JsonResponse
      */
     public function newProduct(Request $request, FormsActions $formsActionsService)
@@ -79,8 +74,8 @@ class ApiProductController extends Controller
                 $em->persist($product);
                 $em->flush();
                 return new JsonResponse('New product added.', 201);
-                } else {
-                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+            } else {
+                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
             }
         } catch (\Exception $exception) {
             return new JsonResponse('Bad request.', 400);
@@ -91,7 +86,8 @@ class ApiProductController extends Controller
      * @Route("/api/product/{id}/edit")
      * @Method("PUT")
      * @param Request $request
-     * @param $id
+     * @param integer $id
+     * @param FormsActions $formsActionsService
      * @return JsonResponse
      */
     public function editProduct(Request $request, $id, FormsActions $formsActionsService)
@@ -105,9 +101,9 @@ class ApiProductController extends Controller
                 if($form->isValid()) {
                     $em->flush();
                     return new JsonResponse('Product updated.', 200);
-                    } else {
-                        return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
-                    }
+                } else {
+                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+                }
             } catch (\Exception $exception) {
                 return new JsonResponse('Bad request.', 400);
             }
@@ -119,7 +115,7 @@ class ApiProductController extends Controller
     /**
      * @Route("/api/product/{id}/delete")
      * @Method("DELETE")
-     * @param $id
+     * @param integer $id
      * @return JsonResponse
      */
     public function deleteProduct($id)
