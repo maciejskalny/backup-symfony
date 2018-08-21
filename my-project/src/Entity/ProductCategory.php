@@ -279,4 +279,14 @@ class ProductCategory
         }
         return $data;
     }
+
+    public function getSomeCategoryInfo(){
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'created_at' => $this->getAddDate(),
+            'last_modified' => $this->getLastModifiedDate()
+        ];
+    }
 }
