@@ -16,28 +16,12 @@ use Symfony\Component\Form\Form;
  * @package App\Service
  */
 class FormsActions{
-
     /**
-     * @var Form
-     */
-    private $form;
-
-    /**
-     * FormsActions constructor.
-     * @param $form
-     */
-    public function __construct($form)
-    {
-        $this->form = $form;
-    }
-
-    /**
+     * @param Form $form
      * @return array
      */
-    public function showErrors()
+    public function showErrors(Form $form)
     {
-        $form = $this->form;
-
         $errors = [];
 
         foreach ($form as $child)
@@ -49,7 +33,6 @@ class FormsActions{
                 }
             }
         }
-
         return $errors;
     }
 }

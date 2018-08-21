@@ -95,7 +95,7 @@ class ApiProductController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function editProduct(Request $request, $id)
+    public function editProduct(Request $request, $id, FormsActions $formsActionsService)
     {
         $em = $this->getDoctrine()->getManager();
         $data = json_decode($request->getContent(), true);
@@ -105,13 +105,16 @@ class ApiProductController extends Controller
                 $form = $this->createForm(ApiProductType::class, $product);
                 $form->submit($request->query->all());
                 $em->flush();
-                return new JsonResponse('Product updated.', 200);
+                if(!empty($formsActionsService->showErrors($form))) {
+                    return new JsonResponse('Product updated, but there were some mistakes: ' . json_encode($formsActionsService->showErrors($form)), 200);
+                } else {
+                    return new JsonResponse('Product updated.', 200);
+                }
             } catch (\Exception $exception) {
                 if($form->isValid()){
                     return new JsonResponse('Bad request.', 400);
                 } else {
-                    $formsActionsService = new FormsActions($form);
-                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors()), 400);
+                    return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
                 }
             }
         } else {
