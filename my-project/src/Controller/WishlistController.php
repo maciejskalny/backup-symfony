@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is a controller which is responsible for wishlist
+ * @category Controller
+ * @Package Virtua_Internship
+ * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+ * @author Maciej Skalny contact@wearevirtua.com
+ */
+
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
@@ -10,11 +18,17 @@ use App\Entity\Product;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class WishlistController
+ * @package App\Controller
+ */
 class WishlistController extends Controller
 {
 
     /**
      * @Route("/wishlist", name="wishlist")
+     * @param Session $session
+     * @return Response
      */
     public function index(Session $session)
     {
@@ -25,16 +39,16 @@ class WishlistController extends Controller
                 'wishlist' => $session->get('wishlist'),
                 'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
             ]);
-        }
-
-        else
-        {
+        } else {
             return $this->render('wishlist/index.html.twig');
         }
     }
 
     /**
-     * @Route("/wishlist/add/{id}", name="wishlist_add", methods="POST")
+     * @Route("/wishlist/add/{id}", name="wishlist_add", methods="GET|POST")
+     * @param Session $session
+     * @param $id
+     * @return Response
      */
     public function new(Session $session, $id)
     {
@@ -44,25 +58,20 @@ class WishlistController extends Controller
 
         if($session->has('wishlist')) {
         $wishlist = $session->get('wishlist');
-        }
-
-        else {
+        } else {
             $wishlist = array();
         }
 
         if(sizeof($wishlist)<5) {
             array_push($wishlist, $id);
             $session->set('wishlist', $wishlist);
-        }
-
-        else{
+        } else {
             $session->getFlashBag()->add('error', 'You can add only 5 products to the wishlist.');
         }
 
         $em = $this->getDoctrine()->getManager();
 
         return $this->render('wishlist/index.html.twig', [
-            'controller_name' => 'WishlistController',
             'wishlist' => $session->get('wishlist'),
             'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
         ]);
@@ -70,26 +79,23 @@ class WishlistController extends Controller
 
     /**
      * @Route("/wishlist/delete/{id}", name="wishlist_delete", methods="GET|POST")
+     * @param Session $session
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function delete(Session $session, $id)
     {
-        if(!$session->isStarted()) {
-            return $this->render('wishlist/index.html.twig');
-        }
-
-        if($session->has('wishlist')) {
+        if($session->isStarted() && $session->has('wishlist')) {
             $wishlist = $session->get('wishlist');
-        }
 
-        unset($wishlist[array_search($id, $wishlist)]);
+            unset($wishlist[array_search($id, $wishlist)]);
 
-        if(sizeof($wishlist) == NULL)
-        {
-            $session->remove('wishlist');
-        }
+            if (sizeof($wishlist) == NULL) {
+                $session->remove('wishlist');
+            } else {
+                $session->set('wishlist', $wishlist);
+            }
 
-        else {
-            $session->set('wishlist', $wishlist);
         }
 
         return $this->redirectToRoute('wishlist');
@@ -97,18 +103,14 @@ class WishlistController extends Controller
 
     /**
      * @Route("/wishlist/delete", name="wishlist_delete_all", methods="GET|POST")
+     * @param Session $session
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function deleteAll(Session $session)
     {
-        if(!$session->isStarted()) {
-            return $this->render('wishlist/index.html.twig');
+        if($session->isStarted() && $session->has('wishlist')) {
+            $session->remove('wishlist');
         }
-
-        if($session->has('wishlist')) {
-            $wishlist = $session->get('wishlist');
-        }
-
-        $session->remove('wishlist');
 
         return $this->redirectToRoute('wishlist');
     }

@@ -28,3 +28,7 @@ yarn-error.log
 ###> uploads ###
 /public/uploads
 ###< uploads ###
+
+###> .env ###
+.env
+###< .env ###

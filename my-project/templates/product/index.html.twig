@@ -27,38 +27,45 @@ This file shows all of the products
     {% endfor %}
 
     <div class="jumbotron">
-    <h1 class="entity-name">Products</h1>
 
-    <div class="row">
-        <div class="col entity-field"></div>
-        <div class="col entity-field">Id</div>
-        <div class="col entity-field">Name</div>
-        <div class="col entity-field">Description</div>
-        <div class="col entity-field">Created at</div>
-        <div class="col entity-field">Last modified date</div>
-        <div class="col entity-field">Category</div>
-        <div class="col entity-field">Actions</div>
-    </div>
+        <h1 class="entity-name">Products</h1>
 
-    {% for product in products %}
-        <div class="row entity-list-item">
-            <div class="col">
-                <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage }}')" {% endif %}></div>
-            </div>
-            <div class="col">{{ product.id }}</div>
-            <div class="col">{{ product.name }}</div>
-            <div class="col">{{ product.description }}</div>
-            <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
-            <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
-            <div class="col"><a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a></div>
-            <div class="col">
-                <a href="{{ path('product_show', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Show</button></a>
-                <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Edit</button></a>
-            </div>
+        <div class="row">
+            <div class="col entity-field"></div>
+            <div class="col entity-field">Id</div>
+            <div class="col entity-field">Name</div>
+            <div class="col entity-field">Description</div>
+            <div class="col entity-field">Created at</div>
+            <div class="col entity-field">Last modified date</div>
+            <div class="col entity-field">Category</div>
+            <div class="col entity-field">Actions</div>
         </div>
-    {% else %}
+
+        {% for product in products %}
+
+            <div class="row entity-list-item">
+                <div class="col">
+                    <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
+                </div>
+                <div class="col">{{ product.id }}</div>
+                <div class="col">{{ product.name }}</div>
+                <div class="col">{{ product.description }}</div>
+                <div class="col">{{ product.AddDate ? product.AddDate|date('Y-m-d') : '' }}</div>
+                <div class="col">{{ product.LastModifiedDate ? product.LastModifiedDate|date('Y-m-d') : '' }}</div>
+                <div class="col">
+                    <a href="{{ path('product_category_show', {'id': product.category.id}) }}">{{ product.category.name }}</a>
+                </div>
+                <div class="col">
+                    <a href="{{ path('product_show', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Show</button></a>
+                    <a href="{{ path('product_edit', {'id': product.id}) }}"><button type="button" class="btn btn-outline-primary">Edit</button></a>
+                </div>
+            </div>
+
+        {% else %}
+
             <p>no records found</p>
-    {% endfor %}
+
+        {% endfor %}
 
         <br>
 

@@ -1,3 +1,11 @@
+{#
+This file is responsible for deleting images.
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
 <form method="post" action="{{ path('image_delete', {'id': image.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ image.id) }}">
