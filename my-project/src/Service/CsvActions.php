@@ -42,7 +42,7 @@ class CsvActions {
      */
     private $session;
 
-    /**\
+    /**
      * CsvActions constructor.
      * @param String $csvDirectory
      * @param EntityManager $em
@@ -71,7 +71,7 @@ class CsvActions {
     public function import(FormInterface $form)
     {
         $line = 0;
-        
+
         foreach ($this->prepareData($form) as $row)
         {
             $line++;

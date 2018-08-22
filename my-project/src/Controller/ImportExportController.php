@@ -30,12 +30,12 @@ class ImportExportController extends Controller
 {
     /**
      * @param Request $request
+     * @param CsvActions $csvActionsService
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/categories/import", name="categories_import")
      */
     public function importCategories(Request $request, CsvActions $csvActionsService)
     {
-        $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ImportCategoryType::class);
         $form->handleRequest($request);
 
@@ -43,28 +43,11 @@ class ImportExportController extends Controller
         {
             $csvActionsService->import($form);
 
-            //return $this->redirectToRoute('product_category_index');
+            return $this->redirectToRoute('product_category_index');
         }
 
         return $this->render('product_category/import.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
-//    public function import(Request $request, CsvActions $csvActionsService)
-//    {
-//        $form = $this->createForm(ImportCategoryType::class);
-//        $form->handleRequest($request);
-//
-//        if($form->isSubmitted() && $form->isValid())
-//        {
-//            $csvActionsService->import($form);
-//
-//            return $this->redirectToRoute('product_category_index');
-//        }
-//
-//        return $this->render('product_category/import.html.twig', [
-//            'form' => $form->createView(),
-//        ]);
-//    }
 }
