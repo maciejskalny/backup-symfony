@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use App\Entity\ProductCategory;
 use App\Form\ImportCategoryType;
+use App\Service\CsvActions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -32,7 +33,7 @@ class ImportExportController extends Controller
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/categories/import", name="categories_import")
      */
-    public function importCategories(Request $request)
+    public function importCategories(Request $request, CsvActions $csvActionsService)
     {
         $em = $this->getDoctrine()->getManager();
         $form = $this->createForm(ImportCategoryType::class);
@@ -40,38 +41,30 @@ class ImportExportController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
-            $data = $serializer->decode(file_get_contents($form->get('importFile')->getData()), 'csv');
-            $line = 0;
-            foreach ($data as $row)
-            {
-                $line++;
-                $checkId = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
-                if(!isset($checkId)) {
+            $csvActionsService->import($form);
 
-                    $category = new ProductCategory();
-                    try {
-                        $category->setDataFromArray($row);
-                        $em->persist($category);
-                        $em->flush();
-                    } catch (\Exception $e) {
-                        $this->addFlash(
-                            'notice',
-                            'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
-                        );
-                    }
-                } else {
-                    $this->addFlash(
-                        'notice',
-                        'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
-                    );
-                }
-            }
-            return $this->redirectToRoute('product_category_index');
+            //return $this->redirectToRoute('product_category_index');
         }
 
         return $this->render('product_category/import.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+
+//    public function import(Request $request, CsvActions $csvActionsService)
+//    {
+//        $form = $this->createForm(ImportCategoryType::class);
+//        $form->handleRequest($request);
+//
+//        if($form->isSubmitted() && $form->isValid())
+//        {
+//            $csvActionsService->import($form);
+//
+//            return $this->redirectToRoute('product_category_index');
+//        }
+//
+//        return $this->render('product_category/import.html.twig', [
+//            'form' => $form->createView(),
+//        ]);
+//    }
 }

@@ -28,6 +28,12 @@ services:
                 arguments:
                     $imagesDirectory: '%images_directory%'
 
+    App\Service\CsvActions:
+                arguments:
+                    $em: '@doctrine.orm.entity_manager'
+                    $csvDirectory: '%csv_directory%'
+                    $session: '@session'
+
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
