@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is a controller which supports import to csv file and export do database.
+ * This file is a controller which supports export to csv file and import to database.
  * @category Controller
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use App\Form\ProductCategoryType;
 
 /**
  * Class ImportExportController
@@ -29,6 +28,8 @@ use App\Form\ProductCategoryType;
 class ImportExportController extends Controller
 {
     /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("/categories/import", name="categories_import")
      */
     public function importCategories(Request $request)

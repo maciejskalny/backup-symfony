@@ -280,6 +280,10 @@ class ProductCategory
         return $data;
     }
 
+    /**
+     * @param array|null $row
+     * @throws \Exception
+     */
     public function setDataFromArray(?Array $row)
     {
        if(!empty($row['name'])) {

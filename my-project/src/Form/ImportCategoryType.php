@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file supports product category form
+ * This file supports categories import.
  * @category Form
  * @Package Virtua_Internship
  * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
@@ -39,8 +39,18 @@ class ImportCategoryType extends AbstractType
             ->add('importFile', FileType::class, [
                 'required' => true,
                 'data_class' => null,
-                'mapped' => false
+                'mapped' => false,
             ]);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => null,
+        ]);
     }
 
 }
