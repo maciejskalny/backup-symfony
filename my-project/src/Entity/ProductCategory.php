@@ -32,12 +32,8 @@ class ProductCategory
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\NotNull()
-     * @Assert\Length(
-     *  min=3,
-     *  minMessage = "Category name must be at least 3 characters."
-     *  )
      */
     private $name;
 
@@ -275,7 +271,7 @@ class ProductCategory
             'description' => $this->getDescription(),
             'created_at' => $this->getAddDate(),
             'last_modified' => $this->getLastModifiedDate(),
-            'products' => array(),
+            'products' => [],
         ];
         foreach ($this->getProducts() as $product)
         {
@@ -284,23 +280,19 @@ class ProductCategory
         return $data;
     }
 
-    public function getSomeCategoryInfo(){
-
-        $createdAt = $this->getAddDate()->format('d/m/Y');
-        $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
-
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'created_at' => $createdAt,
-            'last_modified' => $lastModified,
-        ];
-    }
-
     public function setDataFromArray(?Array $row)
     {
-        $this->setName($row['name']);
-        $this->setDescription($row['description']);
+       if(!empty($row['name'])) {
+           $this->setName($row['name']);
+       } else {
+           throw new \Exception('Name field cant be null.');
+       }
+
+       if(!empty($row['description']))
+       {
+           $this->setDescription($row['description']);
+       } else {
+           throw new \Exception('Description field cant be null.');
+       }
     }
 }

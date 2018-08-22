@@ -12,7 +12,6 @@ namespace App\Controller;
 
 use App\Entity\ProductCategory;
 use App\Form\ImportCategoryType;
-use App\Service\CsvActions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,7 +41,6 @@ class ImportExportController extends Controller
         {
             $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
             $data = $serializer->decode(file_get_contents($form->get('importFile')->getData()), 'csv');
-            dump($data);
             $line = 0;
             foreach ($data as $row)
             {
@@ -55,7 +53,7 @@ class ImportExportController extends Controller
                 } catch (\Exception $e) {
                     $this->addFlash(
                         'notice',
-                        'Something went wrong at line '.$line.': '.$e->getMessage()
+                        'Something went wrong in imported file, at line '.$line.': '.$e->getMessage()
                     );
                 }
             }
@@ -65,24 +63,5 @@ class ImportExportController extends Controller
         return $this->render('product_category/import.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @return Response
-     * @param CsvActions $csvActionsService
-     * @Route("/categories/export", name="categories_export")
-     */
-    public function exportCategories(CsvActions $csvActionsService)
-    {
-        $categories = $this->getDoctrine()->getRepository(ProductCategory::class)->findAll();
-        $data = [];
-
-        foreach ($categories as $category){
-            $data[] = $category->getSomeCategoryInfo();
-        }
-
-        $csvActionsService->createCsvFile($data);
-
-        return $this->redirectToRoute('product_category_index');
     }
 }

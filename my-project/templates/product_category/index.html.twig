@@ -20,7 +20,7 @@ This file shows all of the categories
 
     {% for message in app.flashes('notice') %}
 
-        <div class="flash-notice">
+        <div class="alert alert-danger">
             {{ message }}
         </div>
 
@@ -70,10 +70,6 @@ This file shows all of the categories
         <br><br>
 
         <a href="{{ path('categories_import') }}"><button class="btn btn-primary">Import from CSV</button></a>
-
-        <br><br>
-
-        {{ include('csv/_export_categories.html.twig') }}
 
     </div>
 

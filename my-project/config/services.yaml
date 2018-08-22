@@ -28,11 +28,6 @@ services:
                 arguments:
                     $imagesDirectory: '%images_directory%'
 
-    App\Service\CsvActions:
-                public: true
-                arguments:
-                    $csvDirectory: '%csv_directory%'
-
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
