@@ -46,15 +46,24 @@ class ImportExportController extends Controller
             foreach ($data as $row)
             {
                 $line++;
-                $category = new ProductCategory();
-                try {
-                    $category->setDataFromArray($row);
-                    $em->persist($category);
-                    $em->flush();
-                } catch (\Exception $e) {
+                $checkId = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+                if(!isset($checkId)) {
+
+                    $category = new ProductCategory();
+                    try {
+                        $category->setDataFromArray($row);
+                        $em->persist($category);
+                        $em->flush();
+                    } catch (\Exception $e) {
+                        $this->addFlash(
+                            'notice',
+                            'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+                        );
+                    }
+                } else {
                     $this->addFlash(
                         'notice',
-                        'Something went wrong in imported file, at line '.$line.': '.$e->getMessage()
+                        'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
                     );
                 }
             }
