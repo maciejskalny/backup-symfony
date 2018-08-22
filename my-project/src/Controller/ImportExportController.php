@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use App\Form\ProductCategoryType;
 
 /**
  * Class ImportExportController
@@ -41,18 +42,24 @@ class ImportExportController extends Controller
         {
             $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
             $data = $serializer->decode(file_get_contents($form->get('importFile')->getData()), 'csv');
+            dump($data);
+            $line = 0;
             foreach ($data as $row)
             {
-               
+                $line++;
                 $category = new ProductCategory();
-                $category->setName($row['name']);
-                $category->setDescription($row['description']);
-                $category->setAddDate($row['created_at']);
-                $category->setLastModifiedDate($row['last_modified']);
-
-                $em->persist($category);
-                $em->flush();
+                try {
+                    $category->setDataFromArray($row);
+                    $em->persist($category);
+                    $em->flush();
+                } catch (\Exception $e) {
+                    $this->addFlash(
+                        'notice',
+                        'Something went wrong at line '.$line.': '.$e->getMessage()
+                    );
+                }
             }
+            return $this->redirectToRoute('product_category_index');
         }
 
         return $this->render('product_category/import.html.twig', [

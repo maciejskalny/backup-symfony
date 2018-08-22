@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\File;
 use Webmozart\Assert\Assert;
 
 /**
- * Class ProductCategoryType
+ * Class ImportCategoryType
  * @package App\Form
  */
 class ImportCategoryType extends AbstractType

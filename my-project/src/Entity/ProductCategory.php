@@ -34,11 +34,15 @@ class ProductCategory
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull()
+     * @Assert\Length(
+     *  min=3,
+     *  minMessage = "Category name must be at least 3 characters."
+     *  )
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      */
     private $description;
@@ -292,5 +296,11 @@ class ProductCategory
             'created_at' => $createdAt,
             'last_modified' => $lastModified,
         ];
+    }
+
+    public function setDataFromArray(?Array $row)
+    {
+        $this->setName($row['name']);
+        $this->setDescription($row['description']);
     }
 }
