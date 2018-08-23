@@ -63,6 +63,10 @@ class ImportExportController extends Controller
     {
         $csvActionsService->export($name);
 
-        return $this->redirectToRoute('product_category_index');
+        if($name == 'category') {
+            return $this->redirectToRoute('product_category_index');
+        } else {
+            return $this->redirectToRoute('product_index');
+        }
     }
 }
