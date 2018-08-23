@@ -26,8 +26,8 @@ class CategoryExportCommand extends Command
             ->setName('app:category-export')
             ->setDescription('Exports categories.')
             ->setHelp('This command allows you to export categories.')
-            ->addArgument('name', $this->file ? InputArgument::REQUIRED : InputArgument::OPTIONAL, 'File name.')
-            ->addArgument('id', $this->categories ? InputArgument::OPTIONAL : InputArgument::IS_ARRAY, 'Id of categories you want to export');
+            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::OPTIONAL, 'File name.')
+            ->addArgument('category', $this->categories ? InputArgument::OPTIONAL : InputArgument::IS_ARRAY, 'Id of categories you want to export');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -37,9 +37,7 @@ class CategoryExportCommand extends Command
             '=============='
         ]);
 
-        //$this->csvActionsService->export('category');
-
-        $this->csvActionsService->exportCommand('category', $this->file, $this->categories);
+        $this->csvActionsService->exportCommand('category', $input->getArgument('file'), $input->getArgument('category'));
 
         $output->writeln('Success!');
     }
