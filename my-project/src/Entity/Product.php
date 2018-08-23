@@ -276,4 +276,21 @@ class Product
 
         $this->setCategory($category);
     }
+
+    /**
+     * @return array
+     */
+    public function getExportInfo(){
+        $createdAt = $this->getAddDate()->format('d/m/Y');
+        $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
+
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'category' => $this->getCategory()->getId(),
+            'created_at' => $createdAt,
+            'last_modified' => $lastModified
+        ];
+    }
 }
