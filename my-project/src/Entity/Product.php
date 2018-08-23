@@ -257,21 +257,13 @@ class Product
 
     /**
      * @param array|null $row
+     * @param $category
      * @throws \Exception
      */
-    public function setDataFromArray(?Array $row)
+    public function setDataFromArray(?Array $row, $category)
     {
         if(empty($row['id'])) {
            throw new \Exception('Id field cant be null.');
-        }
-
-        if(!empty($row['category'])) {
-            $category = new ProductCategory();
-            $category->setName($row['category']);
-            $category->serializeCategory();
-            $this->setCategory($category);
-        } else {
-            throw new \Exception('Category field cant be null.');
         }
 
         if(!empty($row['name'])) {
@@ -285,5 +277,7 @@ class Product
         } else {
             throw new \Exception('Description field cant be null.');
         }
+
+        $this->setCategory($category);
     }
 }
