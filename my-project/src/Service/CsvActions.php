@@ -80,17 +80,16 @@ class CsvActions
         foreach ($this->prepareData($form) as $row) {
 
             $line++;
+            $entity = null;
 
-            $repository = $this->getEntityRepository($row, $name);
+            if($row['id']) {
+                $entity = $this->getEntity($row, $name);
+            }
 
-            if(is_null($repository)) {
-                try {
-                    $this->prepareEntity($row, $name, $line);
-                } catch (\Exception $e) {
-                    $this->addFlashMessage($line, $e->getMessage());
-                }
-            } else {
-                $this->addFlashMessage($line, 'Entity with that id already exists.');
+            try {
+                $this->prepareEntity($row, $name, $entity, $line);
+            } catch (\Exception $e) {
+                $this->addFlashMessage($line, $e->getMessage());
             }
         }
     }
@@ -100,7 +99,7 @@ class CsvActions
      * @param String $name
      * @return null|object
      */
-    public function getEntityRepository(Array $row, String $name)
+    public function getEntity(Array $row, String $name)
     {
         if ($name == 'category') {
             return $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
@@ -112,32 +111,39 @@ class CsvActions
     /**
      * @param array $row
      * @param String $name
+     * @param $entity
      * @param Int $line
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareEntity(Array $row, String $name, Int $line)
+    public function prepareEntity(Array $row, String $name, $entity, Int $line)
     {
         if ($name == 'category') {
-            $this->prepareCategoryEntity($row, $line);
+            $this->prepareCategoryEntity($row, $line, $entity);
         } else {
-            $this->prepareProductEntity($row, $line);
+            $this->prepareProductEntity($row, $line, $entity);
         }
     }
 
     /**
      * @param array $row
      * @param Int $line
+     * @param $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareProductEntity(Array $row, Int $line)
+    public function prepareProductEntity(Array $row, Int $line, $entity)
     {
         if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
-            $product = new Product();
-            $product->setDataFromArray($row, $category);
-            $this->em->persist($product);
-            $this->em->flush();
+            if($entity == null ) {
+                $product = new Product();
+                $product->setDataFromArray($row, $category);
+                $this->em->persist($product);
+                $this->em->flush();
+            } else {
+                $entity->setDataFromArray($row, $category);
+                $this->em->flush();
+            }
         } else {
             $this->addFlashMessage($line, 'Category with that id does not exist.');
         }
@@ -146,15 +152,21 @@ class CsvActions
     /**
      * @param array $row
      * @param Int $line
+     * @param $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareCategoryEntity(Array $row, Int $line)
+    public function prepareCategoryEntity(Array $row, Int $line, $entity)
     {
-        $category = new ProductCategory();
-        $category->setDataFromArray($row);
-        $this->em->persist($category);
-        $this->em->flush();
+        if($entity == null) {
+            $category = new ProductCategory();
+            $category->setDataFromArray($row);
+            $this->em->persist($category);
+            $this->em->flush();
+        } else {
+            $entity->setDataFromArray($row);
+            $this->em->flush();
+        }
     }
 
     /**

@@ -286,10 +286,6 @@ class ProductCategory
      */
     public function setDataFromArray(?Array $row)
     {
-        if(empty($row['id'])) {
-            throw new \Exception('Id field cant be null');
-        }
-
        if(!empty($row['name'])) {
            $this->setName($row['name']);
        } else {
