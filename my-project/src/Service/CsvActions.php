@@ -208,4 +208,35 @@ class CsvActions
             'Something went wrong in imported file, at line '.$line.': '.$error
         );
     }
+
+    /**
+     * @param $name
+     */
+    public function exportCommand($name, $abc, $categories=null)
+    {
+        $repository = $this->getRepository($name)->findAll();
+        $data = [];
+
+        foreach ($repository as $item) {
+            $data[] = $item->getExportInfo();
+        }
+
+        $fileSystem = new Filesystem();
+
+        if(!$fileSystem->exists($this->csvDirectory)) {
+            $fileSystem->mkdir($this->csvDirectory);
+        }
+
+        $fileName = $this->csvDirectory.'/'.$abc.'.csv';
+        $file = fopen($fileName, "w");
+
+        foreach ($data as $line) {
+            fputcsv(
+                $file,
+                $line,
+                ','
+            );
+        }
+        fclose($file);
+    }
 }
