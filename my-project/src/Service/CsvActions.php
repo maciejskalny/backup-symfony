@@ -82,12 +82,12 @@ class CsvActions
             $line++;
             $entity = null;
 
-            if($row['id']) {
+            if(isset($row['id'])) {
                 $entity = $this->getEntity($row, $name);
             }
 
             try {
-                $this->prepareEntity($row, $name, $entity, $line);
+                $this->prepareEntity($row, $name, $line, $entity);
             } catch (\Exception $e) {
                 $this->addFlashMessage($line, $e->getMessage());
             }
@@ -116,7 +116,7 @@ class CsvActions
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareEntity(Array $row, String $name, $entity, Int $line)
+    public function prepareEntity(Array $row, String $name, Int $line, $entity=null)
     {
         if ($name == 'category') {
             $this->prepareCategoryEntity($row, $line, $entity);
@@ -132,7 +132,7 @@ class CsvActions
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareProductEntity(Array $row, Int $line, $entity)
+    public function prepareProductEntity(Array $row, Int $line, $entity=null)
     {
         if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
             if($entity == null ) {
@@ -156,7 +156,7 @@ class CsvActions
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function prepareCategoryEntity(Array $row, Int $line, $entity)
+    public function prepareCategoryEntity(Array $row, Int $line, $entity=null)
     {
         if($entity == null) {
             $category = new ProductCategory();
