@@ -1,0 +1,33 @@
+{#
+This file shows form which is responsible for import categories.
+@category View
+@Package Virtua_Internship
+@copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
+@author Maciej Skalny contact@wearevirtua.com
+#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Import{% endblock %}
+
+{% block header %}
+
+    <p class="title-of-page">Categories / Import</p>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="jumbotron">
+
+        <h1 class="entity-name">Edit</h1>
+
+        {{ include('csv/_import_categories.html.twig')}}
+
+        <br>
+
+        <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-dark">Back to list</button></a>
+
+    </div>
+
+{% endblock %}

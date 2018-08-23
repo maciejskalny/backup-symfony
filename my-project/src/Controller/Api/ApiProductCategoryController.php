@@ -8,6 +8,8 @@
  * @author Maciej Skalny contact@wearevirtua.com
  */
 
+namespace App\Controller\Api;
+
 use App\Entity\ProductCategory;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -43,7 +45,7 @@ class ApiProductCategoryController extends Controller
     public function showAllCategories()
     {
         $categories = $this->getDoctrine()->getRepository(ProductCategory::class)->findAll();
-        $data = array('categories' => array());
+        $data = ['categories' => []];
         foreach ($categories as $category){
             $data['categories'][] = $category->serializeCategory();
         }

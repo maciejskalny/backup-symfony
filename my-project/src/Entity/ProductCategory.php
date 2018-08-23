@@ -32,13 +32,13 @@ class ProductCategory
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\NotNull()
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      */
     private $description;
@@ -271,12 +271,32 @@ class ProductCategory
             'description' => $this->getDescription(),
             'created_at' => $this->getAddDate(),
             'last_modified' => $this->getLastModifiedDate(),
-            'products' => array(),
+            'products' => [],
         ];
         foreach ($this->getProducts() as $product)
         {
             $data['products'][] = $product->serializeProduct();
         }
         return $data;
+    }
+
+    /**
+     * @param array|null $row
+     * @throws \Exception
+     */
+    public function setDataFromArray(?Array $row)
+    {
+       if(!empty($row['name'])) {
+           $this->setName($row['name']);
+       } else {
+           throw new \Exception('Name field cant be null.');
+       }
+
+       if(!empty($row['description']))
+       {
+           $this->setDescription($row['description']);
+       } else {
+           throw new \Exception('Description field cant be null.');
+       }
     }
 }
