@@ -12,7 +12,7 @@ This file shows form which is responsible for import categories.
 
 {% block header %}
 
-    <p class="title-of-page">Categories / Import</p>
+    <p class="title-of-page">Import</p>
 
 {% endblock %}
 
@@ -20,13 +20,17 @@ This file shows form which is responsible for import categories.
 
     <div class="jumbotron">
 
-        <h1 class="entity-name">Edit</h1>
+        <h1 class="entity-name">Import</h1>
 
-        {{ include('csv/_import_categories.html.twig')}}
+        {{ include('csv/_import_form.html.twig')}}
 
         <br>
 
+        {% if name == 'product' %}
+        <a href="{{ path('product_index') }}"><button type="button" class="btn btn-dark">Back to list</button></a>
+        {% else %}
         <a href="{{ path('product_category_index') }}"><button type="button" class="btn btn-dark">Back to list</button></a>
+        {% endif %}
 
     </div>
 

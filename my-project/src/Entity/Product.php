@@ -51,9 +51,10 @@ class Product
     private $last_modified_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", cascade={"persist"}, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull()
+     *
      */
     private $category;
 
@@ -252,5 +253,37 @@ class Product
             'last_modified' => $this->getLastModifiedDate(),
         ];
         return $data;
+    }
+
+    /**
+     * @param array|null $row
+     * @throws \Exception
+     */
+    public function setDataFromArray(?Array $row)
+    {
+        if(empty($row['id'])) {
+           throw new \Exception('Id field cant be null.');
+        }
+
+        if(!empty($row['category'])) {
+            $category = new ProductCategory();
+            $category->setName($row['category']);
+            $category->serializeCategory();
+            $this->setCategory($category);
+        } else {
+            throw new \Exception('Category field cant be null.');
+        }
+
+        if(!empty($row['name'])) {
+            $this->setName($row['name']);
+        } else {
+            throw new \Exception('Name field cant be null.');
+        }
+
+        if(!empty($row['description'])) {
+            $this->setDescription($row['description']);
+        } else {
+            throw new \Exception('Description field cant be null.');
+        }
     }
 }

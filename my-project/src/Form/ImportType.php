@@ -24,10 +24,10 @@ use Symfony\Component\Validator\Constraints\File;
 use Webmozart\Assert\Assert;
 
 /**
- * Class ImportCategoryType
+ * Class ImportType
  * @package App\Form
  */
-class ImportCategoryType extends AbstractType
+class ImportType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder

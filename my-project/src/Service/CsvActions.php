@@ -10,6 +10,7 @@
 
 namespace App\Service;
 
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -65,37 +66,158 @@ class CsvActions {
         return $data;
     }
 
+//    /**
+//     * @param FormInterface $form
+//     */
+//    public function import(FormInterface $form, String $name)
+//    {
+//        if($name == 'category')
+//        {
+//            $this->importCategory($form);
+//        } else if($name == 'product') {
+//            $this->importProduct($form);
+//        }
+//    }
+//
+//    public function importCategory(FormInterface $form)
+//    {
+//        $line = 0;
+//
+//        foreach ($this->prepareData($form) as $row)
+//        {
+//            $line++;
+//            $checkId = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+//            if(!isset($checkId)) {
+//                $category = new ProductCategory();
+//                $category->setDataFromArray($row);
+//                try{
+//
+//                    $this->em->persist($category);
+//                    $this->em->flush();
+//                } catch (\Exception $e){
+//                    $this->session->getFlashBag()->add(
+//                        'notice',
+//                        'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+//                    );
+//                }
+//            } else {
+//                $this->session->getFlashBag()->add(
+//                    'notice',
+//                    'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
+//                );
+//            }
+//        }
+//    }
+//
+//    public function importProduct(FormInterface $form)
+//    {
+//
+//    }
+//
+//    /**
+//     * @param FormInterface $form
+//     */
+//    public function importCategory2(FormInterface $form)
+//    {
+//        $line = 0;
+//        foreach ($this->prepareData($form) as $row)
+//        {
+//            $line++;
+//            $checkId = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+//            if(!isset($checkId)) {
+//                $category = new ProductCategory();
+//                try{
+//                    $category->setDataFromArray($row);
+//                    $this->em->persist($category);
+//                    $this->em->flush();
+//                } catch (\Exception $e){
+//                    $this->session->getFlashBag()->add(
+//                        'notice',
+//                        'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+//                    );
+//                }
+//            } else {
+//                $this->session->getFlashBag()->add(
+//                    'notice',
+//                    'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
+//                );
+//            }
+//        }
+//    }
+
+//    /**
+//     * @param FormInterface $form
+//     */
+//    public function importProduct2(FormInterface $form)
+//    {
+//        $line = 0;
+//        foreach ($this->prepareData($form) as $row)
+//        {
+//            $line++;
+//            $checkId = $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
+//            if(!isset($checkId)) {
+//                $product = new Product();
+//                try{
+//                    $product->setDataFromArray($row);
+//                    $this->em->persist($product);
+//                    $this->em->flush();
+//                } catch (\Exception $e){
+//                    $this->session->getFlashBag()->add(
+//                        'notice',
+//                        'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+//                    );
+//                }
+//            } else {
+//                $this->session->getFlashBag()->add(
+//                    'notice',
+//                    'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
+//                );
+//            }
+//        }
+//    }
+
     /**
      * @param FormInterface $form
      */
-    public function import(FormInterface $form)
+    public function import(FormInterface $form, String $name)
     {
-        $line = 0;
+        if($name == 'category' || $name == 'product') {
+            $line = 0;
 
-        foreach ($this->prepareData($form) as $row)
-        {
-            $line++;
-            $checkId = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+            foreach ($this->prepareData($form) as $row) {
+                $line++;
 
-            if(!isset($checkId)) {
-                $category = new ProductCategory();
-
-                try{
-                    $category->setDataFromArray($row);
-                    $this->em->persist($category);
-                    $this->em->flush();
-                } catch (\Exception $e){
-                    $this->session->getFlashBag()->add(
-                        'notice',
-                        'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
-                    );
+                if ($name == 'category') {
+                    $check = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+                } else {
+                    $check = $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
                 }
 
-            } else {
-                $this->session->getFlashBag()->add(
-                    'notice',
-                    'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
-                );
+                if (!isset($check)) {
+
+                    if($name == 'category') {
+                        $entity = new ProductCategory();
+                    } else {
+                        $entity = new Product();
+                    }
+
+                    try {
+                        $entity->setDataFromArray($row);
+                        $this->em->persist($entity);
+                        $this->em->flush();
+                    } catch (\Exception $e) {
+                        $this->session->getFlashBag()->add(
+                            'notice',
+                            'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+                        );
+                    }
+
+                } else {
+                    $this->session->getFlashBag()->add(
+                        'notice',
+                        'Something went wrong in imported file, at line ' . $line . ': entity with that id already exists.'
+                    );
+                }
             }
         }
     }
