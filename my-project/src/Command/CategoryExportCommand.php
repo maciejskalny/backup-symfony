@@ -27,7 +27,7 @@ class CategoryExportCommand extends Command
             ->setDescription('Exports categories.')
             ->setHelp('This command allows you to export categories.')
             ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::OPTIONAL, 'File name.')
-            ->addArgument('category', $this->categories ? InputArgument::OPTIONAL : InputArgument::IS_ARRAY, 'Id of categories you want to export');
+            ->addArgument('category', $this->categories ? InputArgument::IS_ARRAY : InputArgument::OPTIONAL, 'Id of categories you want to export. Separate them with spaces.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

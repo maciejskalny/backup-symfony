@@ -212,31 +212,61 @@ class CsvActions
     /**
      * @param $name
      */
-    public function exportCommand($name, $abc, $categories=null)
+    public function exportCommand($name, $abc, $category=null)
     {
-        $repository = $this->getRepository($name)->findAll();
-        $data = [];
+        if($category==null) {
+            $repository = $this->getRepository($name)->findAll();
+            $data = [];
 
-        foreach ($repository as $item) {
-            $data[] = $item->getExportInfo();
+            foreach ($repository as $item) {
+                $data[] = $item->getExportInfo();
+            }
+
+            $fileSystem = new Filesystem();
+
+            if (!$fileSystem->exists($this->csvDirectory)) {
+                $fileSystem->mkdir($this->csvDirectory);
+            }
+
+            $fileName = $this->csvDirectory . '/' . $abc . '.csv';
+            $file = fopen($fileName, "w");
+
+            foreach ($data as $line) {
+                fputcsv(
+                    $file,
+                    $line,
+                    ','
+                );
+            }
+            fclose($file);
+        } else {
+            $data = [];
+
+            $categories = explode(',',$category);
+            foreach($categories as $category) {
+                $repository = $this->getRepository($name)->findOneBy(['id' => $category]);
+
+                $data[] = $repository->getExportInfo();
+            }
+
+                $fileSystem = new Filesystem();
+
+                if (!$fileSystem->exists($this->csvDirectory)) {
+                    $fileSystem->mkdir($this->csvDirectory);
+                }
+
+                $fileName = $this->csvDirectory . '/' . $abc . '.csv';
+                $file = fopen($fileName, "w");
+
+                foreach ($data as $line) {
+                    fputcsv(
+                        $file,
+                        $line,
+                        ','
+                    );
+                }
+                fclose($file);
+
         }
-
-        $fileSystem = new Filesystem();
-
-        if(!$fileSystem->exists($this->csvDirectory)) {
-            $fileSystem->mkdir($this->csvDirectory);
-        }
-
-        $fileName = $this->csvDirectory.'/'.$abc.'.csv';
-        $file = fopen($fileName, "w");
-
-        foreach ($data as $line) {
-            fputcsv(
-                $file,
-                $line,
-                ','
-            );
-        }
-        fclose($file);
     }
 }
