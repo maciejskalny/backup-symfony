@@ -35,7 +35,7 @@ class Product
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      */
     private $description;
@@ -257,10 +257,10 @@ class Product
 
     /**
      * @param array|null $row
-     * @param $category
+     * @param ProductCategory $category
      * @throws \Exception
      */
-    public function setDataFromArray(?Array $row, $category)
+    public function setDataFromArray(?Array $row, ProductCategory $category)
     {
         if(empty($row['id'])) {
            throw new \Exception('Id field cant be null.');

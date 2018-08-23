@@ -68,11 +68,11 @@ class CsvActions {
 
     /**
      * @param FormInterface $form
+     * @param String $name
      */
     public function import(FormInterface $form, String $name)
     {
-        if($name == 'category')
-        {
+        if($name == 'category') {
             $this->importCategory($form);
         } else if($name == 'product') {
             $this->importProduct($form);
@@ -89,23 +89,30 @@ class CsvActions {
         {
             $line++;
             $checkId = $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
-            if(!isset($checkId) && isset($row['category'])) {
-                $product = new Product();
-                if($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
-                    try {
-                        $product->setDataFromArray($row, $category);
-                        $this->em->persist($product);
-                        $this->em->flush();
-                    } catch (\Exception $e) {
+            if(!isset($checkId)) {
+                if(isset($row['category'])) {
+                    if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
+                        $product = new Product();
+                        try {
+                            $product->setDataFromArray($row, $category);
+                            $this->em->persist($product);
+                            $this->em->flush();
+                        } catch (\Exception $e) {
+                            $this->session->getFlashBag()->add(
+                                'notice',
+                                'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+                            );
+                        }
+                    } else {
                         $this->session->getFlashBag()->add(
                             'notice',
-                            'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
+                            'Something went wrong in imported file, at line ' . $line . ': there is no category with that id.'
                         );
                     }
                 } else {
                     $this->session->getFlashBag()->add(
                         'notice',
-                        'Something went wrong in imported file, at line '.$line.': there is no category with that id.'
+                        'Something went wrong in imported file, at line '.$line.': category field does not exist.'
                     );
                 }
             } else {

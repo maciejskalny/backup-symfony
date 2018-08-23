@@ -10,16 +10,12 @@
 
 namespace App\Controller;
 
-use App\Entity\ProductCategory;
 use App\Form\ImportType;
 use App\Service\CsvActions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class ImportExportController
@@ -31,6 +27,7 @@ class ImportExportController extends Controller
     /**
      * @param Request $request
      * @param CsvActions $csvActionsService
+     * @param $name
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @Route("{name}/", name="import", methods="GET|POST")
      */
@@ -43,11 +40,11 @@ class ImportExportController extends Controller
         {
             $csvActionsService->import($form, $name);
 
-            if($name == 'category') {
-                return $this->redirectToRoute('product_category_index');
-            } else {
-                return $this->redirectToRoute('product_index');
-            }
+//            if($name == 'category') {
+//                return $this->redirectToRoute('product_category_index');
+//            } else {
+//                return $this->redirectToRoute('product_index');
+//            }
         }
 
         return $this->render('csv/import.html.twig', [
