@@ -136,14 +136,11 @@ class CsvActions
     {
         if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
             if($entity == null ) {
-                $product = new Product();
-                $product->setDataFromArray($row, $category);
-                $this->em->persist($product);
-                $this->em->flush();
-            } else {
-                $entity->setDataFromArray($row, $category);
-                $this->em->flush();
+                $entity = new Product();
             }
+            $entity->setDataFromArray($row, $category);
+            $this->em->persist($entity);
+            $this->em->flush();
         } else {
             $this->addFlashMessage($line, 'Category with that id does not exist.');
         }
@@ -159,14 +156,11 @@ class CsvActions
     public function prepareCategoryEntity(Array $row, Int $line, $entity=null)
     {
         if($entity == null) {
-            $category = new ProductCategory();
-            $category->setDataFromArray($row);
-            $this->em->persist($category);
-            $this->em->flush();
-        } else {
-            $entity->setDataFromArray($row);
-            $this->em->flush();
+            $entity = new ProductCategory();
         }
+        $entity->setDataFromArray($row);
+        $this->em->persist($entity);
+        $this->em->flush();
     }
 
     /**
