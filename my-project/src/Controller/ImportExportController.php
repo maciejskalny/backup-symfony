@@ -52,4 +52,17 @@ class ImportExportController extends Controller
             'name' => $name
         ]);
     }
+
+    /**
+     * @param CsvActions $csvActionsService
+     * @param $name
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("{name}/export", name="export")
+     */
+    public function export(CsvActions $csvActionsService, $name)
+    {
+        $csvActionsService->export($name);
+
+        return $this->redirectToRoute('product_category_index');
+    }
 }

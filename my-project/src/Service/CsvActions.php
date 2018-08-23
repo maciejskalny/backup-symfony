@@ -13,6 +13,8 @@ namespace App\Service;
 use App\Entity\Product;
 use App\Entity\ProductCategory;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Scalar\MagicConst\File;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -70,6 +72,37 @@ class CsvActions
     }
 
     /**
+     * @param $name
+     */
+    public function export($name)
+    {
+        $repository = $this->getRepository($name)->findAll();
+        $data = [];
+
+        foreach ($repository as $item) {
+            $data[] = $item->getSomeInfo();
+        }
+
+        $fileSystem = new Filesystem();
+
+        if(!$fileSystem->exists($this->csvDirectory)) {
+            $fileSystem->mkdir($this->csvDirectory);
+        }
+
+        $fileName = $this->csvDirectory.'/export_'.$name.'_'.date('d-m-Y-H:i:s').'.csv';
+        $file = fopen($fileName, "w");
+
+        foreach ($data as $line) {
+            fputcsv(
+                $file,
+                $line,
+                ','
+            );
+        }
+        fclose($file);
+    }
+
+    /**
      * @param FormInterface $form
      * @param String $name
      */
@@ -83,7 +116,7 @@ class CsvActions
             $entity = null;
 
             if(isset($row['id'])) {
-                $entity = $this->getEntity($row, $name);
+                $entity = $this->getRepository($row, $name)->findOneBy(['id' => $row['id']]);
             }
 
             try {
@@ -99,12 +132,12 @@ class CsvActions
      * @param String $name
      * @return null|object
      */
-    public function getEntity(Array $row, String $name)
+    public function getRepository(String $name)
     {
         if ($name == 'category') {
-            return $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+            return $this->em->getRepository(ProductCategory::class);
         } else {
-            return $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
+            return $this->em->getRepository(Product::class);
         }
     }
 
