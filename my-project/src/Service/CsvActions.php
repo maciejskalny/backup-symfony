@@ -12,6 +12,7 @@ namespace App\Service;
 
 use App\Entity\Product;
 use App\Entity\ProductCategory;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -23,7 +24,8 @@ use Doctrine\ORM\EntityManager;
  * Class CsvActions
  * @package App\Service
  */
-class CsvActions {
+class CsvActions
+{
 
     /**
      * Directory for .csv files.
@@ -60,7 +62,8 @@ class CsvActions {
      * @param FormInterface $form
      * @return array
      */
-    public function prepareData(FormInterface $form){
+    public function prepareData(FormInterface $form)
+    {
         $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
         $data = $serializer->decode(file_get_contents($form->get('importFile')->getData()), 'csv');
         return $data;
@@ -72,87 +75,98 @@ class CsvActions {
      */
     public function import(FormInterface $form, String $name)
     {
-        if($name == 'category') {
-            $this->importCategory($form);
-        } else if($name == 'product') {
-            $this->importProduct($form);
-        }
-    }
-
-    /**
-     * @param FormInterface $form
-     */
-    public function importProduct(FormInterface $form)
-    {
         $line = 0;
-        foreach ($this->prepareData($form) as $row)
-        {
+
+        foreach ($this->prepareData($form) as $row) {
+
             $line++;
-            $checkId = $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
-            if(!isset($checkId)) {
-                if(isset($row['category'])) {
-                    if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
-                        $product = new Product();
-                        try {
-                            $product->setDataFromArray($row, $category);
-                            $this->em->persist($product);
-                            $this->em->flush();
-                        } catch (\Exception $e) {
-                            $this->session->getFlashBag()->add(
-                                'notice',
-                                'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
-                            );
-                        }
-                    } else {
-                        $this->session->getFlashBag()->add(
-                            'notice',
-                            'Something went wrong in imported file, at line ' . $line . ': there is no category with that id.'
-                        );
-                    }
-                } else {
-                    $this->session->getFlashBag()->add(
-                        'notice',
-                        'Something went wrong in imported file, at line '.$line.': category field does not exist.'
-                    );
+
+            $repository = $this->getEntityRepository($row, $name);
+
+            if(is_null($repository)) {
+                try {
+                    $this->prepareEntity($row, $name, $line);
+                } catch (\Exception $e) {
+                    $this->addFlashMessage($line, $e->getMessage());
                 }
             } else {
-                $this->session->getFlashBag()->add(
-                    'notice',
-                    'Something went wrong in imported file, at line '.$line.': product with that id already exists.'
-                );
+                $this->addFlashMessage($line, 'Entity with that id already exists.');
             }
         }
     }
 
     /**
-     * @param FormInterface $form
+     * @param array $row
+     * @param String $name
+     * @return null|object
      */
-    public function importCategory(FormInterface $form)
+    public function getEntityRepository(Array $row, String $name)
     {
-        $line = 0;
-        foreach ($this->prepareData($form) as $row)
-        {
-            $line++;
-            $checkId = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
-            if(!isset($checkId)) {
-                $category = new ProductCategory();
-                try{
-                    $category->setDataFromArray($row);
-                    $this->em->persist($category);
-                    $this->em->flush();
-                } catch (\Exception $e){
-                    $this->session->getFlashBag()->add(
-                        'notice',
-                        'Something went wrong in imported file, at line ' . $line . ': ' . $e->getMessage()
-                    );
-                }
-            } else {
-                $this->session->getFlashBag()->add(
-                    'notice',
-                    'Something went wrong in imported file, at line '.$line.': category with that id already exists.'
-                );
-            }
+        if ($name == 'category') {
+            return $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['id']]);
+        } else {
+            return $this->em->getRepository(Product::class)->findOneBy(['id' => $row['id']]);
         }
     }
 
+    /**
+     * @param array $row
+     * @param String $name
+     * @param Int $line
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function prepareEntity(Array $row, String $name, Int $line)
+    {
+        if ($name == 'category') {
+            $this->prepareCategoryEntity($row, $line);
+        } else {
+            $this->prepareProductEntity($row, $line);
+        }
+    }
+
+    /**
+     * @param array $row
+     * @param Int $line
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function prepareProductEntity(Array $row, Int $line)
+    {
+        if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
+            $product = new Product();
+            $product->setDataFromArray($row, $category);
+            $this->em->persist($product);
+            $this->em->flush();
+        } else {
+            $this->addFlashMessage($line, 'Category with that id does not exist.');
+        }
+    }
+
+    /**
+     * @param array $row
+     * @param Int $line
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function prepareCategoryEntity(Array $row, Int $line)
+    {
+        $category = new ProductCategory();
+        $category->setDataFromArray($row);
+        $this->em->persist($category);
+        $this->em->flush();
+    }
+
+    /**
+     * @param Int $line
+     * @param String $error
+     * @return string
+     */
+    public function addFlashMessage(Int $line, String $error)
+    {
+        return $this->session->getFlashBag()->add(
+            'notice',
+            'Something went wrong in imported file, at line '.$line.': '.$error
+        );
+    }
 }

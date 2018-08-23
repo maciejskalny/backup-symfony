@@ -40,11 +40,11 @@ class ImportExportController extends Controller
         {
             $csvActionsService->import($form, $name);
 
-//            if($name == 'category') {
-//                return $this->redirectToRoute('product_category_index');
-//            } else {
-//                return $this->redirectToRoute('product_index');
-//            }
+            if($name == 'category') {
+                return $this->redirectToRoute('product_category_index');
+            } else {
+                return $this->redirectToRoute('product_index');
+            }
         }
 
         return $this->render('csv/import.html.twig', [
