@@ -281,22 +281,6 @@ class ProductCategory
     }
 
     /**
-     * @return array
-     */
-    public function getSomeInfo(){
-        $createdAt = $this->getAddDate()->format('d/m/Y');
-        $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
-
-        return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
-            'description' => $this->getDescription(),
-            'created_at' => $createdAt,
-            'last_modified' => $lastModified
-        ];
-    }
-
-    /**
      * @param array|null $row
      * @throws \Exception
      */
@@ -314,5 +298,21 @@ class ProductCategory
         } else {
             throw new \Exception('Description field cant be null.');
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getExportInfo(){
+        $createdAt = $this->getAddDate()->format('d/m/Y');
+        $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
+
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'created_at' => $createdAt,
+            'last_modified' => $lastModified
+        ];
     }
 }

@@ -80,7 +80,7 @@ class CsvActions
         $data = [];
 
         foreach ($repository as $item) {
-            $data[] = $item->getSomeInfo();
+            $data[] = $item->getExportInfo();
         }
 
         $fileSystem = new Filesystem();
