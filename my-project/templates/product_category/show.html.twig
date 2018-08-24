@@ -52,7 +52,12 @@ This file shows one of the category
 
             {% for product in product_category.products %}
 
-            <div class="entity-list-item product col-12"><a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>{{ include('wishlist/_additem_form.html.twig') }}</div>
+
+            <div class="product col-12">
+                <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
+                <a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>
+                {{ include('wishlist/_additem_form.html.twig') }}
+            </div>
 
             {% else %}
 
