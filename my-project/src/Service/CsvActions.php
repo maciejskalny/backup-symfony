@@ -78,24 +78,6 @@ class CsvActions
      */
     public function export(string $name, string $csvFile=null, string $choices=null)
     {
-        $data = [];
-
-        if(!isset($choices) || $choices == null) {
-            $repository = $this->getRepository($name)->findAll();
-
-            foreach ($repository as $item) {
-                $data[] = $item->getExportInfo();
-            }
-
-        } else {
-            $choices = explode(',', $choices);
-
-            foreach ($choices as $choice) {
-                $repository = $this->getRepository($name)->findOneBy(['id' => $choice]);
-                $data[] = $repository->getExportInfo();
-            }
-        }
-
         $fileSystem = new Filesystem();
 
         if(!$fileSystem->exists($this->csvDirectory)) {
@@ -110,7 +92,7 @@ class CsvActions
 
         $file = fopen($fileName, "w");
 
-        foreach ($data as $line) {
+        foreach ($this->findEntity($name, $choices) as $line) {
             fputcsv(
                 $file,
                 $line,
@@ -134,7 +116,7 @@ class CsvActions
             $entity = null;
 
             if(isset($row['id'])) {
-                $entity = $this->getRepository($row, $name)->findOneBy(['id' => $row['id']]);
+                $entity = $this->getRepository($name)->findOneBy(['id' => $row['id']]);
             }
 
             try {
@@ -224,5 +206,27 @@ class CsvActions
             'notice',
             'Something went wrong in imported file, at line '.$line.': '.$error
         );
+    }
+
+    /**
+     * @param string $name
+     * @param string|null $choices
+     * @return array
+     */
+    public function findEntity(string $name, string $choices=null)
+    {
+        if($choices == null)
+        {
+            $repository = $this->getRepository($name)->findAll();
+        } else {
+            $choices = explode(',',$choices);
+            $repository = $this->getRepository($name)->findBy(['id' => $choices]);
+        }
+
+        foreach ($repository as $item) {
+            $data[] = $item->getExportInfo();
+        }
+
+        return $data;
     }
 }
