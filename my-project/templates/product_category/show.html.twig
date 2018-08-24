@@ -53,7 +53,7 @@ This file shows one of the category
             {% for product in product_category.products %}
 
 
-            <div class="product col-12">
+            <div class="product col-4">
                 <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
                 <a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>
                 {{ include('wishlist/_additem_form.html.twig') }}
@@ -66,7 +66,6 @@ This file shows one of the category
             {% endfor %}
 
         </div>
-
 
             <select id="display-value">
                 <option value="1">Rows</option>

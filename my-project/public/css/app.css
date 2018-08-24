@@ -68,4 +68,9 @@ a{
 .product{
     padding:50px;
     border-bottom:1px solid lightgrey;
+    text-align:center;
+}
+
+.product .main-image{
+    margin:0 auto;
 }
