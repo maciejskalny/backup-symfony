@@ -78,7 +78,7 @@ class CategoryExportCommand extends Command
             '=============='
         ]);
 
-        $this->csvActionsService->exportCategoriesCommand($input->getArgument('file'), $input->getArgument('category'));
+        $this->csvActionsService->export('category', $input->getArgument('file'), $input->getArgument('category'));
         $output->writeln('Success!');
 
     }

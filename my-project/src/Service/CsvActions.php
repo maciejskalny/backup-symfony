@@ -72,15 +72,28 @@ class CsvActions
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param string|null $csvFile
+     * @param string|null $choices
      */
-    public function export($name)
+    public function export(string $name, string $csvFile=null, string $choices=null)
     {
-        $repository = $this->getRepository($name)->findAll();
         $data = [];
 
-        foreach ($repository as $item) {
-            $data[] = $item->getExportInfo();
+        if(!isset($choices) || $choices == null) {
+            $repository = $this->getRepository($name)->findAll();
+
+            foreach ($repository as $item) {
+                $data[] = $item->getExportInfo();
+            }
+
+        } else {
+            $choices = explode(',', $choices);
+
+            foreach ($choices as $choice) {
+                $repository = $this->getRepository($name)->findOneBy(['id' => $choice]);
+                $data[] = $repository->getExportInfo();
+            }
         }
 
         $fileSystem = new Filesystem();
@@ -89,7 +102,12 @@ class CsvActions
             $fileSystem->mkdir($this->csvDirectory);
         }
 
-        $fileName = $this->csvDirectory.'/export_'.$name.'_'.date('d-m-Y-H:i:s').'.csv';
+        if(!isset($csvFile)) {
+            $fileName = $this->csvDirectory . '/export_' . $name . '_' . date('d-m-Y-H:i:s') . '.csv';
+        } else {
+            $fileName = $this->csvDirectory . '/' . $csvFile . '.csv';
+        }
+
         $file = fopen($fileName, "w");
 
         foreach ($data as $line) {
@@ -206,51 +224,5 @@ class CsvActions
             'notice',
             'Something went wrong in imported file, at line '.$line.': '.$error
         );
-    }
-
-    /**
-     * @param string $csvName
-     * @param string|null $category
-     */
-    public function exportCategoriesCommand(string $csvName, string $category=null)
-    {
-        $data = [];
-
-        if($category == null) {
-            $repository = $this->getRepository('category')->findAll();
-
-            foreach ($repository as $item) {
-                $data[] = $item->getExportInfo();
-            }
-
-        } else {
-
-            $categories = explode(',',$category);
-
-            foreach($categories as $category) {
-                $repository = $this->getRepository('category')->findOneBy(['id' => $category]);
-
-                $data[] = $repository->getExportInfo();
-            }
-
-        }
-
-        $fileSystem = new Filesystem();
-
-        if (!$fileSystem->exists($this->csvDirectory)) {
-            $fileSystem->mkdir($this->csvDirectory);
-            }
-
-        $fileName = $this->csvDirectory . '/' . $csvName . '.csv';
-        $file = fopen($fileName, "w");
-
-        foreach ($data as $line) {
-            fputcsv(
-                $file,
-                $line,
-                ','
-            );
-        }
-        fclose($file);
     }
 }
