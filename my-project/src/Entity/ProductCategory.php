@@ -284,7 +284,7 @@ class ProductCategory
      * @param array|null $row
      * @throws \Exception
      */
-    public function setDataFromArray(?Array $row)
+    public function setDataFromArray($row)
     {
         if(!empty($row['name'])) {
             $this->setName($row['name']);

@@ -13,8 +13,9 @@ namespace App\Service;
 use App\Entity\Product;
 use App\Entity\ProductCategory;
 use PhpParser\Node\Expr\Array_;
-use PhpParser\Node\Scalar\MagicConst\File;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -28,7 +29,6 @@ use Doctrine\ORM\EntityManager;
  */
 class CsvActions
 {
-
     /**
      * Directory for .csv files.
      * @var string
@@ -61,13 +61,13 @@ class CsvActions
     }
 
     /**
-     * @param FormInterface $form
+     * @param File|string $file
      * @return array
      */
-    public function prepareData(FormInterface $form)
+    public function prepareData($file)
     {
         $serializer = new Serializer([new ObjectNormalizer()], [new CsvEncoder()]);
-        $data = $serializer->decode(file_get_contents($form->get('importFile')->getData()), 'csv');
+        $data = $serializer->decode(file_get_contents($file), 'csv');
         return $data;
     }
 
@@ -103,14 +103,14 @@ class CsvActions
     }
 
     /**
-     * @param FormInterface $form
+     * @param File|string $file
      * @param String $name
      */
-    public function import(FormInterface $form, String $name)
+    public function import(String $name, $file)
     {
         $line = 0;
 
-        foreach ($this->prepareData($form) as $row) {
+        foreach ($this->prepareData($file) as $row) {
 
             $line++;
             $entity = null;
