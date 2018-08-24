@@ -15,6 +15,7 @@ use App\Entity\Product;
 use App\Entity\ProductCategory;
 use App\Form\ImageType;
 use App\Form\ProductCategoryType;
+use App\Form\ProductPaginationType;
 use App\Repository\ProductCategoryRepository;
 use App\Service\ImagesActions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -81,24 +82,34 @@ class ProductCategoryController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="product_category_show", methods="GET")
+     * @Route("/{id}", name="product_category_show", methods="GET|POST")
      * @param ProductCategory $productCategory
+     * @param Request $request
      * @return Response
      */
     public function show(ProductCategory $productCategory, Request $request): Response
     {
-        //$em = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+        $form = $this->createForm(ProductPaginationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $count = $form->get('productCount')->getData();
+        } else {
+            $count = 6;
+        }
+        
         $products = $productCategory->getProducts();
 
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $products,
             $request->query->getInt('page', 1),
-            2
+            $count
         );
         return $this->render('product_category/show.html.twig', [
             'product_category' => $productCategory,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'form' => $form->createView()
         ]);
     }
 
