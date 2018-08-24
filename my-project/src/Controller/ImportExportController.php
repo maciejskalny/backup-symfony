@@ -38,7 +38,7 @@ class ImportExportController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $csvActionsService->import($form, $name);
+            $csvActionsService->import($name, $form->get('importFile')->getData());
 
             if($name == 'category') {
                 return $this->redirectToRoute('product_category_index');
