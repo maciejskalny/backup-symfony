@@ -72,27 +72,27 @@ class CsvActions
     }
 
     /**
-     * @param $name
+     * @param string $name
+     * @param string|null $csvFile
+     * @param string|null $choices
      */
-    public function export($name)
+    public function export(string $name, string $csvFile=null, string $choices=null)
     {
-        $repository = $this->getRepository($name)->findAll();
-        $data = [];
-
-        foreach ($repository as $item) {
-            $data[] = $item->getExportInfo();
-        }
-
         $fileSystem = new Filesystem();
 
         if(!$fileSystem->exists($this->csvDirectory)) {
             $fileSystem->mkdir($this->csvDirectory);
         }
 
-        $fileName = $this->csvDirectory.'/export_'.$name.'_'.date('d-m-Y-H:i:s').'.csv';
+        if(!isset($csvFile)) {
+            $fileName = $this->csvDirectory . '/export_' . $name . '_' . date('d-m-Y-H:i:s') . '.csv';
+        } else {
+            $fileName = $this->csvDirectory . '/' . $csvFile . '.csv';
+        }
+
         $file = fopen($fileName, "w");
 
-        foreach ($data as $line) {
+        foreach ($this->findEntity($name, $choices) as $line) {
             fputcsv(
                 $file,
                 $line,
@@ -116,7 +116,7 @@ class CsvActions
             $entity = null;
 
             if(isset($row['id'])) {
-                $entity = $this->getRepository($row, $name)->findOneBy(['id' => $row['id']]);
+                $entity = $this->getRepository($name)->findOneBy(['id' => $row['id']]);
             }
 
             try {
@@ -128,7 +128,6 @@ class CsvActions
     }
 
     /**
-     * @param array $row
      * @param String $name
      * @return null|object
      */
@@ -207,5 +206,27 @@ class CsvActions
             'notice',
             'Something went wrong in imported file, at line '.$line.': '.$error
         );
+    }
+
+    /**
+     * @param string $name
+     * @param string|null $choices
+     * @return array
+     */
+    public function findEntity(string $name, string $choices=null)
+    {
+        if($choices == null)
+        {
+            $repository = $this->getRepository($name)->findAll();
+        } else {
+            $choices = explode(',',$choices);
+            $repository = $this->getRepository($name)->findBy(['id' => $choices]);
+        }
+
+        foreach ($repository as $item) {
+            $data[] = $item->getExportInfo();
+        }
+
+        return $data;
     }
 }
