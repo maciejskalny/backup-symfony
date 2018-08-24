@@ -1,17 +1,3 @@
-// $(document).ready(function () {
-//     $('#display-type').click(function () {
-//         let choice = $('#display-value').val();
-//
-//         if(choice == 2) {
-//             $('.product').removeClass('col-6');
-//             $('.product').addClass('col-4');
-//         } else {
-//             $('.product').removeClass('col-4');
-//             $('.product').addClass('col-6');
-//         }
-//     });
-// });
-
 $(document).ready(function () {
     $('.display-type').click(function () {
 
