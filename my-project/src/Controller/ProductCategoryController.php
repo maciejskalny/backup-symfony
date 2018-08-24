@@ -11,6 +11,7 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use App\Form\ImageType;
 use App\Form\ProductCategoryType;
@@ -84,9 +85,21 @@ class ProductCategoryController extends Controller
      * @param ProductCategory $productCategory
      * @return Response
      */
-    public function show(ProductCategory $productCategory): Response
+    public function show(ProductCategory $productCategory, Request $request): Response
     {
-        return $this->render('product_category/show.html.twig', ['product_category' => $productCategory]);
+        //$em = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+        $products = $productCategory->getProducts();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $products,
+            $request->query->getInt('page', 1),
+            2
+        );
+        return $this->render('product_category/show.html.twig', [
+            'product_category' => $productCategory,
+            'pagination' => $pagination
+        ]);
     }
 
     /**
