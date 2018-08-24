@@ -23,7 +23,7 @@ use App\Service\CsvActions;
 class CategoryImportCommand extends Command
 {
     /**
-     * Name of file, from you want to import categories.
+     * Path of file, from you want to import categories.
      * @var string
      */
     private $file;
@@ -54,7 +54,7 @@ class CategoryImportCommand extends Command
             ->setName('app:category-import')
             ->setDescription('Imports categories.')
             ->setHelp('This command allows you to import categories.')
-            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'File name.');
+            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'Path to file.');
     }
 
     /**
