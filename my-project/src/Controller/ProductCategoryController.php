@@ -97,7 +97,7 @@ class ProductCategoryController extends Controller
         } else {
             $count = 6;
         }
-        
+
         $products = $productCategory->getProducts();
 
         $paginator = $this->get('knp_paginator');
