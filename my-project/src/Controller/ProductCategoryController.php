@@ -11,9 +11,11 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use App\Entity\Product;
 use App\Entity\ProductCategory;
 use App\Form\ImageType;
 use App\Form\ProductCategoryType;
+use App\Form\ProductPaginationType;
 use App\Repository\ProductCategoryRepository;
 use App\Service\ImagesActions;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -80,13 +82,35 @@ class ProductCategoryController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="product_category_show", methods="GET")
+     * @Route("/{id}", name="product_category_show", methods="GET|POST")
      * @param ProductCategory $productCategory
+     * @param Request $request
      * @return Response
      */
-    public function show(ProductCategory $productCategory): Response
+    public function show(ProductCategory $productCategory, Request $request): Response
     {
-        return $this->render('product_category/show.html.twig', ['product_category' => $productCategory]);
+        $form = $this->createForm(ProductPaginationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $count = $form->get('productCount')->getData();
+        } else {
+            $count = 6;
+        }
+
+        $products = $productCategory->getProducts();
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $products,
+            $request->query->getInt('page', 1),
+            $count
+        );
+        return $this->render('product_category/show.html.twig', [
+            'product_category' => $productCategory,
+            'pagination' => $pagination,
+            'form' => $form->createView()
+        ]);
     }
 
     /**

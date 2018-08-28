@@ -74,3 +74,11 @@ a{
 .product .main-image{
     margin:0 auto;
 }
+
+.page-navigation{
+    margin:0 auto;
+}
+
+.page-navigation span {
+    padding: 5px;
+}

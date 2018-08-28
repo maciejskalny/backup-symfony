@@ -46,28 +46,11 @@ This file shows one of the category
             <div class="col">{{ product_category.LastModifiedDate ? product_category.LastModifiedDate|date('Y-m-d') : '' }}</div>
         </div>
 
-        <p class="entity-field">Products:</p>
+        <br><br>
 
-        <div class="row">
+        {{ include('product_category/_product_pagination_form.html.twig', {'button_label': 'Choose'}) }}
 
-            {% for product in product_category.products %}
-
-
-            <div class="product col-4">
-                <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
-                <a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>
-                {{ include('wishlist/_additem_form.html.twig') }}
-            </div>
-
-            {% else %}
-
-                <li>no products found</li><br>
-
-            {% endfor %}
-
-        </div>
-
-        <div class="btn-group">
+        <br><div class="btn-group">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Display type
             </button>
@@ -75,6 +58,24 @@ This file shows one of the category
                 <div class="dropdown-item display-type" id="1">Rows</div>
                 <div class="dropdown-item display-type" id="2">Two columns</div>
                 <div class="dropdown-item display-type" id="3">Three columns</div>
+            </div>
+        </div><br><br>
+
+        <p class="entity-field">Products:</p>
+
+        <div class="row">
+                {% for product in pagination %}
+                    <div class="product col-4">
+                        <div class="main-image" {% if product.mainImage is not null %} style="background: url('{{ asset('uploads/images/') }}{{ product.mainImage.name }}')" {% endif %}></div>
+                        <a href="{{ path('product_show', {'id': product.id}) }}">{{ product.name }}</a>
+                        {{ include('wishlist/_additem_form.html.twig') }}
+                    </div>
+                {% endfor %}
+        </div>
+
+        <div class="row">
+            <div class="page-navigation">
+                {{ knp_pagination_render(pagination) }}
             </div>
         </div>
 
@@ -88,7 +89,6 @@ This file shows one of the category
                     <img width="100px" height="100px" src="{{ asset('uploads/images/') }}{{ image.name }}" class="img-responsive">
                     <span class="entity-list-item">{{ image.name }}</span>
                 </div>
-
 
             {% else %}
 
