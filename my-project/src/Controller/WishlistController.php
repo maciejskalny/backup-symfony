@@ -50,8 +50,8 @@ class WishlistController extends Controller
 
             return $this->render(
                 'wishlist/index.html.twig', [
-                'wishlist' => $session->get('wishlist'),
-                'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
+                    'wishlist' => $session->get('wishlist'),
+                    'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
                 ]
             );
         } else {
@@ -92,8 +92,8 @@ class WishlistController extends Controller
 
         return $this->render(
             'wishlist/index.html.twig', [
-            'wishlist' => $session->get('wishlist'),
-            'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
+                'wishlist' => $session->get('wishlist'),
+                'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
             ]
         );
     }

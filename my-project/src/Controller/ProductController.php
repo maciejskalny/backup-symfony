@@ -92,8 +92,8 @@ class ProductController extends Controller
 
         return $this->render(
             'product/new.html.twig', [
-            'product' => $product,
-            'form' => $form->createView(),
+                'product' => $product,
+                'form' => $form->createView(),
                 ]
         );
     }
@@ -152,8 +152,8 @@ class ProductController extends Controller
 
         return $this->render(
             'product/edit.html.twig', [
-            'product' => $product,
-            'form' => $form->createView(),
+                'product' => $product,
+                'form' => $form->createView(),
                 ]
         );
     }

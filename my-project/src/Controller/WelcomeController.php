@@ -41,7 +41,7 @@ class WelcomeController extends Controller
     {
         return $this->render(
             'welcome/index.html.twig', [
-            'controller_name' => 'WelcomeController',
+                'controller_name' => 'WelcomeController',
                 ]
         );
     }

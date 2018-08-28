@@ -1,10 +1,15 @@
 <?php
 /**
  * This file supports api product form
- * @category Form
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Form
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Form\Api;
@@ -18,34 +23,50 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
  * Class ApiProductType
- * @package App\Form\Api
+ *
+ * @category Class
+ * @package  App\Form\Api
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
  */
 class ApiProductType extends AbstractType
 {
     /**
+     * Builds form
+     *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
+     *
+     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
             ->add('description')
-            ->add('category', EntityType::class, [
-                'class' => ProductCategory::class,
-                'choice_label' => 'name'
-            ])
-        ;
+            ->add(
+                'category', EntityType::class, [
+                    'class' => ProductCategory::class,
+                    'choice_label' => 'name'
+                ]
+            );
     }
 
     /**
+     * Configuring options
+     *
      * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'data_class' => Product::class,
-            'csrf_protection' => false,
-        ]);
+        $resolver->setDefaults(
+            [
+                'data_class' => Product::class,
+                'csrf_protection' => false,
+                ]
+        );
     }
 }

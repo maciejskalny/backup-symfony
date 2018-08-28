@@ -97,8 +97,8 @@ class ProductCategoryController extends Controller
         return $this->render(
             'product_category/new.html.twig',
             [
-            'product_category' => $productCategory,
-            'form' => $form->createView(),
+                'product_category' => $productCategory,
+                'form' => $form->createView(),
                 ]
         );
     }
@@ -135,9 +135,9 @@ class ProductCategoryController extends Controller
         return $this->render(
             'product_category/show.html.twig',
             [
-            'product_category' => $productCategory,
-            'pagination' => $pagination,
-            'form' => $form->createView()
+                'product_category' => $productCategory,
+                'pagination' => $pagination,
+                'form' => $form->createView()
             ]
         );
     }
@@ -183,8 +183,8 @@ class ProductCategoryController extends Controller
         return $this->render(
             'product_category/edit.html.twig',
             [
-            'product_category' => $productCategory,
-            'form' => $form->createView(),
+                'product_category' => $productCategory,
+                'form' => $form->createView(),
                 ]
         );
     }
