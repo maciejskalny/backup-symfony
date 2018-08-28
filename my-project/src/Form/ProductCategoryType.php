@@ -67,7 +67,8 @@ class ProductCategoryType extends AbstractType
                                 '.jpg' => 'image/jpg',
                                 '.jpeg' => 'image/jpeg'
                             ],
-                            'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
+                            'mimeTypesMessage' =>
+                                'Your file must be a .png, .jpg or .jpeg!'
                             ]
                         )
                     ]
@@ -88,7 +89,8 @@ class ProductCategoryType extends AbstractType
                                     '.jpg' => 'image/jpg',
                                     '.jpeg' => 'image/jpeg'
                                 ],
-                                'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
+                                'mimeTypesMessage' =>
+                                    'Your file must be a .png, .jpg or .jpeg!'
                                 ]
                             )
                         ]

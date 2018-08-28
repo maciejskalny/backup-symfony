@@ -42,6 +42,9 @@ class NavController extends Controller
      */
     public function items(ProductCategoryRepository $categories)
     {
-        return $this->render('nav/nav_items.html.twig', ['categories' => $categories->findAll()]);
+        return $this->render(
+            'nav/nav_items.html.twig',
+            ['categories' => $categories->findAll()]
+        );
     }
 }

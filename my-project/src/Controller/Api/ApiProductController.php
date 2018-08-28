@@ -46,8 +46,12 @@ class ApiProductController extends Controller
      */
     public function showProduct($id)
     {
-        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
-        if($product) {
+        $product = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->findOneBy(['id' => $id]);
+
+        if ($product) {
             return new JsonResponse(json_encode($product->getProductInfo()));
         } else {
             return new JsonResponse('Not Found.', 404);
@@ -89,13 +93,18 @@ class ApiProductController extends Controller
         $form = $this->createForm(ApiProductType::class, $product);
         $form->handleRequest($request);
         $form->submit($request->query->all());
-        if($form->isValid()) {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
             return new JsonResponse('New product added.', 201);
         } else {
-            return new JsonResponse('Bad request: ' . json_encode($formsActionsService->showErrors($form)), 400);
+            return new JsonResponse(
+                'Bad request: ' . json_encode(
+                    $formsActionsService->showErrors($form)
+                ),
+                400
+            );
         }
     }
 
@@ -111,18 +120,30 @@ class ApiProductController extends Controller
      *
      * @return JsonResponse
      */
-    public function editProduct(Request $request, FormsActions $formsActionsService, $id)
-    {
+    public function editProduct(
+        Request $request,
+        FormsActions $formsActionsService,
+        $id
+    ) {
         $em = $this->getDoctrine()->getManager();
-        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
-        if($product) {
+        $product = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->findOneBy(['id' => $id]);
+
+        if ($product) {
             $form = $this->createForm(ApiProductType::class, $product);
             $form->submit($request->query->all());
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $em->flush();
                 return new JsonResponse('Product updated.', 200);
             } else {
-                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+                return new JsonResponse(
+                    'Bad request: '.json_encode(
+                        $formsActionsService->showErrors($form)
+                    ),
+                    400
+                );
             }
         } else {
             return new JsonResponse('Not found.', 404);
@@ -142,8 +163,12 @@ class ApiProductController extends Controller
     public function deleteProduct($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $product = $this->getDoctrine()->getRepository(Product::class)->findOneBy(['id' => $id]);
-        if($product) {
+        $product = $this
+            ->getDoctrine()
+            ->getRepository(Product::class)
+            ->findOneBy(['id' => $id]);
+
+        if ($product) {
             $em->remove($product);
             $em->flush();
             return new JsonResponse('Product deleted.', 200);

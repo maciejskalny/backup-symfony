@@ -2,10 +2,15 @@
 
 /**
  * This file supports export and imports actions
- * @category Service
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Service
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Service;
@@ -25,43 +30,58 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Class CsvActions
- * @package App\Service
+ *
+ * @category Class
+ * @package  App\Service
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
  */
 class CsvActions
 {
     /**
      * Directory for .csv files.
+     *
      * @var string
      */
     private $csvDirectory;
 
     /**
      * Supports connecting with database.
+     *
      * @var EntityManager
      */
     private $em;
 
     /**
      * Supports flash messages.
+     *
      * @var Session
      */
     private $session;
 
     /**
      * CsvActions constructor.
-     * @param String $csvDirectory
+     *
+     * @param String        $csvDirectory
      * @param EntityManager $em
-     * @param Session $session
+     * @param Session       $session
      */
-    public function __construct(String $csvDirectory, EntityManager $em, Session $session)
-    {
+    public function __construct(
+        String $csvDirectory,
+        EntityManager $em,
+        Session $session
+    ) {
         $this->csvDirectory = $csvDirectory;
         $this->em = $em;
         $this->session = $session;
     }
 
     /**
+     * Preparing data from imported file
+     *
      * @param File|string $file
+     *
      * @return array
      */
     public function prepareData($file)
@@ -72,20 +92,25 @@ class CsvActions
     }
 
     /**
-     * @param string $name
+     * Supports export
+     *
+     * @param string      $name
      * @param string|null $csvFile
      * @param string|null $choices
+     *
+     * @return void
      */
     public function export(string $name, string $csvFile=null, string $choices=null)
     {
         $fileSystem = new Filesystem();
 
-        if(!$fileSystem->exists($this->csvDirectory)) {
+        if (!$fileSystem->exists($this->csvDirectory)) {
             $fileSystem->mkdir($this->csvDirectory);
         }
 
-        if(!isset($csvFile)) {
-            $fileName = $this->csvDirectory . '/export_' . $name . '_' . date('d-m-Y-H:i:s') . '.csv';
+        if (!isset($csvFile)) {
+            $fileName = $this
+                    ->csvDirectory.'/export_'.$name.'_'.date('d-m-Y-H:i:s').'.csv';
         } else {
             $fileName = $this->csvDirectory . '/' . $csvFile . '.csv';
         }
@@ -103,8 +128,12 @@ class CsvActions
     }
 
     /**
+     * Supports import
+     *
+     * @param String      $name
      * @param File|string $file
-     * @param String $name
+     *
+     * @return void
      */
     public function import(String $name, $file)
     {
@@ -115,8 +144,10 @@ class CsvActions
             $line++;
             $entity = null;
 
-            if(isset($row['id'])) {
-                $entity = $this->getRepository($name)->findOneBy(['id' => $row['id']]);
+            if (isset($row['id'])) {
+                $entity = $this
+                    ->getRepository($name)
+                    ->findOneBy(['id' => $row['id']]);
             }
 
             try {
@@ -128,7 +159,10 @@ class CsvActions
     }
 
     /**
+     * Preparing repository
+     *
      * @param String $name
+     *
      * @return null|object
      */
     public function getRepository(String $name)
@@ -141,12 +175,17 @@ class CsvActions
     }
 
     /**
-     * @param array $row
+     * Preparing entity
+     *
+     * @param array  $row
      * @param String $name
+     * @param Int    $line
      * @param $entity
-     * @param Int $line
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @return void
      */
     public function prepareEntity(Array $row, String $name, Int $line, $entity=null)
     {
@@ -158,16 +197,21 @@ class CsvActions
     }
 
     /**
-     * @param array $row
-     * @param Int $line
+     * Preparing product entity
+     *
+     * @param array  $row
+     * @param Int    $line
      * @param $entity
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @return void
      */
     public function prepareProductEntity(Array $row, Int $line, $entity=null)
     {
         if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
-            if($entity == null ) {
+            if ($entity == null ) {
                 $entity = new Product();
             }
             $entity->setDataFromArray($row, $category);
@@ -179,15 +223,20 @@ class CsvActions
     }
 
     /**
-     * @param array $row
-     * @param Int $line
+     * Preparing category entity
+     *
+     * @param array  $row
+     * @param Int    $line
      * @param $entity
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @return void
      */
     public function prepareCategoryEntity(Array $row, Int $line, $entity=null)
     {
-        if($entity == null) {
+        if ($entity == null) {
             $entity = new ProductCategory();
         }
         $entity->setDataFromArray($row);
@@ -196,8 +245,11 @@ class CsvActions
     }
 
     /**
-     * @param Int $line
+     * Adding flash message
+     *
+     * @param Int    $line
      * @param String $error
+     *
      * @return string
      */
     public function addFlashMessage(Int $line, String $error)
@@ -209,17 +261,19 @@ class CsvActions
     }
 
     /**
-     * @param string $name
+     * Finds entity
+     *
+     * @param string      $name
      * @param string|null $choices
+     *
      * @return array
      */
     public function findEntity(string $name, string $choices=null)
     {
-        if($choices == null)
-        {
+        if ($choices == null) {
             $repository = $this->getRepository($name)->findAll();
         } else {
-            $choices = explode(',',$choices);
+            $choices = explode(',', $choices);
             $repository = $this->getRepository($name)->findBy(['id' => $choices]);
         }
 

@@ -79,25 +79,45 @@ class ProductCategory
     /**
      * Category products
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Product",
+     *     mappedBy="category",
+     *     cascade={"persist", "remove"})
      */
     private $products;
 
     /**
      * Category main image
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="main_image_id",          referencedColumnName="id")
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     *     )
+     * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
      */
     private $mainImage;
 
     /**
      * Category gallery
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true)
      * @ORM\JoinTable(name="images_categories",
-     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
+     *     joinColumns={@ORM\JoinColumn(
+     *     name="category_id",
+     *     referencedColumnName="id",
+     *     onDelete="CASCADE"
+     * )},
+     *     inverseJoinColumns={@ORM\JoinColumn(
+     *     name="image_id",
+     *     referencedColumnName="id",
+     *     unique=true,
+     *     onDelete="CASCADE"
+     * )
+     * })
      */
     private $images;
 

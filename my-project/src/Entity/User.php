@@ -30,8 +30,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @link     https://github.com/maciejskalny/backup-symfony
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="Username already taken")
+ * @UniqueEntity(
+ *     fields="email",
+ *     message="Email already taken"
+ * )
+ * @UniqueEntity(
+ *     fields="username",
+ *     message="Username already taken"
+ * )
  */
 class User implements UserInterface
 {
@@ -210,7 +216,8 @@ class User implements UserInterface
     /**
      * Sets roles
      *
-     * @param  array $roles
+     * @param array $roles
+     *
      * @return User
      */
     public function setRoles(array $roles): self
@@ -232,6 +239,8 @@ class User implements UserInterface
 
     /**
      * That method is only meant to clean up possibly stored plain text passwords.
+     *
+     * @return void
      */
     public function eraseCredentials()
     {

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is a controller which supports export to csv file and import to database.
+ * This file is a controller which supports export and import.
  *
  * PHP version 7.1.16
  *
@@ -51,10 +51,10 @@ class ImportExportController extends Controller
         $form = $this->createForm(ImportType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $csvActionsService->import($name, $form->get('importFile')->getData());
 
-            if($name == 'category') {
+            if ($name == 'category') {
                 return $this->redirectToRoute('product_category_index');
             } else {
                 return $this->redirectToRoute('product_index');
@@ -83,7 +83,7 @@ class ImportExportController extends Controller
     {
         $csvActionsService->export($name);
 
-        if($name == 'category') {
+        if ($name == 'category') {
             return $this->redirectToRoute('product_category_index');
         } else {
             return $this->redirectToRoute('product_index');

@@ -85,18 +85,36 @@ class Product
     /**
      * Product main image
      *
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\JoinColumn(name="main_image_id",          referencedColumnName="id")
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     *     )
+     * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
      */
     private $mainImage;
 
     /**
      * Product gallery images
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     *     )
      * @ORM\JoinTable(name="images_products",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
+     *     joinColumns={@ORM\JoinColumn(
+     *     name="product_id",
+     *     referencedColumnName="id",
+     *     onDelete="CASCADE"
+     * )},
+     *     inverseJoinColumns={@ORM\JoinColumn(
+     *     name="image_id",
+     *     referencedColumnName="id",
+     *     unique=true,
+     *     onDelete="CASCADE"
+     *  )
+     * })
      */
     private $images;
 

@@ -43,15 +43,20 @@ class RegistrationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $user = new User();
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $password = $passwordEncoder->encodePassword(
+                $user,
+                $user->getPlainPassword()
+            );
             $user->setPassword($password);
 
             $em = $this->getDoctrine()->getManager();

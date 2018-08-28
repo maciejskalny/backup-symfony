@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is a controller which is responsible for all of the product category actions
+ * This file is a controller which is responsible for all product category actions
  *
  * PHP version 7.1.16
  *
@@ -50,9 +50,13 @@ class ProductCategoryController extends Controller
      *
      * @return Response
      */
-    public function index(ProductCategoryRepository $productCategoryRepository): Response
-    {
-        return $this->render('product_category/index.html.twig', ['product_categories' => $productCategoryRepository->findAll()]);
+    public function index(
+        ProductCategoryRepository $productCategoryRepository
+    ): Response {
+        return $this->render(
+            'product_category/index.html.twig',
+            ['product_categories' => $productCategoryRepository->findAll()]
+        );
     }
 
     /**
@@ -65,8 +69,10 @@ class ProductCategoryController extends Controller
      *
      * @return Response
      */
-    public function new(Request $request, ImagesActions $imagesActionsService): Response
-    {
+    public function new(
+        Request $request,
+        ImagesActions $imagesActionsService
+    ): Response {
         $productCategory = new ProductCategory();
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
@@ -75,12 +81,19 @@ class ProductCategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (!is_null($form->get('imageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $mainImage = $imagesActionsService->createImage(
+                    $form->get('imageFile')->getData()
+                );
+
                 $productCategory->setMainImage($mainImage);
             }
 
             if (!is_null($form->get('imageFiles')->getData())) {
-                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+                $productCategory->addImages(
+                    $imagesActionsService->createImagesCollection(
+                        $form->get('imageFiles')->getData()
+                    )
+                );
             }
 
             $em->persist($productCategory);
@@ -113,8 +126,10 @@ class ProductCategoryController extends Controller
      *
      * @return Response
      */
-    public function show(ProductCategory $productCategory, Request $request): Response
-    {
+    public function show(
+        ProductCategory $productCategory,
+        Request $request
+    ): Response {
         $form = $this->createForm(ProductPaginationType::class);
         $form->handleRequest($request);
 
@@ -153,8 +168,11 @@ class ProductCategoryController extends Controller
      *
      * @return Response
      */
-    public function edit(Request $request, ProductCategory $productCategory, ImagesActions $imagesActionsService): Response
-    {
+    public function edit(
+        Request $request,
+        ProductCategory $productCategory,
+        ImagesActions $imagesActionsService
+    ): Response {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
 
@@ -162,12 +180,18 @@ class ProductCategoryController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (!is_null($form->get('imageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $mainImage = $imagesActionsService->createImage(
+                    $form->get('imageFile')->getData()
+                );
                 $productCategory->setMainImage($mainImage);
             }
 
             if (!is_null($form->get('imageFiles')->getData())) {
-                $productCategory->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+                $productCategory->addImages(
+                    $imagesActionsService->createImagesCollection(
+                        $form->get('imageFiles')->getData()
+                    )
+                );
             }
 
             $em->flush();
@@ -177,7 +201,10 @@ class ProductCategoryController extends Controller
                 'Edited successfully.'
             );
 
-            return $this->redirectToRoute('product_category_edit', ['id' => $productCategory->getId()]);
+            return $this->redirectToRoute(
+                'product_category_edit',
+                ['id' => $productCategory->getId()]
+            );
         }
 
         return $this->render(
@@ -199,9 +226,15 @@ class ProductCategoryController extends Controller
      *
      * @return Response
      */
-    public function delete(Request $request, ProductCategory $productCategory): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        ProductCategory $productCategory
+    ): Response {
+        if ($this->isCsrfTokenValid(
+            'delete'.$productCategory->getId(),
+            $request->request->get('_token')
+        )
+        ) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($productCategory);
             $em->flush();

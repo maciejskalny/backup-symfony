@@ -31,6 +31,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends Controller
 {
     /**
+     * Supports login
+     *
      * @param AuthenticationUtils $authenticationUtils
      *
      * @Route("/login", name="login")

@@ -48,7 +48,10 @@ class ProductController extends Controller
      */
     public function index(ProductRepository $productRepository): Response
     {
-        return $this->render('product/index.html.twig', ['products' => $productRepository->findAll()]);
+        return $this->render(
+            'product/index.html.twig',
+            ['products' => $productRepository->findAll()]
+        );
     }
 
     /**
@@ -61,8 +64,10 @@ class ProductController extends Controller
      *
      * @return Response
      */
-    public function new(Request $request, ImagesActions $imagesActionsService): Response
-    {
+    public function new(
+        Request $request,
+        ImagesActions $imagesActionsService
+    ): Response {
         $product = new Product();
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
@@ -71,12 +76,18 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (!is_null($form->get('imageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $mainImage = $imagesActionsService->createImage(
+                    $form->get('imageFile')->getData()
+                );
                 $product->setMainImage($mainImage);
             }
 
             if (!is_null($form->get('imageFiles')->getData())) {
-                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+                $product->addImages(
+                    $imagesActionsService->createImagesCollection(
+                        $form->get('imageFiles')->getData()
+                    )
+                );
             }
 
             $em->persist($product);
@@ -123,8 +134,11 @@ class ProductController extends Controller
      *
      * @return Response
      */
-    public function edit(Request $request, Product $product, ImagesActions $imagesActionsService): Response
-    {
+    public function edit(
+        Request $request,
+        Product $product,
+        ImagesActions $imagesActionsService
+    ): Response {
         $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
@@ -132,12 +146,18 @@ class ProductController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             if (!is_null($form->get('imageFile')->getData())) {
-                $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
+                $mainImage = $imagesActionsService->createImage(
+                    $form->get('imageFile')->getData()
+                );
                 $product->setMainImage($mainImage);
             }
 
             if (!is_null($form->get('imageFiles')->getData())) {
-                $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
+                $product->addImages(
+                    $imagesActionsService->createImagesCollection(
+                        $form->get('imageFiles')->getData()
+                    )
+                );
             }
 
             $em->flush();
@@ -147,7 +167,10 @@ class ProductController extends Controller
                 'Edited successfully.'
             );
 
-            return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
+            return $this->redirectToRoute(
+                'product_edit',
+                ['id' => $product->getId()]
+            );
         }
 
         return $this->render(
@@ -170,7 +193,11 @@ class ProductController extends Controller
      */
     public function delete(Request $request, Product $product): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid(
+            'delete'.$product->getId(),
+            $request->request->get('_token')
+        )
+        ) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($product);
             $em->flush();

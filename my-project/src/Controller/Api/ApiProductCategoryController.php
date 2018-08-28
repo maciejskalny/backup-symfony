@@ -47,8 +47,12 @@ class ApiProductCategoryController extends Controller
      */
     public function showCategory($id)
     {
-        $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $id]);
-        if($category) {
+        $category = $this
+            ->getDoctrine()
+            ->getRepository(ProductCategory::class)
+            ->findOneBy(['id' => $id]);
+
+        if ($category) {
             return new JsonResponse(json_encode($category->getCategoryInfo()));
         } else {
             return new JsonResponse('Not Found.', 404);
@@ -65,9 +69,13 @@ class ApiProductCategoryController extends Controller
      */
     public function showAllCategories()
     {
-        $categories = $this->getDoctrine()->getRepository(ProductCategory::class)->findAll();
+        $categories = $this
+            ->getDoctrine()
+            ->getRepository(ProductCategory::class)
+            ->findAll();
+
         $data = ['categories' => []];
-        foreach ($categories as $category){
+        foreach ($categories as $category) {
             $data['categories'][] = $category->serializeCategory();
         }
         return new JsonResponse(json_encode($data), 200);
@@ -96,7 +104,12 @@ class ApiProductCategoryController extends Controller
                 $em->flush();
                 return new JsonResponse('New category added.', 200);
             } else {
-                return new JsonResponse('Bad request: '.json_encode($formsActionsService->showErrors($form)), 400);
+                return new JsonResponse(
+                    'Bad request: '.json_encode(
+                        $formsActionsService->showErrors($form)
+                    ),
+                    400
+                );
             }
     }
 
@@ -112,18 +125,30 @@ class ApiProductCategoryController extends Controller
      *
      * @return JsonResponse
      */
-    public function editCategory(Request $request, FormsActions $formActionsService, $id)
-    {
+    public function editCategory(
+        Request $request,
+        FormsActions $formActionsService,
+        $id
+    ) {
         $em = $this->getDoctrine()->getManager();
-        $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id'=>$id]);
-        if($category) {
+        $category = $this
+            ->getDoctrine()
+            ->getRepository(ProductCategory::class)
+            ->findOneBy(['id'=>$id]);
+
+        if ($category) {
             $form = $this->createForm(ApiProductCategoryType::class, $category);
             $form->submit($request->query->all());
-            if($form->isValid()) {
+            if ($form->isValid()) {
                 $em->flush();
                 return new JsonResponse('Category updated.', 200);
             } else {
-                return new JsonResponse('Bad request: '.json_encode($formActionsService->showErrors($form)), 400);
+                return new JsonResponse(
+                    'Bad request: '.json_encode(
+                        $formActionsService->showErrors($form)
+                    ),
+                    400
+                );
             }
         } else {
             return new JsonResponse('Not found.', 404);
@@ -143,8 +168,12 @@ class ApiProductCategoryController extends Controller
     public function deleteCategory($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $id]);
-        if($category) {
+        $category = $this
+            ->getDoctrine()
+            ->getRepository(ProductCategory::class)
+            ->findOneBy(['id' => $id]);
+
+        if ($category) {
             $em->remove($category);
             $em->flush();
             return new JsonResponse('Category deleted.', 200);

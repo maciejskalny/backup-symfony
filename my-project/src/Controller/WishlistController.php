@@ -51,7 +51,9 @@ class WishlistController extends Controller
             return $this->render(
                 'wishlist/index.html.twig', [
                     'wishlist' => $session->get('wishlist'),
-                    'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
+                    'products' => $em->getRepository(Product::class)->findBy(
+                        ['id' => $session->get('wishlist')]
+                    )
                 ]
             );
         } else {
@@ -85,7 +87,10 @@ class WishlistController extends Controller
             array_push($wishlist, $id);
             $session->set('wishlist', $wishlist);
         } else {
-            $session->getFlashBag()->add('error', 'You can add only 5 products to the wishlist.');
+            $session->getFlashBag()->add(
+                'error',
+                'You can add only 5 products to the wishlist.'
+            );
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -93,7 +98,9 @@ class WishlistController extends Controller
         return $this->render(
             'wishlist/index.html.twig', [
                 'wishlist' => $session->get('wishlist'),
-                'products' => $em->getRepository(Product::class)->findBy(['id' => $session->get('wishlist')])
+                'products' => $em->getRepository(Product::class)->findBy(
+                    ['id' => $session->get('wishlist')]
+                )
             ]
         );
     }

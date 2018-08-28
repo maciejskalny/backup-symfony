@@ -51,9 +51,16 @@ class ImageController extends Controller
      *
      * @return Response
      */
-    public function delete(Request $request, Image $image, ImagesActions $imagesActions): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$image->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Image $image,
+        ImagesActions $imagesActions
+    ): Response {
+        if ($this->isCsrfTokenValid(
+            'delete'.$image->getId(),
+            $request->request->get('_token')
+        )
+        ) {
             $em = $this->getDoctrine()->getManager();
 
             $imagesActions->removeImage($image);
