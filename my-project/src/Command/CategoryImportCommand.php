@@ -39,7 +39,7 @@ class CategoryImportCommand extends Command
      * @param CsvActions $csvActionsService
      * @param string|null $file
      */
-    public function __construct(CsvActions $csvActionsService, string $file=null)
+    public function __construct(CsvActions $csvActionsService, string $file = null)
     {
         $this->csvActionsService = $csvActionsService;
         parent::__construct();
