@@ -2,10 +2,15 @@
 
 /**
  * This file is a controller which is responsible for image actions
- * @category Controller
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Controller
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Controller;
@@ -24,16 +29,26 @@ use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
  * Class ImageController
- * @package App\Controller
+ *
+ * @category Class
+ * @package  App\Controller
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
+ *
  * @Route("/image")
  */
 class ImageController extends Controller
 {
     /**
-     * @Route("/{id}", name="image_delete", methods="DELETE")
-     * @param Request $request
-     * @param Image $image
+     * Removes image
+     *
+     * @param Request       $request
+     * @param Image         $image
      * @param ImagesActions $imagesActions
+     *
+     * @Route("/{id}", name="image_delete", methods="DELETE")
+     *
      * @return Response
      */
     public function delete(Request $request, Image $image, ImagesActions $imagesActions): Response

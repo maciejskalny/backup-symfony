@@ -31,6 +31,7 @@ use App\Service\CsvActions;
  */
 class CategoryExportCommand extends Command
 {
+
     /**
      * Name of file, where you want to save exported data.
      *
@@ -67,6 +68,8 @@ class CategoryExportCommand extends Command
 
     /**
      * Configuring command.
+     *
+     * @return void
      */
     protected function configure()
     {
@@ -81,16 +84,14 @@ class CategoryExportCommand extends Command
     /**
      * Supports command actions.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln([
-            'Category export',
-            '=============='
-        ]);
+        $output->writeln(['Category export', '==============']);
 
         $this->csvActionsService->export('category', $input->getArgument('file'), $input->getArgument('category'));
         $output->writeln('Success!');

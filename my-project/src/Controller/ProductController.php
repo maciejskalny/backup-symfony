@@ -2,10 +2,15 @@
 
 /**
  * This file is a controller which is responsible for all of the product actions
- * @category Controller
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Controller
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Controller;
@@ -20,15 +25,25 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\ImagesActions;
 
 /**
- * @Route("/product")
  * Class ProductController
- * @package App\Controller
+ *
+ * @category Class
+ * @package  App\Controller
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
+ *
+ * @Route("/product")
  */
 class ProductController extends Controller
 {
     /**
-     * @Route("/", name="product_index", methods="GET")
+     * Shows all products
+     *
      * @param ProductRepository $productRepository
+     *
+     * @Route("/", name="product_index", methods="GET")
+     *
      * @return Response
      */
     public function index(ProductRepository $productRepository): Response
@@ -37,9 +52,13 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/new", name="product_new", methods="GET|POST")
-     * @param Request $request
+     * Creates new product
+     *
+     * @param Request       $request
      * @param ImagesActions $imagesActionsService
+     *
+     * @Route("/new", name="product_new", methods="GET|POST")
+     *
      * @return Response
      */
     public function new(Request $request, ImagesActions $imagesActionsService): Response
@@ -51,12 +70,12 @@ class ProductController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if(!is_null($form->get('imageFile')->getData())) {
+            if (!is_null($form->get('imageFile')->getData())) {
                 $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
                 $product->setMainImage($mainImage);
             }
 
-            if(!is_null($form->get('imageFiles')->getData())){
+            if (!is_null($form->get('imageFiles')->getData())) {
                 $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
             }
 
@@ -71,15 +90,21 @@ class ProductController extends Controller
             return $this->redirectToRoute('product_index');
         }
 
-        return $this->render('product/new.html.twig', [
+        return $this->render(
+            'product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
-        ]);
+                ]
+        );
     }
 
     /**
-     * @Route("/{id}", name="product_show", methods="GET")
+     * Shows one product
+     *
      * @param Product $product
+     *
+     * @Route("/{id}", name="product_show", methods="GET")
+     *
      * @return Response
      */
     public function show(Product $product): Response
@@ -88,10 +113,14 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
-     * @param Request $request
-     * @param Product $product
+     * Updates product
+     *
+     * @param Request       $request
+     * @param Product       $product
      * @param ImagesActions $imagesActionsService
+     *
+     * @Route("/{id}/edit", name="product_edit", methods="GET|POST")
+     *
      * @return Response
      */
     public function edit(Request $request, Product $product, ImagesActions $imagesActionsService): Response
@@ -100,15 +129,14 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
 
-            if(!is_null($form->get('imageFile')->getData())) {
+            if (!is_null($form->get('imageFile')->getData())) {
                 $mainImage = $imagesActionsService->createImage($form->get('imageFile')->getData());
                 $product->setMainImage($mainImage);
             }
 
-            if(!is_null($form->get('imageFiles')->getData())){
+            if (!is_null($form->get('imageFiles')->getData())) {
                 $product->addImages($imagesActionsService->createImagesCollection($form->get('imageFiles')->getData()));
             }
 
@@ -122,16 +150,22 @@ class ProductController extends Controller
             return $this->redirectToRoute('product_edit', ['id' => $product->getId()]);
         }
 
-        return $this->render('product/edit.html.twig', [
+        return $this->render(
+            'product/edit.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
-        ]);
+                ]
+        );
     }
 
     /**
-     * @Route("/{id}", name="product_delete", methods="DELETE")
+     * Removes product
+     *
      * @param Request $request
      * @param Product $product
+     *
+     * @Route("/{id}", name="product_delete", methods="DELETE")
+     *
      * @return Response
      */
     public function delete(Request $request, Product $product): Response

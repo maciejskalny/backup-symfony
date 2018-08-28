@@ -2,10 +2,15 @@
 
 /**
  * This file is a controller which supports Category Rest api.
- * @category Controller
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Controller
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Controller\Api;
@@ -19,12 +24,25 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\Api\ApiProductCategoryType;
 use App\Service\FormsActions;
 
+/**
+ * Class ApiProductCategoryController
+ *
+ * @category Class
+ * @package  App\Controller\Api
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
+ */
 class ApiProductCategoryController extends Controller
 {
     /**
+     * Shows one category
+     *
+     * @param integer $id
+     *
      * @Route("/api/category/{id}")
      * @Method("GET")
-     * @param integer $id
+     *
      * @return JsonResponse
      */
     public function showCategory($id)
@@ -38,8 +56,11 @@ class ApiProductCategoryController extends Controller
     }
 
     /**
+     * Shows all categories
+     *
      * @Route("api/categories")
      * @Method("GET")
+     *
      * @return JsonResponse
      */
     public function showAllCategories()
@@ -53,10 +74,14 @@ class ApiProductCategoryController extends Controller
     }
 
     /**
+     * Creates new category
+     *
+     * @param Request      $request
+     * @param FormsActions $formsActionsService
+     *
      * @Route("api/category")
      * @Method("POST")
-     * @param Request $request
-     * @param FormsActions $formsActionsService
+     *
      * @return JsonResponse
      */
     public function newCategory(Request $request, FormsActions $formsActionsService)
@@ -76,14 +101,18 @@ class ApiProductCategoryController extends Controller
     }
 
     /**
+     * Updates category
+     *
+     * @param Request      $request
+     * @param FormsActions $formActionsService
+     * @param integer      $id
+     *
      * @Route("api/category/{id}/edit")
      * @Method("PUT")
-     * @param Request $request
-     * @param FormsActions $formActionsService
-     * @param integer $id
+     *
      * @return JsonResponse
      */
-    public function editCategory(Request $request, $id, FormsActions $formActionsService)
+    public function editCategory(Request $request, FormsActions $formActionsService, $id)
     {
         $em = $this->getDoctrine()->getManager();
         $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id'=>$id]);
@@ -102,16 +131,20 @@ class ApiProductCategoryController extends Controller
     }
 
     /**
+     * Removing category
+     *
+     * @param integer $id
+     *
      * @Route("api/category/{id}/delete")
      * @Method("DELETE")
-     * @param integer $id
+     *
      * @return JsonResponse
      */
     public function deleteCategory($id)
     {
         $em = $this->getDoctrine()->getManager();
         $category = $this->getDoctrine()->getRepository(ProductCategory::class)->findOneBy(['id' => $id]);
-        if($category){
+        if($category) {
             $em->remove($category);
             $em->flush();
             return new JsonResponse('Category deleted.', 200);
