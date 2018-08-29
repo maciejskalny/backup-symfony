@@ -69,7 +69,11 @@ class CategoryImportCommand extends Command
             ->setName('app:category-import')
             ->setDescription('Imports categories.')
             ->setHelp('This command allows you to import categories.')
-            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'Path to file.');
+            ->addArgument(
+                'file',
+                $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED,
+                'Path to file.'
+            );
     }
 
     /**

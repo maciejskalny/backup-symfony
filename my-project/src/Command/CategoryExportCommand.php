@@ -77,7 +77,11 @@ class CategoryExportCommand extends Command
             ->setName('app:category-export')
             ->setDescription('Exports categories.')
             ->setHelp('This command allows you to export categories.')
-            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'File name.')
+            ->addArgument(
+                'file',
+                $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED,
+                'File name.'
+            )
             ->addArgument(
                 'category',
                 $this->categories ? InputArgument::IS_ARRAY : InputArgument::OPTIONAL,
@@ -97,7 +101,11 @@ class CategoryExportCommand extends Command
     {
         $output->writeln(['Category export', '==============']);
 
-        $this->csvActionsService->export('category', $input->getArgument('file'), $input->getArgument('category'));
+        $this->csvActionsService->export(
+            'category',
+            $input->getArgument('file'),
+            $input->getArgument('category')
+        );
         $output->writeln('Success!');
     }
 }

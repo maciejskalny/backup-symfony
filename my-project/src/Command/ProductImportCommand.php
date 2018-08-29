@@ -69,7 +69,11 @@ class ProductImportCommand extends Command
             ->setName('app:product-import')
             ->setDescription('Imports products.')
             ->setHelp('This command allows you to import products.')
-            ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'Path to file.');
+            ->addArgument(
+                'file',
+                $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED,
+                'Path to file.'
+            );
     }
 
     /**

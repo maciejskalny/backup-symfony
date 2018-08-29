@@ -341,7 +341,9 @@ class Product
         $data = [
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'category' => 'id: '.$this->getCategory()->getId().' name: '.$this->getCategory()->getName(),
+            'category' => 'id: '.$this->getCategory()
+                    ->getId().' name: '.$this->getCategory()
+                    ->getName(),
             'created_at' => $this->getAddDate(),
             'last_modified' => $this->getLastModifiedDate(),
         ];

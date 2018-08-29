@@ -2,10 +2,15 @@
 
 /**
  * This file is an image repository.
- * @category Repository
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Repository
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Repository;
