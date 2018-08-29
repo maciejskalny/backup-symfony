@@ -49,7 +49,8 @@ class WishlistController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             return $this->render(
-                'wishlist/index.html.twig', [
+                'wishlist/index.html.twig',
+                [
                     'wishlist' => $session->get('wishlist'),
                     'products' => $em->getRepository(Product::class)->findBy(
                         ['id' => $session->get('wishlist')]
@@ -96,7 +97,8 @@ class WishlistController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         return $this->render(
-            'wishlist/index.html.twig', [
+            'wishlist/index.html.twig',
+            [
                 'wishlist' => $session->get('wishlist'),
                 'products' => $em->getRepository(Product::class)->findBy(
                     ['id' => $session->get('wishlist')]

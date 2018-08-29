@@ -53,7 +53,9 @@ class ProductCategoryType extends AbstractType
             ->add('name')
             ->add('description')
             ->add(
-                'imageFile', FileType::class, [
+                'imageFile',
+                FileType::class,
+                [
                     'required' => false,
                     'data_class' => null,
                     'mapped' => false,
@@ -75,7 +77,9 @@ class ProductCategoryType extends AbstractType
                 ]
             )
             ->add(
-                'imageFiles', CollectionType::class, [
+                'imageFiles',
+                CollectionType::class,
+                [
                     'entry_type' => FileType::class,
                     'entry_options' => [
                         'label' => false,

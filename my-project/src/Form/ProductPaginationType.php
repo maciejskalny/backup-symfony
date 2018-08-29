@@ -52,7 +52,9 @@ class ProductPaginationType extends AbstractType
     {
         $builder
             ->add(
-                'productCount', ChoiceType::class, [
+                'productCount',
+                ChoiceType::class,
+                [
                     'choices' => [
                         '6' => 6,
                         '9' => 9,

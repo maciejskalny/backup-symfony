@@ -60,7 +60,7 @@ class ProductExportCommand extends Command
      * @param string|null $file
      * @param string|null $products
      */
-    public function __construct(CsvActions $csvActionsService, string $file=null, string $products=null)
+    public function __construct(CsvActions $csvActionsService, string $file = null, string $products = null)
     {
         $this->csvActionsService = $csvActionsService;
         parent::__construct();
@@ -78,7 +78,11 @@ class ProductExportCommand extends Command
             ->setDescription('Exports products.')
             ->setHelp('This command allows you to export products.')
             ->addArgument('file', $this->file ? InputArgument::REQUIRED : InputArgument::REQUIRED, 'File name.')
-            ->addArgument('product', $this->products ? InputArgument::IS_ARRAY : InputArgument::OPTIONAL, 'Id of products you want to export separated by ,');
+            ->addArgument(
+                'product',
+                $this->products ? InputArgument::IS_ARRAY : InputArgument::OPTIONAL,
+                'Id of products you want to export separated by ,'
+            );
     }
 
     /**

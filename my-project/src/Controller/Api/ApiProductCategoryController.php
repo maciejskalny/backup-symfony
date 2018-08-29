@@ -94,23 +94,23 @@ class ApiProductCategoryController extends Controller
      */
     public function newCategory(Request $request, FormsActions $formsActionsService)
     {
-            $category = new ProductCategory();
-            $form = $this->createForm(ApiProductCategoryType::class, $category);
-            $form->handleRequest($request);
-            $form->submit($request->query->all());
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($category);
-                $em->flush();
-                return new JsonResponse('New category added.', 200);
-            } else {
-                return new JsonResponse(
-                    'Bad request: '.json_encode(
-                        $formsActionsService->showErrors($form)
-                    ),
-                    400
-                );
-            }
+        $category = new ProductCategory();
+        $form = $this->createForm(ApiProductCategoryType::class, $category);
+        $form->handleRequest($request);
+        $form->submit($request->query->all());
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($category);
+            $em->flush();
+            return new JsonResponse('New category added.', 200);
+        } else {
+            return new JsonResponse(
+                'Bad request: '.json_encode(
+                    $formsActionsService->showErrors($form)
+                ),
+                400
+            );
+        }
     }
 
     /**

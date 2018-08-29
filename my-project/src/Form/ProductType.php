@@ -55,13 +55,17 @@ class ProductType extends AbstractType
             ->add('name')
             ->add('description')
             ->add(
-                'category', EntityType::class, [
+                'category',
+                EntityType::class,
+                [
                     'class' => ProductCategory::class,
                     'choice_label' => 'name'
                 ]
             )
             ->add(
-                'imageFile', FileType::class, [
+                'imageFile',
+                FileType::class,
+                [
                     'required' => false,
                     'data_class' => null,
                     'mapped' => false,
@@ -83,7 +87,9 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
-                'imageFiles', CollectionType::class, [
+                'imageFiles',
+                CollectionType::class,
+                [
                     'entry_type' => FileType::class,
                     'entry_options' => [
                         'label' => false,

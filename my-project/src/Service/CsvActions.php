@@ -100,7 +100,7 @@ class CsvActions
      *
      * @return void
      */
-    public function export(string $name, string $csvFile=null, string $choices=null)
+    public function export(string $name, string $csvFile = null, string $choices = null)
     {
         $fileSystem = new Filesystem();
 
@@ -140,7 +140,6 @@ class CsvActions
         $line = 0;
 
         foreach ($this->prepareData($file) as $row) {
-
             $line++;
             $entity = null;
 
@@ -187,7 +186,7 @@ class CsvActions
      *
      * @return void
      */
-    public function prepareEntity(Array $row, String $name, Int $line, $entity=null)
+    public function prepareEntity(Array $row, String $name, Int $line, $entity = null)
     {
         if ($name == 'category') {
             $this->prepareCategoryEntity($row, $line, $entity);
@@ -208,10 +207,10 @@ class CsvActions
      *
      * @return void
      */
-    public function prepareProductEntity(Array $row, Int $line, $entity=null)
+    public function prepareProductEntity(Array $row, Int $line, $entity = null)
     {
         if ($category = $this->em->getRepository(ProductCategory::class)->findOneBy(['id' => $row['category']])) {
-            if ($entity == null ) {
+            if ($entity == null) {
                 $entity = new Product();
             }
             $entity->setDataFromArray($row, $category);
@@ -234,7 +233,7 @@ class CsvActions
      *
      * @return void
      */
-    public function prepareCategoryEntity(Array $row, Int $line, $entity=null)
+    public function prepareCategoryEntity(Array $row, Int $line, $entity = null)
     {
         if ($entity == null) {
             $entity = new ProductCategory();
@@ -268,7 +267,7 @@ class CsvActions
      *
      * @return array
      */
-    public function findEntity(string $name, string $choices=null)
+    public function findEntity(string $name, string $choices = null)
     {
         if ($choices == null) {
             $repository = $this->getRepository($name)->findAll();

@@ -51,7 +51,9 @@ class ImportType extends AbstractType
     {
         $builder
             ->add(
-                'importFile', FileType::class, [
+                'importFile',
+                FileType::class,
+                [
                     'required' => true,
                     'data_class' => null,
                     'mapped' => false,
@@ -74,5 +76,4 @@ class ImportType extends AbstractType
                 ]
         );
     }
-
 }
