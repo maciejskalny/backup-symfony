@@ -2,10 +2,15 @@
 
 /**
  * This file supports product form
- * @category Form
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Form
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Form;
@@ -27,45 +32,46 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
 
 /**
  * Class ProductType
- * @package App\Form
+ *
+ * @category Class
+ * @package  App\Form
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
  */
 class ProductType extends AbstractType
 {
     /**
+     * Builds form
+     *
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
+     *
+     * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name')
             ->add('description')
-            ->add('category', EntityType::class, [
-                'class' => ProductCategory::class,
-                'choice_label' => 'name'])
-            ->add('imageFile', FileType::class, [
-                'required' => false,
-                'data_class' => null,
-                'mapped' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '400k',
-                        'maxSizeMessage' => 'Too large file.',
-                        'mimeTypes' => [
-                            '.png' => 'image/png',
-                            '.jpg' => 'image/jpg',
-                            '.jpeg' => 'image/jpeg'
-                        ],
-                        'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
-                    ])
+            ->add(
+                'category',
+                EntityType::class,
+                [
+                    'class' => ProductCategory::class,
+                    'choice_label' => 'name'
                 ]
-            ])
-            ->add('imageFiles', CollectionType::class, [
-                'entry_type' => FileType::class,
-                'entry_options' => [
-                    'label' => false,
+            )
+            ->add(
+                'imageFile',
+                FileType::class,
+                [
+                    'required' => false,
+                    'data_class' => null,
+                    'mapped' => false,
                     'constraints' => [
-                        new File([
+                        new File(
+                            [
                             'maxSize' => '400k',
                             'maxSizeMessage' => 'Too large file.',
                             'mimeTypes' => [
@@ -73,22 +79,55 @@ class ProductType extends AbstractType
                                 '.jpg' => 'image/jpg',
                                 '.jpeg' => 'image/jpeg'
                             ],
-                            'mimeTypesMessage' => 'Your file must be a .png, .jpg or .jpeg!'
-                        ])
+                            'mimeTypesMessage' =>
+                                'Your file must be a .png, .jpg or .jpeg!'
+                            ]
+                        )
                     ]
-                ],
-                'allow_add' => true,
-                'mapped' =>false,
-            ]);
+                ]
+            )
+            ->add(
+                'imageFiles',
+                CollectionType::class,
+                [
+                    'entry_type' => FileType::class,
+                    'entry_options' => [
+                        'label' => false,
+                        'constraints' => [
+                            new File(
+                                [
+                                'maxSize' => '400k',
+                                'maxSizeMessage' => 'Too large file.',
+                                'mimeTypes' => [
+                                    '.png' => 'image/png',
+                                    '.jpg' => 'image/jpg',
+                                    '.jpeg' => 'image/jpeg'
+                                ],
+                                'mimeTypesMessage' =>
+                                    'Your file must be a .png, .jpg or .jpeg!'
+                                ]
+                            )
+                        ]
+                    ],
+                    'allow_add' => true,
+                    'mapped' =>false,
+                    ]
+            );
     }
 
     /**
+     * Configuring options
+     *
      * @param OptionsResolver $resolver
+     *
+     * @return void
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'data_class' => Product::class,
-        ]);
+                ]
+        );
     }
 }

@@ -1,10 +1,15 @@
 <?php
 /**
  * This file supports images actions
- * @category Service
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Service
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Service;
@@ -22,19 +27,25 @@ use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * Class ImagesActions
- * @package App\Service
+ *
+ * @category Class
+ * @package  App\Service
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
  */
 class ImagesActions
 {
     /**
      * Service parameter, a directory with uploaded images.
+     *
      * @var string
      */
     private $imagesDirectory;
 
     /**
      * ImagesCollection constructor.
-     * Parameter is a path of a directory with uploaded images.
+     *
      * @param string $imagesDirectory
      */
     public function __construct($imagesDirectory)
@@ -43,7 +54,10 @@ class ImagesActions
     }
 
     /**
+     * Creates images collection
+     *
      * @param $images
+     *
      * @return ArrayCollection
      */
     public function createImagesCollection($images)
@@ -51,8 +65,7 @@ class ImagesActions
         $imageManager = new ImagesActions($this->imagesDirectory);
         $filesCollection = new ArrayCollection();
 
-        foreach ($images as $image)
-        {
+        foreach ($images as $image) {
             $filesCollection->add($imageManager->createImage($image));
         }
 
@@ -60,7 +73,10 @@ class ImagesActions
     }
 
     /**
+     * Create one image
+     *
      * @param $image
+     *
      * @return Image
      */
     public function createImage($image)
@@ -84,7 +100,11 @@ class ImagesActions
     }
 
     /**
+     * Removes image
+     *
      * @param Image|null $image
+     *
+     * @return void
      */
     public function removeImage(?Image $image)
     {

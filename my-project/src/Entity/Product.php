@@ -2,10 +2,15 @@
 
 /**
  * This file supports product entity.
- * @category Entity
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Entity
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Entity;
@@ -16,12 +21,22 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Product
+ *
+ * @category Class
+ * @package  App\Entity
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
+ *
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class Product
 {
     /**
+     * Id of the product
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,46 +44,77 @@ class Product
     private $id;
 
     /**
+     * Name of the product
+     *
      * @ORM\Column(type="string", length=255)
      * @Assert\NotNull()
      */
     private $name;
 
     /**
+     * Description of the product
+     *
      * @ORM\Column(type="text", nullable=false)
      * @Assert\NotNull()
      */
     private $description;
 
     /**
+     * When product has been created
+     *
      * @ORM\Column(type="date")
      */
     private $add_date;
 
     /**
+     * When product has been modified
+     *
      * @ORM\Column(type="date")
      */
     private $last_modified_date;
 
     /**
+     * Product category
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\ProductCategory", cascade={"persist"}, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotNull()
-     *
      */
     private $category;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist"}, orphanRemoval=true)
+     * Product main image
+     *
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     *     )
      * @ORM\JoinColumn(name="main_image_id", referencedColumnName="id")
      */
     private $mainImage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Image", cascade={"persist", "remove"}, orphanRemoval=true)
+     * Product gallery images
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Image",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     *     )
      * @ORM\JoinTable(name="images_products",
-     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="image_id", referencedColumnName="id", unique=true, onDelete="CASCADE")})
+     *     joinColumns={@ORM\JoinColumn(
+     *     name="product_id",
+     *     referencedColumnName="id",
+     *     onDelete="CASCADE"
+     * )},
+     *     inverseJoinColumns={@ORM\JoinColumn(
+     *     name="image_id",
+     *     referencedColumnName="id",
+     *     unique=true,
+     *     onDelete="CASCADE"
+     *  )
+     * })
      */
     private $images;
 
@@ -81,6 +127,8 @@ class Product
     }
 
     /**
+     * Get product id
+     *
      * @return integer
      */
     public function getId()
@@ -89,6 +137,8 @@ class Product
     }
 
     /**
+     * Gets product name
+     *
      * @return null|string
      */
     public function getName(): ?string
@@ -97,7 +147,10 @@ class Product
     }
 
     /**
+     * Sets product name
+     *
      * @param string $name
+     *
      * @return Product
      */
     public function setName(string $name): self
@@ -108,6 +161,8 @@ class Product
     }
 
     /**
+     * Gets product description
+     *
      * @return null|string
      */
     public function getDescription(): ?string
@@ -116,7 +171,10 @@ class Product
     }
 
     /**
+     * Sets product description
+     *
      * @param null|string $description
+     *
      * @return Product
      */
     public function setDescription(?string $description): self
@@ -127,6 +185,8 @@ class Product
     }
 
     /**
+     * Gets when product has been created
+     *
      * @return \DateTimeInterface|null
      */
     public function getAddDate(): ?\DateTimeInterface
@@ -135,7 +195,11 @@ class Product
     }
 
     /**
+     * Sets when product has been created
+     *
      * @ORM\PrePersist
+     *
+     * @return void
      */
     public function setAddDate()
     {
@@ -143,6 +207,8 @@ class Product
     }
 
     /**
+     * Gets when product has been modified last
+     *
      * @return \DateTimeInterface|null
      */
     public function getLastModifiedDate(): ?\DateTimeInterface
@@ -151,8 +217,12 @@ class Product
     }
 
     /**
+     * Sets when product has been modified last
+     *
      * @ORM\PrePersist
      * @ORM\PreUpdate
+     *
+     * @return void
      */
     public function setLastModifiedDate()
     {
@@ -160,6 +230,8 @@ class Product
     }
 
     /**
+     * Gets product category
+     *
      * @return ProductCategory|null
      */
     public function getCategory(): ?ProductCategory
@@ -168,7 +240,10 @@ class Product
     }
 
     /**
+     * Sets product category
+     *
      * @param ProductCategory|null $category
+     *
      * @return Product
      */
     public function setCategory(?ProductCategory $category): self
@@ -179,6 +254,8 @@ class Product
     }
 
     /**
+     * Gets gallery
+     *
      * @return Collection|Image[]
      */
     public function getImages(): Collection
@@ -187,7 +264,10 @@ class Product
     }
 
     /**
+     * Adding images to product gallery
+     *
      * @param ArrayCollection $images
+     *
      * @return $this
      */
     public function addImages(ArrayCollection $images)
@@ -197,7 +277,10 @@ class Product
     }
 
     /**
+     * Removing image
+     *
      * @param Image $image
+     *
      * @return Product
      */
     public function removeImage(Image $image): self
@@ -210,6 +293,8 @@ class Product
     }
 
     /**
+     * Gets product main image
+     *
      * @return Image|null
      */
     public function getMainImage(): ?Image
@@ -218,7 +303,10 @@ class Product
     }
 
     /**
+     * Sets product main image
+     *
      * @param Image|null $mainImage
+     *
      * @return Product
      */
     public function setMainImage(?Image $mainImage): self
@@ -231,9 +319,12 @@ class Product
     }
 
     /**
+     * Preparing some product data for rest api
+     *
      * @return array
      */
-    public function serializeProduct(){
+    public function serializeProduct()
+    {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
@@ -241,6 +332,8 @@ class Product
     }
 
     /**
+     * Preparing product fields for rest api
+     *
      * @return array
      */
     public function getProductInfo()
@@ -248,7 +341,9 @@ class Product
         $data = [
             'name' => $this->getName(),
             'description' => $this->getDescription(),
-            'category' => 'id: '.$this->getCategory()->getId().' name: '.$this->getCategory()->getName(),
+            'category' => 'id: '.$this->getCategory()
+                    ->getId().' name: '.$this->getCategory()
+                    ->getName(),
             'created_at' => $this->getAddDate(),
             'last_modified' => $this->getLastModifiedDate(),
         ];
@@ -256,19 +351,24 @@ class Product
     }
 
     /**
-     * @param array|null $row
+     * Sets some new info to product
+     *
+     * @param array|null      $row
      * @param ProductCategory $category
+     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function setDataFromArray(?Array $row, ProductCategory $category)
     {
-        if(!empty($row['name'])) {
+        if (!empty($row['name'])) {
             $this->setName($row['name']);
         } else {
             throw new \Exception('Name field cant be null.');
         }
 
-        if(!empty($row['description'])) {
+        if (!empty($row['description'])) {
             $this->setDescription($row['description']);
         } else {
             throw new \Exception('Description field cant be null.');
@@ -278,9 +378,12 @@ class Product
     }
 
     /**
+     * Gets some product info for export
+     *
      * @return array
      */
-    public function getExportInfo(){
+    public function getExportInfo()
+    {
         $createdAt = $this->getAddDate()->format('d/m/Y');
         $lastModified = $this->getLastModifiedDate()->format('d/m/Y');
 

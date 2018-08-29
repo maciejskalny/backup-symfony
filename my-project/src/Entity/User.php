@@ -2,10 +2,15 @@
 
 /**
  * This file supports user entity
- * @category Entity
- * @Package Virtua_Internship
- * @copyright Copyright (c) 2018 Virtua (http://www.wearevirtua.com)
- * @author Maciej Skalny contact@wearevirtua.com
+ *
+ * PHP version 7.1.16
+ *
+ * @category  Entity
+ * @package   Virtua_Internship
+ * @author    Maciej Skalny <contact@wearevirtua.com>
+ * @copyright 2018 Copyright (c) Virtua (http://wwww.wearevirtua.com)
+ * @license   GPL http://opensource.org/licenses/gpl-license.php
+ * @link      https://github.com/maciejskalny/backup-symfony
  */
 
 namespace App\Entity;
@@ -16,13 +21,29 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Class User
+ *
+ * @category Class
+ * @package  App\Entity
+ * @author   Maciej Skalny <contact@wearevirtua.com>
+ * @license  GPL http://opensource.org/licenses/gpl-license.php
+ * @link     https://github.com/maciejskalny/backup-symfony
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="email", message="Email already taken")
- * @UniqueEntity(fields="username", message="Username already taken")
+ * @UniqueEntity(
+ *     fields="email",
+ *     message="Email already taken"
+ * )
+ * @UniqueEntity(
+ *     fields="username",
+ *     message="Username already taken"
+ * )
  */
 class User implements UserInterface
 {
     /**
+     * Id of the user
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -30,12 +51,16 @@ class User implements UserInterface
     private $id;
 
     /**
+     * Username
+     *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      */
     private $username;
 
     /**
+     * Email of the user
+     *
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
@@ -43,17 +68,23 @@ class User implements UserInterface
     private $email;
 
     /**
+     * Password of the user
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
+     * Plain password
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max=4096)
      */
     private $plainPassword;
 
     /**
+     * User roles
+     *
      * @ORM\Column(type="array")
      */
     private $roles;
@@ -67,6 +98,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets id of the user
+     *
      * @return integer
      */
     public function getId()
@@ -75,6 +108,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets username
+     *
      * @return null|string
      */
     public function getUsername(): ?string
@@ -83,7 +118,10 @@ class User implements UserInterface
     }
 
     /**
+     * Sets username
+     *
      * @param string $username
+     *
      * @return User
      */
     public function setUsername(string $username): self
@@ -94,6 +132,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets user email
+     *
      * @return null|string
      */
     public function getEmail(): ?string
@@ -102,7 +142,10 @@ class User implements UserInterface
     }
 
     /**
+     * Sets email
+     *
      * @param string $email
+     *
      * @return User
      */
     public function setEmail(string $email): self
@@ -113,6 +156,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets user password
+     *
      * @return null|string
      */
     public function getPassword(): ?string
@@ -121,7 +166,10 @@ class User implements UserInterface
     }
 
     /**
+     * Sets password
+     *
      * @param string $password
+     *
      * @return User
      */
     public function setPassword(string $password): self
@@ -132,6 +180,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets plain password
+     *
      * @return null|string
      */
     public function getPlainPassword(): ?string
@@ -140,7 +190,10 @@ class User implements UserInterface
     }
 
     /**
+     * Sets plain password
+     *
      * @param string $plainPassword
+     *
      * @return User
      */
     public function setPlainPassword(string $plainPassword): self
@@ -151,6 +204,8 @@ class User implements UserInterface
     }
 
     /**
+     * Gets user roles
+     *
      * @return array|null
      */
     public function getRoles(): ?array
@@ -159,7 +214,10 @@ class User implements UserInterface
     }
 
     /**
+     * Sets roles
+     *
      * @param array $roles
+     *
      * @return User
      */
     public function setRoles(array $roles): self
@@ -170,6 +228,8 @@ class User implements UserInterface
     }
 
     /**
+     * Doing nothing, needed by validator
+     *
      * @return null|string
      */
     public function getSalt()
@@ -179,6 +239,10 @@ class User implements UserInterface
 
     /**
      * That method is only meant to clean up possibly stored plain text passwords.
+     *
+     * @return void
      */
-    public function eraseCredentials(){}
+    public function eraseCredentials()
+    {
+    }
 }
